@@ -1,12 +1,12 @@
 mysql
 =====
 
-mysql
------
+Install the MySQL client and/or server
 
-Install the mysql client
+Available states
+----------------
 
-mysql.server
-------------
-
-Install the mysql server and fire it up
+``mysql``
+    Install the MySQL client package.
+``mysql.server``
+    Install the MySQL server package and start the service.
