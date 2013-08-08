@@ -1,9 +1,9 @@
+{% set pkg = salt['grains.filter_by']({
+  'Debian': {'name': 'mysql-client'},
+  'RedHat': {'name': 'mysql'},
+}) %}
+
 mysql:
   pkg:
     - installed
-    {% if grains['os_family'] == 'Debian' %}
-    - pkgs:
-      - mysql-client
-      - mysql-server
-    {% endif %}
-
+    - name: {{ pkg.name }}
