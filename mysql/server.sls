@@ -2,8 +2,14 @@ include:
   - mysql
 
 {% set pkg = salt['grains.filter_by']({
-  'Debian': {'name': 'mysql-server'},
-  'RedHat': {'name': 'mysql-server'},
+  'Debian': {
+    'name': 'mysql-server',
+    'service': 'mysql',
+  },
+  'RedHat': {
+    'name': 'mysql-server',
+    'service': 'mysqld',
+  },
 }) %}
 
 mysqld:
@@ -12,6 +18,7 @@ mysqld:
     - name: {{ pkg.name }}
   service:
     - running
+    - name: {{ pkg.service }}
     - enable: True
   require:
     - pkg: mysql
