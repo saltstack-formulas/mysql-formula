@@ -1,24 +1,12 @@
-include:
-  - mysql
-
-{% set pkg = salt['grains.filter_by']({
-  'Debian': {
-    'name': 'mysql-server',
-    'service': 'mysql',
-  },
-  'RedHat': {
-    'name': 'mysql-server',
-    'service': 'mysqld',
-  },
-}) %}
+{% from "salt/package-map.jinja" import pkgs with context %}
 
 mysqld:
   pkg:
     - installed
-    - name: {{ pkg.name }}
+    - name: {{ pkgs['mysql-server'] }}
   service:
     - running
-    - name: {{ pkg.service }}
+    - name: {{ services['mysql'] }}
     - enable: True
-  require:
-    - pkg: mysql
+    - watch:
+      - pkg: mysqld
