@@ -1,4 +1,4 @@
-{% from "salt/package-map.jinja" import pkgs, services with context %}
+{% from "salt/package-map.jinja" import pkgs with context %}
 
 mysqld:
   pkg:
