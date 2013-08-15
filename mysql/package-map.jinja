@@ -1,0 +1,36 @@
+{% set package_table = {
+    'Debian': {'mysql-server': 'mysql-server',
+               'mysql-client': 'mysql-client'},
+    'Ubuntu': {'mysql-server': 'mysql-server',
+               'mysql-client': 'mysql-client'},
+    'CentOS': {'mysql-server': 'mysql-server',
+               'mysql-client': 'mysql'},
+    'Fedora': {'mysql-server': 'mysql-server',
+               'mysql-client': 'mysql'},
+    'RedHat': {'mysql-server': 'mysql-server',
+               'mysql-client': 'mysql'},
+    'Gentoo': {'mysql-server': 'dev-db/mysql',
+               'mysql-client': 'dev-db/mysql'},
+} %}
+
+{% if 'package_table' in pillar %}
+    {% set pkgs = pillar['package_table'] %}
+{% elif grains['os'] in package_table %}
+    {% set pkgs = package_table[grains['os']] %}
+{% endif %}
+
+
+{% set service_table = {
+    'Debian': {'mysql': 'mysql'},
+    'Ubuntu': {'mysql': 'mysql'},
+    'CentOS': {'mysql': 'mysqld'},
+    'Fedora': {'mysql': 'mysqld'},
+    'RedHat': {'mysql': 'mysqld'},
+    'Gentoo': {'mysql': 'mysql'}
+} %}
+
+{% if 'service_table' in pillar %}
+    {% set services = pillar['service_table'] %}
+{% elif grains['os'] in service_table %}
+    {% set services = service_table[grains['os']] %}
+{% endif %}
