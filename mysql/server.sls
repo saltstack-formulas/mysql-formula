@@ -1,12 +1,12 @@
-{% from "mysql/package-map.jinja" import pkgs, services, configs with context %}
+{% from "mysql/package-map.jinja" import mysql with context %}
 
 mysqld:
   pkg:
     - installed
-    - name: {{ pkgs['mysql-server'] }}
+    - name: {{ mysql.server }}
   service:
     - running
-    - name: {{ services['mysql'] }}
+    - name: {{ mysql.service }}
     - enable: True
     - watch:
       - pkg: mysqld
@@ -14,7 +14,7 @@ mysqld:
 {% if grains['os'] in ['Ubuntu', 'Debian', 'Gentoo'] %}
 my.cnf:
   file.managed:
-    - name: {{ configs['mysql'] }}
+    - name: {{ mysql.config }}
     - source: salt://mysql/files/{{ grains['os'] }}-my.cnf
     - user: root
     - group: root

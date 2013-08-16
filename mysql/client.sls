@@ -1,6 +1,6 @@
-{% from "mysql/package-map.jinja" import pkgs, services with context %}
+{% from "mysql/package-map.jinja" import mysql with context %}
 
 mysql:
   pkg:
     - installed
-    - name: {{ pkgs['mysql-client'] }}
+    - name: {{ mysql.client }}
