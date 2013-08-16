@@ -3,3 +3,10 @@ mysql:
     bind-address: 127.0.0.1
     port: 3306
     user: mysql
+
+  # Override any names defined in package-map.jinja
+  lookup:
+    server: mysql-server
+    client: mysql-client
+    service: mysql-service
+    config: /etc/mysql/my.cnf
