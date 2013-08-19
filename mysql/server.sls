@@ -20,4 +20,6 @@ my.cnf:
     - group: root
     - mode: 644
     - template: jinja
+    - watch_in:
+      - service: mysqld
 {% endif %}
