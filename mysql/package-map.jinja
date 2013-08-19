@@ -34,3 +34,19 @@
 {% elif grains['os'] in service_table %}
     {% set services = service_table[grains['os']] %}
 {% endif %}
+
+
+{% set config_table = {
+    'Debian': {'mysql': '/etc/mysql/my.cnf'},
+    'Ubuntu': {'mysql': '/etc/mysql/my.cnf'},
+    'CentOS': {'mysql': '/etc/my.cnf'},
+    'Fedora': {'mysql': '/etc/my.cnf'},
+    'RedHat': {'mysql': '/etc/my.cnf'},
+    'Gentoo': {'mysql': '/etc/mysql/my.cnf'}
+} %}
+
+{% if 'config_table' in pillar %}
+    {% set configs = pillar['config_table'] %}
+{% elif grains['os'] in config_table %}
+    {% set configs = config_table[grains['os']] %}
+{% endif %}
