@@ -1,4 +1,4 @@
-{% from "mysql/pillar-settings.jinja" import server %}
+{% from "mysql/pillar-settings.jinja" import server with context %}
 # This file managed by Salt, do not edit by hand!!
 #
 # The MySQL database server configuration file.
@@ -46,7 +46,6 @@ skip-external-locking
 #
 # Instead of skip-networking the default is now to listen only on
 # localhost which is more compatible and is not less secure.
-{{ if pillar
 bind-address		= {{ server.get('bind-address', '127.0.0.1') }}
 #
 # * Fine Tuning

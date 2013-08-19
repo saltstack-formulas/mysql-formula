@@ -1,4 +1,4 @@
-{% from "mysql/pillar-settings.jinja" import server %}
+{% from "mysql/pillar-settings.jinja" import server with context %}
 # This file managed by Salt, do not edit by hand!!
 #
 # The MySQL database server configuration file.

@@ -1,4 +1,4 @@
-{% from "mysql/pillar-settings.jinja" import server %}
+{% from "mysql/pillar-settings.jinja" import server with context %}
 # This file managed by Salt, do not edit by hand!!
 # /etc/mysql/my.cnf: The global mysql configuration file.
 # $Header: /var/cvsroot/gentoo-x86/dev-db/mysql/files/my.cnf-5.1,v 1.4 2013/01/20 02:40:02 robbat2 Exp $
