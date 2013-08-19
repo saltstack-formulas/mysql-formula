@@ -1,4 +1,3 @@
-{% from "mysql/pillar-settings.jinja" import server with context %}
 # This file managed by Salt, do not edit by hand!!
 #
 # The MySQL database server configuration file.
@@ -34,10 +33,10 @@ nice		= 0
 #
 # * Basic Settings
 #
-user		= {{ server.get('user', 'mysql') }}
+user		= {{ salt['pillar.get']('mysql:user', 'mysql') }}
 pid-file	= /var/run/mysqld/mysqld.pid
 socket		= /var/run/mysqld/mysqld.sock
-port		= {{ server.get('port', '3306') }}
+port		= {{ salt['pillar.get']('mysql:port', '3306') }}
 basedir		= /usr
 datadir		= /var/lib/mysql
 tmpdir		= /tmp
@@ -46,7 +45,7 @@ skip-external-locking
 #
 # Instead of skip-networking the default is now to listen only on
 # localhost which is more compatible and is not less secure.
-bind-address		= {{ server.get('bind-address', '127.0.0.1') }}
+bind-address		= {{ salt['pillar.get']('mysql:bind-address', '127.0.0.1') }}
 #
 # * Fine Tuning
 #
