@@ -1,9 +1,6 @@
-{% set pkg = salt['grains.filter_by']({
-  'Debian': {'name': 'python-mysqldb'},
-  'RedHat': {'name': 'MySQL-python'},
-}) %}
+{% from "mysql/package-map.jinja" import mysql with context %}
 
 mysqldb-python:
   pkg:
     - installed
-    - name: {{ pkg.name }}
+    - name: {{ mysql.python }}

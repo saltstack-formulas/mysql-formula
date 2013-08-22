@@ -10,3 +10,4 @@ mysql:
     client: mysql-client
     service: mysql-service
     config: /etc/mysql/my.cnf
+    python: python-mysqldb
