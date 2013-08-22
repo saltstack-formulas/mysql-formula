@@ -1,6 +1,6 @@
 {% from "mysql/package-map.jinja" import mysql with context %}
 
-mysqldb-python:
+mysql-python:
   pkg:
     - installed
     - name: {{ mysql.python }}
