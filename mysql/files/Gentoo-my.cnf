@@ -45,8 +45,8 @@ err-log						= /var/log/mysql/mysql.err
 # add a section [mysqld-4.1] or [mysqld-5.0] for specific configurations
 [mysqld]
 character-set-server		= utf8
-user 						= {{ salt['pillar.get']('mysql:user', 'mysql') }}
-port 						= {{ salt['pillar.get']('mysql:port', '3306') }}
+user 						= {{ salt['pillar.get']('mysql:server:user', 'mysql') }}
+port 						= {{ salt['pillar.get']('mysql:server:port', '3306') }}
 socket 						= /var/run/mysqld/mysqld.sock
 pid-file 					= /var/run/mysqld/mysqld.pid
 log-error 					= /var/log/mysql/mysqld.err
@@ -66,7 +66,7 @@ language 					= /usr/share/mysql/english
 # security:
 # using "localhost" in connects uses sockets by default
 # skip-networking
-bind-address				= {{ salt['pillar.get']('mysql:bind-address', '127.0.0.1') }}
+bind-address				= {{ salt['pillar.get']('mysql:server:bind-address', '127.0.0.1') }}
 
 log-bin
 server-id 					= 1
