@@ -1,4 +1,4 @@
-{% from "mysql/package-map.jinja" import mysql with context %}
+{% from "mysql/map.jinja" import mysql with context %}
 
 mysql-python:
   pkg:

@@ -4,7 +4,7 @@ mysql:
     port: 3306
     user: mysql
 
-  # Override any names defined in package-map.jinja
+  # Override any names defined in map.jinja
   lookup:
     server: mysql-server
     client: mysql-client
