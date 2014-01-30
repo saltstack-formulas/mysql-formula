@@ -20,4 +20,11 @@
         'config': '/etc/mysql/my.cnf',
         'python': 'dev-python/mysql-python',
     },
+    'FreeBSD': {
+        'server': 'mysql56-server',
+        'mysql-client': 'mysql56-client',
+        'service': 'mysql-server',
+        'config': '/usr/local/etc/my.cnf',
+        'python': 'pymysql',
+        'mysql-size': 'medium',
 }, merge=salt['pillar.get']('mysql:lookup')) %}
