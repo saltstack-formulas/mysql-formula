@@ -46,9 +46,6 @@ my.cnf:
   file.managed:
     - name: {{ mysql.config }}
     - source: salt://mysql/files/my-{{ mysql.mysql_size }}.cnf
-    - user: root
-    - group: root
-    - mode: 644
     - template: jinja
     - watch_in:
       - service: mysqld
