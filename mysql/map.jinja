@@ -26,6 +26,6 @@
         'service': 'mysql-server',
         'config': '/usr/local/etc/my.cnf',
         'python': 'pymysql',
-        'mysql-size': 'medium',
+        'mysql_size': 'medium',
     },
 }, merge=salt['pillar.get']('mysql:lookup')) %}

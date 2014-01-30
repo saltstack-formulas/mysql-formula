@@ -45,7 +45,7 @@ selinux_enforcing:
 my.cnf:
   file.managed:
     - name: {{ mysql.config }}
-    - source: salt://mysql/files/my-{{ mysql.mysql-size }}.cnf
+    - source: salt://mysql/files/my-{{ mysql.mysql_size }}.cnf
     - user: root
     - group: root
     - mode: 644
