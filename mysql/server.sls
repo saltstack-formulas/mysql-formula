@@ -6,7 +6,7 @@ mysqld:
     - name: {{ mysql.server }}
 {% if grains['os'] in ['Ubuntu', 'Debian'] %}
     - debconf: salt://mysql/files/mysql.deb.set
-{%- endif -%}
+{% endif %}
   service:
     - running
     - name: {{ mysql.service }}
