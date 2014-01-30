@@ -1,0 +1,3 @@
+mysql-server-5.5  mysql-server/root_password_again  password somepass
+mysql-server-5.5  mysql-server/root_password  password somepass
+mysql-server-5.5  mysql-server/start_on_boot  boolean true
