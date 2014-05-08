@@ -31,7 +31,7 @@ mysql-python:
     - installed
     - name: {{ mysql.python }}
 
-{% if grains['os'] in ['Ubuntu', 'Debian', 'Gentoo'] %}
+{% if grains['os'] in ['Ubuntu', 'Debian', 'Gentoo', 'CentOS'] %}
 my.cnf:
   file.managed:
     - name: {{ mysql.config }}
