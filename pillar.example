@@ -5,6 +5,11 @@ mysql:
     port: 3306
     user: mysql
 
+  # Manage databases
+  database:
+    - foo
+    - baz
+
   # Override any names defined in map.jinja
   lookup:
     server: mysql-server

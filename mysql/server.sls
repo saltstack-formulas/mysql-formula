@@ -26,6 +26,11 @@ mysqld:
     - watch:
       - pkg: mysqld
 
+mysql-python:
+  pkg:
+    - installed
+    - name: {{ mysql.python }}
+
 {% if grains['os'] in ['Ubuntu', 'Debian', 'Gentoo'] %}
 my.cnf:
   file.managed:
