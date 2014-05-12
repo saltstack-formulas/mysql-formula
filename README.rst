@@ -31,3 +31,8 @@ Debian OS family supports setting MySQL root password during install via debconf
 ----------------
 
 Create and manage MySQL databases.
+
+``mysql.database``
+----------------
+
+Create and manage MySQL database users with definable GRANT privileges.

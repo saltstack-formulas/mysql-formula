@@ -10,6 +10,25 @@ mysql:
     - foo
     - baz
 
+  # Manage users
+  user:
+    - name: frank
+      password: somepass
+      host: localhost
+      databases:
+        - database: foo
+          grants: ['select', 'insert', 'update']
+        - database: bar
+          grants: ['all privileges']
+    - name: bob
+      password: someotherpass
+      host: localhost
+      databases:
+        - database: foo
+          grants: ['all privileges']
+        - database: bar
+          grants: ['select', 'insert', 'update', 'delete']
+
   # Override any names defined in map.jinja
   lookup:
     server: mysql-server
