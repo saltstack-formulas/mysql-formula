@@ -24,3 +24,15 @@ Install the MySQL client package.
 ----------------
 
 Install the MySQL server package and start the service.
+
+Debian OS family supports setting MySQL root password during install via debconf.
+
+``mysql.database``
+----------------
+
+Create and manage MySQL databases.
+
+``mysql.user``
+----------------
+
+Create and manage MySQL database users with definable GRANT privileges.

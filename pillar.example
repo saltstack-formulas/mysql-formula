@@ -1,8 +1,33 @@
 mysql:
   server:
+    root_password: somepass
     bind-address: 127.0.0.1
     port: 3306
     user: mysql
+
+  # Manage databases
+  database:
+    - foo
+    - baz
+
+  # Manage users
+  user:
+    - name: frank
+      password: somepass
+      host: localhost
+      databases:
+        - database: foo
+          grants: ['select', 'insert', 'update']
+        - database: bar
+          grants: ['all privileges']
+    - name: bob
+      password: someotherpass
+      host: localhost
+      databases:
+        - database: foo
+          grants: ['all privileges']
+        - database: bar
+          grants: ['select', 'insert', 'update', 'delete']
 
   # Override any names defined in map.jinja
   lookup:

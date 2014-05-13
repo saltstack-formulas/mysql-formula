@@ -1,11 +1,23 @@
 {% from "mysql/map.jinja" import mysql with context %}
 
+
+{% if grains['os'] in ['Ubuntu', 'Debian'] %}
+mysql-debconf:
+  debconf.set:
+    - name: mysql-server
+    - data:
+        'mysql-server/root_password': {'type': 'password', 'value': '{{ salt['pillar.get']('mysql:server:root_password', 'somepass') }}'}
+        'mysql-server/root_password_again': {'type': 'password', 'value': '{{ salt['pillar.get']('mysql:server:root_password', 'somepass') }}'}
+        'mysql-server/start_on_boot': {'type': 'boolean', 'value': 'true'}
+{% endif %}
+
 mysqld:
   pkg:
     - installed
     - name: {{ mysql.server }}
 {% if grains['os'] in ['Ubuntu', 'Debian'] %}
-    - debconf: salt://mysql/files/mysql.deb.set
+    - require:
+      - debconf: mysql-debconf
 {% endif %}
   service:
     - running
@@ -13,6 +25,11 @@ mysqld:
     - enable: True
     - watch:
       - pkg: mysqld
+
+mysql-python:
+  pkg:
+    - installed
+    - name: {{ mysql.python }}
 
 {% if grains['os'] in ['Ubuntu', 'Debian', 'Gentoo'] %}
 my.cnf:
