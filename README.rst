@@ -28,7 +28,7 @@ Install the MySQL server package and start the service.
 Debian OS family supports setting MySQL root password during install via debconf.
 
 ``mysql.database``
-----------------
+------------------
 
 Create and manage MySQL databases.
 
@@ -36,3 +36,11 @@ Create and manage MySQL databases.
 ----------------
 
 Create and manage MySQL database users with definable GRANT privileges.
+
+The state accepts MySQL hashed passwords or clear text. Hashed password have priority.
+
+.. note::
+    See the `salt.states.mysql_user <http://docs.saltstack.com/en/latest/ref/states/all/salt.states.mysql_user.html#module-salt.states.mysql_user>`_ docs for additional information on configuring hashed passwords.
+    
+    Make sure the **quote the passwords** in the pillar so YAML doesn't throw an exception.
+

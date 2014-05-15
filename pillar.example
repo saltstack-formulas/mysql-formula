@@ -1,6 +1,6 @@
 mysql:
   server:
-    root_password: somepass
+    root_password: 'somepass'
     bind-address: 127.0.0.1
     port: 3306
     user: mysql
@@ -13,7 +13,7 @@ mysql:
   # Manage users
   user:
     - name: frank
-      password: somepass
+      password: 'somepass'
       host: localhost
       databases:
         - database: foo
@@ -21,7 +21,7 @@ mysql:
         - database: bar
           grants: ['all privileges']
     - name: bob
-      password: someotherpass
+      password_hash: '*6C8989366EAF75BB670AD8EA7A7FC1176A95CEF4'
       host: localhost
       databases:
         - database: foo
