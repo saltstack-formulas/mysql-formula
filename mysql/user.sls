@@ -1,5 +1,8 @@
 {% from "mysql/map.jinja" import mysql with context %}
 
+include:
+  - mysql.python
+
 {% for user in salt['pillar.get']('mysql:user', []) %}
 {{ user['name'] }}:
   mysql_user.present:

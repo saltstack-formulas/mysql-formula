@@ -1,5 +1,8 @@
 {% from "mysql/map.jinja" import mysql with context %}
 
+include:
+  - mysql.python
+
 {% for database in salt['pillar.get']('mysql:database', []) %}
 {{ database }}:
   mysql_database.present:
