@@ -4,7 +4,7 @@ include:
   - mysql.python
 
 {% for database in salt['pillar.get']('mysql:database', []) %}
-{{ database }}:
+mysql_db_{{ database }}:
   mysql_database.present:
     - host: localhost
     - connection_user: root
