@@ -4,8 +4,9 @@ include:
   - mysql.python
 
 {% for user in salt['pillar.get']('mysql:user', []) %}
-{{ user['name'] }}:
+mysql_user_{{ user['name'] }}:
   mysql_user.present:
+    - name: {{ user['name'] }}
     - host: {{ user['host'] }}
   {%- if user['password_hash'] is defined %}
     - password_hash: '{{ user['password_hash'] }}'
@@ -18,8 +19,10 @@ include:
     - connection_charset: utf8
 
 {% for db in user['databases'] %}
-{{ user['name'] }}_{{ db['database'] }}:
+{% set name = user['name'] ~ '_' ~ db['database'] %}
+mysql_user_{{ name }}:
   mysql_grants.present:
+    - name: {{ name }}
     - grant: {{db['grants']|join(",")}}
     - database: {{ db['database'] }}.*
     - user: {{ user['name'] }}
