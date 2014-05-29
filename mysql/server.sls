@@ -63,23 +63,6 @@ my.cnf:
       - service: mysqld
 {% endif %}
 
-# Set SELinux to permissive mode while installing mysqld otherwise the
-# mysql user will not be created; restore enforcing when done.
-{% if (grains['os_family'] == 'RedHat'
-    and salt['cmd.run']("sestatus | awk '/Current mode/ { print $3 }'") == 'enforcing') %}
-selinux_permissive:
-  cmd.run:
-    - name: setenforce permissive
-    - prereq:
-      - pkg: mysqld
-
-selinux_enforcing:
-  cmd.wait:
-    - name: setenforce enforcing
-    - watch_in:
-      - pkg: mysqld
-{% endif %}
-
 {% if grains['os'] in 'FreeBSD' %}
 my.cnf:
   file.managed:
