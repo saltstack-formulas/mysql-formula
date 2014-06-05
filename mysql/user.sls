@@ -24,7 +24,7 @@ mysql_user_{{ name }}:
   mysql_grants.present:
     - name: {{ name }}
     - grant: {{db['grants']|join(",")}}
-    - database: {{ db['database'] }}.*
+    - database: '{{ db['database'] }}.*'
     - user: {{ user['name'] }}
     - host: {{ user['host'] }}
     - connection_host: localhost
