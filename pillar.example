@@ -8,7 +8,7 @@ mysql:
   # Manage databases
   database:
     - foo
-    - baz
+    - bar
 
   # Manage users
   user:
