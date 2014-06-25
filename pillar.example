@@ -27,6 +27,7 @@ mysql:
         - database: foo
           grants: ['all privileges']
         - database: bar
+          table: foobar
           grants: ['select', 'insert', 'update', 'delete']
 
   # Override any names defined in map.jinja
