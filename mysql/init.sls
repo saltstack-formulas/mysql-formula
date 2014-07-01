@@ -23,7 +23,7 @@ extend:
   {{ state }}:
     mysql_user:
       - require:
-        sls: mysql.database
+        - sls: mysql.database
   {% endfor %}
 {% endif %}
     
