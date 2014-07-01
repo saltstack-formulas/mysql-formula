@@ -13,7 +13,7 @@ mysql_missing_root_password:
     - result: False
     - comment: 'MySQL pillar is missing root password data. A random password will be used.'
 
-    {% set mysql_root_password = salt['test.rand_str](64) %}
+    {% set mysql_root_password = salt['test.rand_str'](64) %}
 {% endif %}
 
 {% if os in ['Ubuntu', 'Debian'] %}
