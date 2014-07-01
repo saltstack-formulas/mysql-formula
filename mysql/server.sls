@@ -1,26 +1,50 @@
 {% from "mysql/map.jinja" import mysql with context %}
 
-{% set mysql_root_password = salt['pillar.get']('mysql:server:root_password', 'somepass') %}
+{% set os = salt['grains.get']('os', None) %}
+{% set os_family = salt['grains.get']('os_family', None) %}
 
-{% if grains['os'] in ['Ubuntu', 'Debian'] %}
-mysql-debconf:
+{% if 'mysql:server:root_password' in pillar %}
+    {% set mysql_root_password = pillar['mysql:server:root_password'] %}
+{% else %}
+mysql_missing_root_password:
+  test.configurable_test_state:
+    - name: mysql_missing_root_password
+    - changes: False
+    - result: False
+    - comment: 'MySQL pillar is missing root password data. A random password will be used.'
+
+    {% set mysql_root_password = salt['test.rand_str](64) %}
+{% endif %}
+
+{% endif %}
+
+{% if os in ['Ubuntu', 'Debian'] %}
+mysql_debconf:
   debconf.set:
     - name: mysql-server
     - data:
         'mysql-server/root_password': {'type': 'password', 'value': '{{ mysql_root_password }}'}
         'mysql-server/root_password_again': {'type': 'password', 'value': '{{ mysql_root_password }}'}
         'mysql-server/start_on_boot': {'type': 'boolean', 'value': 'true'}
-{% elif grains['os'] in ['CentOS'] %}
-mysql-root-password:
-  cmd:
-    - run
+    - require_in:
+      - pkg: mysqld
+    {% if 'mysql:server:root_password' not in pillar %}
+    - require:
+      - test: mysql_missing_root_password
+    {% endif %}
+{% elif os == 'CentOS' %}
+mysql_root_password:
+  cmd.run:
     - name: mysqladmin --user root password '{{ mysql_root_password|replace("'", "'\"'\"'") }}'
     - unless: mysql --user root --password='{{ mysql_root_password|replace("'", "'\"'\"'") }}' --execute="SELECT 1;"
     - require:
       - service: mysqld
+      {% if 'mysql:server:root_password' not in pillar %}
+      - test: mysql_missing_root_password
+      {% endif %}
 
-{% for host in ['localhost', grains['fqdn']] %}
-mysql-delete-anonymous-user-{{ host }}:
+{% for host in ['localhost', salt['grains.get']('fqdn')] %}
+mysql_delete_anonymous_user_{{ host }}:
   mysql_user:
     - absent
     - host: {{ host }}
@@ -28,47 +52,37 @@ mysql-delete-anonymous-user-{{ host }}:
     - connection_pass: {{ mysql_root_password }}
     - require:
       - service: mysqld
-      - pkg: mysql-python
+      - pkg: mysql_python
       {%- if mysql_root_password %}
-      - cmd: mysql-root-password
+      - cmd: mysql_root_password
       {%- endif %}
 {% endfor %}
 {% endif %}
 
 mysqld:
-  pkg:
-    - installed
+  pkg.installed:
     - name: {{ mysql.server }}
-{% if grains['os'] in ['Ubuntu', 'Debian'] %}
+{% if os in ['Ubuntu', 'Debian'] %}
     - require:
-      - debconf: mysql-debconf
+      - debconf: mysql_debconf
 {% endif %}
-  service:
-    - running
+  service.running:
     - name: {{ mysql.service }}
     - enable: True
     - watch:
       - pkg: mysqld
 
-{% if grains['os'] in ['Ubuntu', 'Debian', 'Gentoo', 'CentOS'] %}
-my.cnf:
+mysql_config:
   file.managed:
     - name: {{ mysql.config }}
-    - source: salt://mysql/files/{{ grains['os'] }}-my.cnf
+    - template: jinja
+    - watch_in:
+      - service: mysqld
+    {% if os in ['Ubuntu', 'Debian', 'Gentoo', 'CentOS'] %}
+    - source: salt://mysql/files/{{ os }}-my.cnf
     - user: root
     - group: root
     - mode: 644
-    - template: jinja
-    - watch_in:
-      - service: mysqld
-{% endif %}
-
-{% if grains['os'] in 'FreeBSD' %}
-my.cnf:
-  file.managed:
-    - name: {{ mysql.config }}
+    {% elif os == 'FreeBSD' %}
     - source: salt://mysql/files/my-{{ mysql.mysql_size }}.cnf
-    - template: jinja
-    - watch_in:
-      - service: mysqld
-{% endif %}
+    {% endif %}
