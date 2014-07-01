@@ -12,6 +12,7 @@ mysql_missing_root_password:
     - changes: False
     - result: False
     - comment: 'MySQL pillar is missing root password data. A random password will be used.'
+    - order: 1
 
     {% set mysql_root_password = salt['test.rand_str'](64) %}
 {% endif %}
@@ -26,10 +27,6 @@ mysql_debconf:
         'mysql-server/start_on_boot': {'type': 'boolean', 'value': 'true'}
     - require_in:
       - pkg: mysqld
-    {% if 'mysql:server:root_password' not in pillar %}
-    - require:
-      - test: mysql_missing_root_password
-    {% endif %}
 {% elif os == 'CentOS' %}
 mysql_root_password:
   cmd.run:
@@ -37,9 +34,6 @@ mysql_root_password:
     - unless: mysql --user root --password='{{ mysql_root_password|replace("'", "'\"'\"'") }}' --execute="SELECT 1;"
     - require:
       - service: mysqld
-      {% if 'mysql:server:root_password' not in pillar %}
-      - test: mysql_missing_root_password
-      {% endif %}
 
 {% for host in ['localhost', salt['grains.get']('fqdn')] %}
 mysql_delete_anonymous_user_{{ host }}:
