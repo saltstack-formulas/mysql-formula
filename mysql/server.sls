@@ -16,8 +16,6 @@ mysql_missing_root_password:
     {% set mysql_root_password = salt['test.rand_str](64) %}
 {% endif %}
 
-{% endif %}
-
 {% if os in ['Ubuntu', 'Debian'] %}
 mysql_debconf:
   debconf.set:
