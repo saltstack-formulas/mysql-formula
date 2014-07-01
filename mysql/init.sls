@@ -12,7 +12,7 @@ include:
   - mysql.database
   - mysql.user
 
-{% if (db_states|length() + user_states|length() > 0 %}
+{% if (db_states|length() + user_states|length()) > 0 %}
 extend:
   mysqld:
     service:
