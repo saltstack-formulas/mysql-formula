@@ -17,8 +17,8 @@ extend:
   mysqld:
     service:
       - require_in:
-        {{ requisites(db_states) }}
-        {{ requisites(user_states) }}
+        {{ requisites('mysql_database', db_states) }}
+        {{ requisites('mysql_user', user_states) }}
   {% for state in user_states %}
   {{ state }}:
     mysql_user:
