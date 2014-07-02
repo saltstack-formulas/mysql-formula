@@ -15,6 +15,11 @@ Available states
 .. contents::
     :local:
 
+``mysql``
+---------
+
+Meta-state that includes all server packages in the correct order.
+
 ``mysql.client``
 ----------------
 
@@ -25,12 +30,26 @@ Install the MySQL client package.
 
 Install the MySQL server package and start the service.
 
-Debian OS family supports setting MySQL root password during install via debconf.
+Debian OS family supports setting MySQL root password during install via
+debconf.
+
+.. note::
+
+    If no root password is provided in the pillar, a random one will
+    be created. As-of Hydrogen, this password uses the Python ``random``
+    module via ``test.rand_str``. As ``random`` is considered
+    cryptographically insecure, future formula versions should use the
+    newly available ``random.get_str`` method.
 
 ``mysql.database``
 ------------------
 
 Create and manage MySQL databases.
+
+``mysql.python``
+------------------
+
+Install mysql python bindings.
 
 ``mysql.user``
 ----------------
