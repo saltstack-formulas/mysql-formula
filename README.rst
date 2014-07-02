@@ -16,6 +16,7 @@ Available states
     :local:
 
 ``mysql``
+---------
 
 Meta-state that includes all server packages in the correct order.
 
