@@ -36,8 +36,9 @@ debconf.
 .. note::
 
     If no root password is provided in the pillar, a random one will
-    be created. As-of Hydrogen, this password uses the Python ``random``
-    module via ``test.rand_str``. As ``random`` is considered
+    be created. Because Hydrogen doesn't have easy access to a random
+    function (test.rand_str isn't introduced until Helium), instead,
+    we use the not-at-all random ``grains.server_id``. As this is
     cryptographically insecure, future formula versions should use the
     newly available ``random.get_str`` method.
 
