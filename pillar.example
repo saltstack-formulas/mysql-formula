@@ -9,6 +9,12 @@ mysql:
   database:
     - foo
     - bar
+  schema:
+    foo:
+      load: True
+      source: salt://mysql/files/foo.schema
+    bar:
+      load: False
 
   # Manage users
   user:

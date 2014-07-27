@@ -16,5 +16,20 @@ include:
     - connection_pass: '{{ mysql_root_pass }}'
     - connection_charset: utf8
 
+{% if salt['pillar.get'](['mysql', 'schema', database, 'load']|join(':'), False) %}
+{{ state_id }}_schema:
+  file.managed:
+    - name: /etc/mysql/{{ database }}.schema
+    - source: {{ salt['pillar.get'](['mysql', 'schema', database, 'source']|join(':')) }}
+    - user: {{ salt['pillar.get']('mysql:server:user', 'mysql') }}
+
+{{ state_id }}_load:
+  cmd.wait:
+    - name: mysql -u root -p{{ mysql_root_pass }} {{ database }} < /etc/mysql/{{ database }}.schema
+    - watch:
+      - file: {{ state_id }}_schema
+      - mysql_database: {{ state_id }}
+{% endif %}
+
 {% do db_states.append(state_id) %}
 {% endfor %}
