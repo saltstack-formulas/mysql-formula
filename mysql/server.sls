@@ -2,7 +2,7 @@
 
 {% set os = salt['grains.get']('os', None) %}
 {% set os_family = salt['grains.get']('os_family', None) %}
-{% set mysql_root_password = salt['pillar.get']('mysql:server:root_password', salt['test.rand_str'](64)) %}
+{% set mysql_root_password = salt['pillar.get']('mysql:server:root_password', salt['grains.get']('server_id')) %}
 
 {% if os in ['Ubuntu', 'Debian'] %}
 mysql_debconf:

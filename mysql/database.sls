@@ -1,6 +1,6 @@
 {% from "mysql/map.jinja" import mysql with context %}
 
-{% set mysql_root_pass = salt['pillar.get']('mysql:server:root_password', salt['test.rand_str'](64)) %}
+{% set mysql_root_pass = salt['pillar.get']('mysql:server:root_password', salt['grains.get']('server_id')) %}
 {% set db_states = [] %}
 
 include:
