@@ -26,7 +26,7 @@ include:
   mysql_grants.present:
     - name: {{ user['name'] ~ '_' ~ db['database'] }}
     - grant: {{db['grants']|join(",")}}
-    - database: {{ db['database'] }}.*
+    - database: '{{ db['database'] }}.{{ db['table'] | default('*') }}'
     - user: {{ user['name'] }}
     - host: '{{ user['host'] }}'
     - connection_host: localhost
