@@ -28,7 +28,10 @@ mysql_delete_anonymous_user_{{ host }}:
     - absent
     - host: {{ host }}
     - name: ''
+    - connection_host: localhost
+    - connection_user: root
     - connection_pass: {{ mysql_root_password }}
+    - connection_charset: utf8
     - require:
       - service: mysqld
       - pkg: mysql_python
