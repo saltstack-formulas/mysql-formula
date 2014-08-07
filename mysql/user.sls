@@ -13,9 +13,11 @@ include:
     - host: '{{ user['host'] }}'
   {%- if user['password_hash'] is defined %}
     - password_hash: '{{ user['password_hash'] }}'
-  {% else %}
+  {%- elif user['password'] is defined and user['password'] != None %}
     - password: '{{ user['password'] }}'
-  {% endif %}
+  {%- else %}
+    - allow_passwordless: True
+  {%- endif %}
     - connection_host: localhost
     - connection_user: root
     - connection_pass: '{{ salt['pillar.get']('mysql:server:root_password', 'somepass') }}'
