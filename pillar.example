@@ -34,6 +34,10 @@ mysql:
           grants: ['all privileges']
         - database: bar
           grants: ['select', 'insert', 'update', 'delete']
+    - name: nopassuser
+      password: ~
+      host: localhost
+      databases: []
 
   # Override any names defined in map.jinja
   lookup:
