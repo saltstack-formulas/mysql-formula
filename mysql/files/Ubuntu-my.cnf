@@ -85,12 +85,26 @@ log_error = /var/log/mysql/error.log
 # The following can be used as easy to replay backup logs or for replication.
 # note: if you are setting up a replication slave, see README.Debian about
 #       other settings you may need to change.
-#server-id		= 1
-#log_bin			= /var/log/mysql/mysql-bin.log
 expire_logs_days	= 10
 max_binlog_size         = 100M
-#binlog_do_db		= include_database_name
-#binlog_ignore_db	= include_database_name
+{%- if pillar['mysql']['server']['server-id'] is defined %}
+server-id		= {{ pillar['mysql']['server']['server-id'] }}
+{% endif %}
+{%- if pillar['mysql']['server']['log_bin'] is defined %}
+log_bin			= {{ pillar['mysql']['server']['log_bin'] }}
+{% endif %}
+{%- if pillar['mysql']['server']['binlog_do_db'] is defined %}
+binlog_do_db		= {{ pillar['mysql']['server']['binlog_do_db'] }}
+{% endif %}
+{%- if pillar['mysql']['server']['auto_increment_increment'] is defined %}
+auto_increment_increment = {{ pillar['mysql']['server']['auto_increment_increment'] }}
+{% endif %}
+{%- if pillar['mysql']['server']['auto_increment_offset'] is defined %}
+auto_increment_offset	= {{ pillar['mysql']['server']['auto_increment_offset'] }}
+{% endif %}
+{%- if pillar['mysql']['server']['max_connect_errors'] is defined %}
+max_connect_errors = {{ pillar['mysql']['server']['max_connect_errors'] }}
+{% endif %}
 #
 # * InnoDB
 #

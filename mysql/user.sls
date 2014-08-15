@@ -4,10 +4,10 @@ include:
   - mysql.python
 
 {% for user in salt['pillar.get']('mysql:user', []) %}
-mysql_user_{{ user['name'] }}:
+mysql_user_{{ user['name'] }}_{{ user['host'] }}:
   mysql_user.present:
     - name: {{ user['name'] }}
-    - host: {{ user['host'] }}
+    - host: '{{ user['host'] }}'
   {%- if user['password_hash'] is defined %}
     - password_hash: '{{ user['password_hash'] }}'
   {% else %}
@@ -26,7 +26,7 @@ mysql_user_{{ name }}:
     - grant: {{db['grants']|join(",")}}
     - database: '{{ db['database'] }}.{{ db['table'] | default('*') }}'
     - user: {{ user['name'] }}
-    - host: {{ user['host'] }}
+    - host: '{{ user['host'] }}'
     - connection_host: localhost
     - connection_user: root
     - connection_pass: '{{ salt['pillar.get']('mysql:server:root_password', 'somepass') }}'
