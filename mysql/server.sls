@@ -4,7 +4,7 @@
 {% set os_family = salt['grains.get']('os_family', None) %}
 {% set mysql_root_password = salt['pillar.get']('mysql:server:root_password', salt['grains.get']('server_id')) %}
 
-{% if os in ['Ubuntu', 'Debian'] %}
+{% if os_family == 'Debian' %}
 mysql_debconf:
   debconf.set:
     - name: mysql-server
@@ -14,7 +14,7 @@ mysql_debconf:
         'mysql-server/start_on_boot': {'type': 'boolean', 'value': 'true'}
     - require_in:
       - pkg: mysqld
-{% elif os == 'CentOS' %}
+{% elif os_family == 'RedHat' %}
 mysql_root_password:
   cmd.run:
     - name: mysqladmin --user root password '{{ mysql_root_password|replace("'", "'\"'\"'") }}'
@@ -44,7 +44,7 @@ mysql_delete_anonymous_user_{{ host }}:
 mysqld:
   pkg.installed:
     - name: {{ mysql.server }}
-{% if os in ['Ubuntu', 'Debian'] %}
+{% if os_family == 'Debian' %}
     - require:
       - debconf: mysql_debconf
 {% endif %}
@@ -60,7 +60,7 @@ mysql_config:
     - template: jinja
     - watch_in:
       - service: mysqld
-    {% if os in ['Ubuntu', 'Debian', 'Gentoo', 'CentOS'] %}
+    {% if os_family in ['Debian', 'Gentoo', 'RedHat'] %}
     - source: salt://mysql/files/{{ os }}-my.cnf
     - user: root
     - group: root
