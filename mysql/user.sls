@@ -19,7 +19,7 @@ mysql_user_{{ user['name'] }}_{{ user['host'] }}:
     - connection_charset: utf8
 
 {% for db in user['databases'] %}
-{% set name = user['name'] ~ '_' ~ db['database'] %}
+{% set name = user['name'] ~ '_' ~ user['host'] ~ '_' ~ db['database'] ~ '_' ~ db['table'] | default('*') %}
 mysql_user_{{ name }}:
   mysql_grants.present:
     - name: {{ name }}

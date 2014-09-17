@@ -1,5 +1,4 @@
-{% from "mysql/defaults.yaml" import rawmap with context %}
-{% set datamap = salt['grains.filter_by'](rawmap, merge=salt['pillar.get']('mysql:server:lookup')) %}
+{% from "mysql/map.jinja" import mysql with context %}
 
 {% set mysql_root_password = salt['pillar.get']('mysql:server:root_password', 'somepass') %}
 
@@ -39,27 +38,37 @@ mysql-delete-anonymous-user-{{ host }}:
 mysqld:
   pkg:
     - installed
-    - name: {{ datamap.server }}
+    - name: {{ mysql.server }}
 {% if grains['os'] in ['Ubuntu', 'Debian'] %}
     - require:
       - debconf: mysql-debconf
 {% endif %}
   service:
     - running
-    - name: {{ datamap.service }}
+    - name: {{ mysql.service }}
     - enable: True
     - watch:
       - pkg: mysqld
 
+{% if grains['os'] in ['Ubuntu', 'Debian', 'Gentoo', 'CentOS'] %}
 my.cnf:
   file.managed:
-    - name: {{ datamap.config.file }}
-    - source: salt://mysql/files/my.cnf
-    - template: jinja
-    #- watch_in:
-    #  - service: mysqld
-    {% if grains['os'] in ['Ubuntu', 'Debian', 'Gentoo', 'CentOS'] -%}
+    - name: {{ mysql.config }}
+    - source: salt://mysql/files/{{ grains['os'] }}-my.cnf
     - user: root
     - group: root
     - mode: 644
+    - template: jinja
+    - watch_in:
+      - service: mysqld
+{% endif %}
+
+{% if grains['os'] in 'FreeBSD' %}
+my.cnf:
+  file.managed:
+    - name: {{ mysql.config }}
+    - source: salt://mysql/files/my-{{ mysql.mysql_size }}.cnf
+    - template: jinja
+    - watch_in:
+      - service: mysqld
 {% endif %}

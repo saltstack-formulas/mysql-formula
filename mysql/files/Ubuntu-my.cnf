@@ -38,8 +38,8 @@ pid-file	= /var/run/mysqld/mysqld.pid
 socket		= /var/run/mysqld/mysqld.sock
 port		= {{ salt['pillar.get']('mysql:server:port', '3306') }}
 basedir		= /usr
-datadir		= /var/lib/mysql
-tmpdir		= /tmp
+datadir         = {{ salt['pillar.get']('mysql:server:datadir', '/var/lib/mysql') }}
+tmpdir          = {{ salt['pillar.get']('mysql:server:tmpdir', '/tmp') }}
 lc-messages-dir	= /usr/share/mysql
 skip-external-locking
 #
@@ -49,16 +49,40 @@ bind-address		= {{ salt['pillar.get']('mysql:server:bind-address', '127.0.0.1') 
 #
 # * Fine Tuning
 #
-key_buffer		= 16M
-max_allowed_packet	= 16M
-thread_stack		= 192K
-thread_cache_size       = 8
+key_buffer		= {{ salt['pillar.get']('mysql:server:key_buffer', '16M') }}
+max_allowed_packet	= {{ salt['pillar.get']('mysql:server:max_allowed_packet', '16M') }}
+thread_stack		= {{ salt['pillar.get']('mysql:server:thread_stack', '192K') }}
+thread_cache_size       = {{ salt['pillar.get']('mysql:server:thread_cache_size', '8') }}
 # This replaces the startup script and checks MyISAM tables if needed
 # the first time they are touched
 myisam-recover         = BACKUP
-#max_connections        = 100
-#table_cache            = 64
-#thread_concurrency     = 10
+{%- if pillar['mysql']['server']['max_connections'] is defined %}
+max_connections         = {{ pillar['mysql']['server']['max_connections'] }}
+{% endif %}
+{%- if pillar['mysql']['server']['table_cache'] is defined %}
+table_cache         = {{ pillar['mysql']['server']['table_cache'] }}
+{% endif %}
+{%- if pillar['mysql']['server']['thread_concurrency'] is defined %}
+thread_concurrency         = {{ pillar['mysql']['server']['thread_concurrency'] }}
+{% endif %}
+{%- if pillar['mysql']['server']['wait_timeout'] is defined %}
+wait_timeout         = {{ pillar['mysql']['server']['wait_timeout'] }}
+{% endif %}
+{%- if pillar['mysql']['server']['tmp_table_size'] is defined %}
+tmp_table_size         = {{ pillar['mysql']['server']['tmp_table_size'] }}
+{% endif %}
+{%- if pillar['mysql']['server']['max_heap_table_size'] is defined %}
+max_heap_table_size         = {{ pillar['mysql']['server']['max_heap_table_size'] }}
+{% endif %}
+{%- if pillar['mysql']['server']['long_query_time'] is defined %}
+long_query_time         = {{ pillar['mysql']['server']['long_query_time'] }}
+{% endif %}
+{%- if pillar['mysql']['server']['open_files_limit'] is defined %}
+open_files_limit         = {{ pillar['mysql']['server']['open_files_limit'] }}
+{% endif %}
+{%- if pillar['mysql']['server']['open_files_limit'] is defined %}
+open_files_limit         = {{ pillar['mysql']['server']['open_files_limit'] }}
+{% endif %}
 #
 # * Query Cache Configuration
 #
@@ -104,6 +128,9 @@ auto_increment_offset	= {{ pillar['mysql']['server']['auto_increment_offset'] }}
 {% endif %}
 {%- if pillar['mysql']['server']['max_connect_errors'] is defined %}
 max_connect_errors = {{ pillar['mysql']['server']['max_connect_errors'] }}
+{% endif %}
+{%- if pillar['mysql']['server']['join_buffer_size'] is defined %}
+join_buffer_size = {{ pillar['mysql']['server']['join_buffer_size'] }}
 {% endif %}
 #
 # * InnoDB
