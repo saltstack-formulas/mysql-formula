@@ -1,0 +1,13 @@
+[mysqld]
+datadir=/var/lib/mysql
+socket=/var/lib/mysql/mysql.sock
+user={{ salt['pillar.get']('mysql:server:user', 'mysql') }}
+port={{ salt['pillar.get']('mysql:server:port', '3306') }}
+bind-address={{ salt['pillar.get']('mysql:server:bind-address', '127.0.0.1') }}
+# Disabling symbolic-links is recommended to prevent assorted security risks
+symbolic-links=0
+
+[mysqld_safe]
+log-error=/var/log/mysqld.log
+pid-file=/var/run/mysqld/mysqld.pid
+
