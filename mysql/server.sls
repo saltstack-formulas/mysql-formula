@@ -61,7 +61,11 @@ mysql_config:
     - watch_in:
       - service: mysqld
     {% if os_family in ['Debian', 'Gentoo', 'RedHat'] %}
+    {% if os_family == 'RedHat' %}
     - source: salt://mysql/files/{{ os_family }}-my.cnf
+    {% else %}
+    - source: salt://mysql/files/{{ os }}-my.cnf
+    {% endif %}
     - user: root
     - group: root
     - mode: 644
