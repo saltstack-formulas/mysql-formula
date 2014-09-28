@@ -1,9 +1,19 @@
 mysql:
   server:
+    # root_password: False - to have root@localhost without password
     root_password: 'somepass'
-    bind-address: 127.0.0.1
-    port: 3306
     user: mysql
+    # my.cnf sections changes 
+    mysqld:
+      bind-address: 0.0.0.0
+      port: 3307
+      log_bin: /var/log/mysql/mysql-bin.log
+      binlog_do_db: foo
+      auto_increment_increment: 5
+      max_connect_errors: 4294967295
+    mysql:
+      # my.cnf param that not require value
+      no-auto-rehash: noarg_present
 
   # Manage databases
   database:
@@ -17,6 +27,7 @@ mysql:
       load: False
 
   # Manage users
+  # you can get pillar for existent server using import_users.py script
   user:
     - name: frank
       password: 'somepass'
@@ -32,7 +43,9 @@ mysql:
       databases:
         - database: foo
           grants: ['all privileges']
+          grant_option: True
         - database: bar
+          table: foobar
           grants: ['select', 'insert', 'update', 'delete']
     - name: nopassuser
       password: ~

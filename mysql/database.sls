@@ -1,4 +1,5 @@
-{% from "mysql/map.jinja" import mysql with context %}
+{% from "mysql/defaults.yaml" import rawmap with context %}
+{%- set mysql = salt['grains.filter_by'](rawmap, grain='os', merge=salt['pillar.get']('mysql:server:lookup')) %}
 
 {% set mysql_root_pass = salt['pillar.get']('mysql:server:root_password', salt['grains.get']('server_id')) %}
 {% set db_states = [] %}
@@ -13,7 +14,9 @@ include:
     - name: {{ database }}
     - host: localhost
     - connection_user: root
+    {% if mysql_root_pass %}
     - connection_pass: '{{ mysql_root_pass }}'
+    {% endif %}
     - connection_charset: utf8
 
 {% if salt['pillar.get'](['mysql', 'schema', database, 'load']|join(':'), False) %}

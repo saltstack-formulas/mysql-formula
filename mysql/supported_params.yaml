@@ -1,0 +1,121 @@
+# vim
+{% load_yaml as supported_params %}
+client:
+  - port
+  - socket
+mysqld_safe:
+  - socket
+  - nice
+  - log-error
+  - pid-file
+  - err-log
+mysqld:
+  - user
+  - pid-file
+  - socket
+  - port
+  - basedir
+  - datadir
+  - tmpdir
+  - lc-messages-dir
+  - skip-external-locking
+  - bind-address
+  - key_buffer
+  - key_buffer_size
+  - max_allowed_packet
+  - thread_stack
+  - thread_cache_size
+  - myisam-recover
+  - query_cache_limit
+  - query_cache_size
+  - max_connections
+  - table_cache
+  - thread_concurrency
+  - wait_timeout
+  - tmp_table_size
+  - max_heap_table_size
+  - open_files_limit
+  - general_log_file
+  - general_log
+  - log_error
+  - log_slow_queries
+  - long_query_time
+  - log-queries-not-using-indexes
+  - expire_logs_days
+  - max_binlog_size
+  - server-id
+  - log_bin
+  - binlog_do_db
+  - replicate-do-db
+  - auto_increment_increment
+  - auto_increment_offset
+  - max_connect_errors
+  - join_buffer_size
+  - chroot
+  - ssl-ca
+  - ssl-cert
+  - ssl-key
+  - sort_buffer_size
+  - read_buffer_size
+  - read_rnd_buffer_size
+  - myisam_sort_buffer_size
+  - slow_query_log
+  - slow_query_log_file
+  - innodb_file_per_table
+  - innodb_data_home_dir
+  - innodb_data_file_path
+  - innodb_log_group_home_dir
+  - innodb_buffer_pool_size
+  - innodb_additional_mem_pool_size
+  - innodb_log_file_size
+  - innodb_log_buffer_size
+  - innodb_flush_log_at_trx_commit
+  - innodb_flush_method
+  - innodb_thread_concurrency
+  - symbolic-links
+  - character-set-server
+  - log-error
+  - table_open_cache
+  - net_buffer_length
+  - language
+  - log-bin
+  - innodb_log_files_in_group
+  - innodb_lock_wait_timeout
+mysqldump:
+  - quick
+  - quote-names
+  - max_allowed_packet
+  - character-sets-dir
+  - default-character-set
+mysql:
+  - no-auto-rehash
+  - character-sets-dir
+  - default-character-set
+isamchk:
+  - key_buffer
+  - sort_buffer_size
+  - read_buffer
+  - write_buffer
+  - character-sets-dir
+myisamchk:
+  - key_buffer
+  - sort_buffer_size
+  - read_buffer
+  - write_buffer
+mysqlhotcopy:
+  - interactive-timeout
+mysqladmin:
+  - character-sets-dir
+  - default-character-set
+mysqlcheck:
+  - character-sets-dir
+  - default-character-set
+mysqlimport:
+  - character-sets-dir
+  - default-character-set
+mysqlshow:
+  - character-sets-dir
+  - default-character-set
+myisampack:
+  - character-sets-dir
+{% endload %}

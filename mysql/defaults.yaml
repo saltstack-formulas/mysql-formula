@@ -1,0 +1,242 @@
+# vim: sts=2 ts=2 sw=2 et ai
+{% load_yaml as rawmap %}
+Ubuntu:
+  server: mysql-server
+  client: mysql-client
+  service: mysql
+  python: python-mysqldb
+  config:
+    file: /etc/mysql/my.cnf
+    sections:
+      client:
+        port: 3306
+        socket: /var/run/mysqld/mysqld.sock
+      mysqld_safe:
+        socket: /var/run/mysqld/mysqld.sock
+        nice: 0
+      mysqld:
+        user: mysql
+        pid-file: /var/run/mysqld/mysqld.pid
+        socket: /var/run/mysqld/mysqld.sock
+        port: 3306
+        basedir: /usr
+        datadir: /var/lib/mysql
+        tmpdir: /tmp
+        lc-messages-dir:  /usr/share/mysql
+        skip-external-locking: noarg_present
+        bind-address: 127.0.0.1
+        key_buffer_size: 16M
+        max_allowed_packet: 16M
+        thread_stack: 192K
+        thread_cache_size: 8
+        myisam-recover: BACKUP
+        query_cache_limit: 1M
+        query_cache_size: 16M
+        log_error: /var/log/mysql/error.log 
+        expire_logs_days: 10
+        max_binlog_size: 100M          
+      mysqldump:
+        quick: noarg_present
+        quote-names: noarg_present
+        max_allowed_packet: 16M
+      isamchk:
+        key_buffer: 16M
+    append: |
+      !includedir /etc/mysql/conf.d/
+Debian:
+  server: mysql-server
+  client: mysql-client
+  service: mysql
+  python: python-mysqldb
+  config:
+    file: /etc/mysql/my.cnf
+    sections:
+      client:
+        port: 3306
+        socket: /var/run/mysqld/mysqld.sock
+      mysqld_safe:
+        socket: /var/run/mysqld/mysqld.sock
+        nice: 0
+      mysqld:
+        user: mysql
+        pid-file: /var/run/mysqld/mysqld.pid
+        socket: /var/run/mysqld/mysqld.sock
+        port: 3306
+        basedir: /usr
+        datadir: /var/lib/mysql
+        tmpdir: /tmp
+        lc-messages-dir:  /usr/share/mysql
+        skip-external-locking: noarg_present
+        bind-address: 127.0.0.1
+        key_buffer_size: 16M
+        max_allowed_packet: 16M
+        thread_stack: 192K
+        thread_cache_size: 8
+        myisam-recover: BACKUP
+        query_cache_limit: 1M
+        query_cache_size: 16M
+        expire_logs_days: 10
+        max_binlog_size: 100M          
+      mysqldump:
+        quick: noarg_present
+        quote-names: noarg_present
+        max_allowed_packet: 16M
+      isamchk:
+        key_buffer: 16M
+    append: |
+      !includedir /etc/mysql/conf.d/
+CentOS:
+  server: mysql-server
+  client: mysql
+  service: mysqld
+  python: MySQL-python
+  config:
+    file: /etc/my.cnf
+    sections:
+      mysqld_safe:
+        log-error: /var/log/mysqld.log
+        pid-file: /var/run/mysqld/mysqld.pid
+      mysqld:
+        datadir: /var/lib/mysql
+        socket: /var/lib/mysql/mysql.sock
+        user: mysql
+        port: 3306
+        bind-address: 127.0.0.1
+        symbolic-links: 0
+RedHat:
+  server: mysql-server
+  client: mysql
+  service: mysqld
+  python: MySQL-python
+  config:
+    file: /etc/my.cnf
+    sections:
+      mysqld_safe:
+        log-error: /var/log/mysqld.log
+        pid-file: /var/run/mysqld/mysqld.pid
+      mysqld:
+        datadir: /var/lib/mysql
+        socket: /var/lib/mysql/mysql.sock
+        user: mysql
+        port: 3306
+        bind-address: 127.0.0.1
+        symbolic-links: 0
+Gentoo:
+  server: dev-db/mysql
+  client: dev-db/mysql
+  service: mysql
+  python: dev-python/mysql-python
+  config:
+    file: /etc/mysql/my.cnf
+    sections:
+      client:
+        port: 3306
+        socket: /var/run/mysqld/mysqld.sock
+      mysql:
+        character-sets-dir: /usr/share/mysql/charsets
+        default-character-set: utf8
+      mysqladmin:
+        character-sets-dir: /usr/share/mysql/charsets
+        default-character-set: utf8
+      mysqlcheck:
+        character-sets-dir: /usr/share/mysql/charsets
+        default-character-set: utf8
+      mysqldump:
+        character-sets-dir: /usr/share/mysql/charsets
+        default-character-set: utf8
+      mysqlimport:
+        character-sets-dir: /usr/share/mysql/charsets
+        default-character-set: utf8
+      mysqlshow:
+        character-sets-dir: /usr/share/mysql/charsets
+        default-character-set: utf8
+      myisamchk:
+        character-sets-dir: /usr/share/mysql/charsets
+        key_buffer: 20M
+        sort_buffer_size: 20M
+        read_buffer: 2M
+        write_buffer: 2M
+      myisampack:
+        character-sets-dir: /usr/share/mysql/charsets
+      mysqld_safe:
+        err-log: /var/log/mysql/mysql.err
+      mysqld:
+        character-set-server: utf8
+        user: mysql
+        port: 3306
+        socket: /var/run/mysqld/mysqld.sock
+        pid-file: /var/run/mysqld/mysqld.pid
+        log-error: /var/log/mysql/mysqld.err
+        basedir: /usr
+        datadir: /var/lib/mysql
+        skip-external-locking: noarg_present
+        key_buffer_size: 16M
+        max_allowed_packet: 1M
+        table_open_cache: 64
+        sort_buffer_size: 512K
+        net_buffer_length: 8K
+        read_buffer_size: 256K
+        read_rnd_buffer_size: 512K
+        myisam_sort_buffer_size: 8M
+        language: /usr/share/mysql/english
+        bind-address: 127.0.0.1
+        log-bin: noarg_present
+        server-id: 1
+        tmpdir: /tmp/
+        innodb_buffer_pool_size: 16M
+        innodb_additional_mem_pool_size: 2M
+        innodb_data_file_path: ibdata1:10M:autoextend:max:128M
+        innodb_log_file_size: 5M
+        innodb_log_buffer_size: 8M
+        innodb_log_files_in_group: 2
+        innodb_flush_log_at_trx_commit: 1
+        innodb_lock_wait_timeout: 50
+        innodb_file_per_table: noarg_present
+      mysqldump:
+        quick: noarg_present
+        max_allowed_packet: 16M
+      isamchk:
+        key_buffer: 20M
+        sort_buffer_size: 20M
+        read_buffer: 2M
+        write_buffer: 2M
+      mysqlhotcopy:
+        interactive-timeout: noarg_present
+FreeBSD:
+  server: mysql56-server
+  client: mysql56-client
+  service: mysql-server
+  python: pymysql
+  config:
+    file: /usr/local/etc/my.cnf
+    client:
+      port: 3306
+      socket: /tmp/mysql.sock
+    mysqld:
+      port: 3306
+      socket: /tmp/mysql.sock
+      skip-external-locking: noarg_present
+      key_buffer_size: 16M
+      max_allowed_packet: 1M
+      table_open_cache: 64
+      sort_buffer_size: 512K
+      net_buffer_length: 8K
+      read_buffer_size: 256K
+      read_rnd_buffer_size: 512K
+      myisam_sort_buffer_size: 8M
+      log-bin: mysql-bin
+      binlog_format: mixed
+      server-id: 1
+    mysqldump:
+      quick: noarg_present
+      max_allowed_packet: 16M
+    mysql:
+      no-auto-rehash: noarg_present
+    myisamchk:
+      key_buffer_size: 20M
+      sort_buffer_size: 20M
+      read_buffer: 2M
+      write_buffer: 2M
+    mysqlhotcopy:
+      interactive-timeout: noarg_present
+{% endload %}
