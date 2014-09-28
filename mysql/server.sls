@@ -1,9 +1,11 @@
-{% from "mysql/map.jinja" import mysql with context %}
+{% from "mysql/defaults.yaml" import rawmap with context %}
+{%- set mysql = salt['grains.filter_by'](rawmap, grain='os', merge=salt['pillar.get']('mysql:server:lookup')) %}
 
 {% set os = salt['grains.get']('os', None) %}
 {% set os_family = salt['grains.get']('os_family', None) %}
 {% set mysql_root_password = salt['pillar.get']('mysql:server:root_password', salt['grains.get']('server_id')) %}
 
+{% if mysql_root_password %}
 {% if os_family == 'Debian' %}
 mysql_debconf:
   debconf.set:
@@ -40,6 +42,7 @@ mysql_delete_anonymous_user_{{ host }}:
       {%- endif %}
 {% endfor %}
 {% endif %}
+{% endif %}
 
 mysqld:
   pkg.installed:
@@ -56,19 +59,13 @@ mysqld:
 
 mysql_config:
   file.managed:
-    - name: {{ mysql.config }}
+    - name: {{ mysql.config.file }}
     - template: jinja
+    - source: salt://mysql/files/my.cnf
     - watch_in:
       - service: mysqld
     {% if os_family in ['Debian', 'Gentoo', 'RedHat'] %}
-    {% if os_family == 'RedHat' %}
-    - source: salt://mysql/files/{{ os_family }}-my.cnf
-    {% else %}
-    - source: salt://mysql/files/{{ os }}-my.cnf
-    {% endif %}
     - user: root
     - group: root
     - mode: 644
-    {% elif os == 'FreeBSD' %}
-    - source: salt://mysql/files/my-{{ mysql.mysql_size }}.cnf
     {% endif %}
