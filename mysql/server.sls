@@ -24,11 +24,14 @@ mysql_root_password:
     - require:
       - service: mysqld
 
-{% for host in ['localhost', salt['grains.get']('fqdn')] %}
+include:
+  - mysql.python
+
+{% for host in ['localhost', 'localhost.localdomain', salt['grains.get']('fqdn')] %}
 mysql_delete_anonymous_user_{{ host }}:
   mysql_user:
     - absent
-    - host: {{ host }}
+    - host: {{ host or "''" }}
     - name: ''
     - connection_host: localhost
     - connection_user: root
