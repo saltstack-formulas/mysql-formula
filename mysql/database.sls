@@ -25,6 +25,7 @@ include:
     - name: /etc/mysql/{{ database }}.schema
     - source: {{ salt['pillar.get'](['mysql', 'schema', database, 'source']|join(':')) }}
     - user: {{ salt['pillar.get']('mysql:server:user', 'mysql') }}
+    - makedirs: True
 
 {{ state_id }}_load:
   cmd.wait:
