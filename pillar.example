@@ -29,7 +29,7 @@ mysql:
   # Manage users
   # you can get pillar for existent server using import_users.py script
   user:
-    - name: frank
+    frank:
       password: 'somepass'
       host: localhost
       databases:
@@ -37,7 +37,7 @@ mysql:
           grants: ['select', 'insert', 'update']
         - database: bar
           grants: ['all privileges']
-    - name: bob
+    bob:
       password_hash: '*6C8989366EAF75BB670AD8EA7A7FC1176A95CEF4'
       host: localhost
       databases:
@@ -47,7 +47,7 @@ mysql:
         - database: bar
           table: foobar
           grants: ['select', 'insert', 'update', 'delete']
-    - name: nopassuser
+    nopassuser:
       password: ~
       host: localhost
       databases: []
