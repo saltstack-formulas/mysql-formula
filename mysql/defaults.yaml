@@ -121,6 +121,24 @@ RedHat:
         port: 3306
         bind-address: 127.0.0.1
         symbolic-links: 0
+Amazon:
+  server: mysql-server
+  client: mysql
+  service: mysqld
+  python: MySQL-python
+  config:
+    file: /etc/my.cnf
+    sections:
+      mysqld_safe:
+        log-error: /var/log/mysqld.log
+        pid-file: /var/run/mysqld/mysqld.pid
+      mysqld:
+        datadir: /var/lib/mysql
+        socket: /var/lib/mysql/mysql.sock
+        user: mysql
+        port: 3306
+        bind-address: 127.0.0.1
+        symbolic-links: 0
 Gentoo:
   server: dev-db/mysql
   client: dev-db/mysql
