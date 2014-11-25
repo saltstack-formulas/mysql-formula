@@ -7,6 +7,10 @@
 
 {% if mysql_root_password %}
 {% if os_family == 'Debian' %}
+mysql_debconf_utils:
+  pkg.installed:
+    - name: {{ mysql.debconf_utils }}
+
 mysql_debconf:
   debconf.set:
     - name: mysql-server
@@ -16,6 +20,8 @@ mysql_debconf:
         'mysql-server/start_on_boot': {'type': 'boolean', 'value': 'true'}
     - require_in:
       - pkg: mysqld
+    - require:
+      - pkg: mysql_debconf_utils
 {% elif os_family == 'RedHat' %}
 mysql_root_password:
   cmd.run:
