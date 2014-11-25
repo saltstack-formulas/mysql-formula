@@ -5,6 +5,7 @@ Ubuntu:
   client: mysql-client
   service: mysql
   python: python-mysqldb
+  debconf_utils: debconf-utils
   config:
     file: /etc/mysql/my.cnf
     sections:
@@ -48,6 +49,7 @@ Debian:
   client: mysql-client
   service: mysql
   python: python-mysqldb
+  debconf_utils: debconf-utils
   config:
     file: /etc/mysql/my.cnf
     sections:
