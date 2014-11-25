@@ -56,7 +56,7 @@ for user in users:
 """ PRINT EXAMPLE
 mysql:
   user:
-    - name: user
+    username:
       host: host
       password_hash: '*2792A97371B2D17789364A22A9B35D180166571A'
       databases:
@@ -67,7 +67,7 @@ mysql:
 print "mysql:"
 print "  user:"
 for user in users:
-	print "    - name: %s" % user['name']
+	print "    %s:" % user['name']
 	print "      host: '%s'" % user['host']
 	if ('password' in user):
 		print "      password_hash: '%s'" % user['password']
