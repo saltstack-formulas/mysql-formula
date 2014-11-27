@@ -7,8 +7,9 @@ mysql:
     mysqld:
       bind-address: 0.0.0.0
       port: 3307
-      log_bin: /var/log/mysql/mysql-bin.log
-      binlog_do_db: foo
+      server-id: 1
+      log-bin: mysql-bin
+      binlog-do-db: foo
       auto_increment_increment: 5
       max_connect_errors: 4294967295
     mysql:
