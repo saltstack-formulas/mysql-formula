@@ -229,34 +229,35 @@ FreeBSD:
   python: pymysql
   config:
     file: /usr/local/etc/my.cnf
-    client:
-      port: 3306
-      socket: /tmp/mysql.sock
-    mysqld:
-      port: 3306
-      socket: /tmp/mysql.sock
-      skip-external-locking: noarg_present
-      key_buffer_size: 16M
-      max_allowed_packet: 1M
-      table_open_cache: 64
-      sort_buffer_size: 512K
-      net_buffer_length: 8K
-      read_buffer_size: 256K
-      read_rnd_buffer_size: 512K
-      myisam_sort_buffer_size: 8M
-      log-bin: mysql-bin
-      binlog_format: mixed
-      server-id: 1
-    mysqldump:
-      quick: noarg_present
-      max_allowed_packet: 16M
-    mysql:
-      no-auto-rehash: noarg_present
-    myisamchk:
-      key_buffer_size: 20M
-      sort_buffer_size: 20M
-      read_buffer: 2M
-      write_buffer: 2M
-    mysqlhotcopy:
-      interactive-timeout: noarg_present
+    sections:
+      client:
+        port: 3306
+        socket: /tmp/mysql.sock
+      mysqld:
+        port: 3306
+        socket: /tmp/mysql.sock
+        skip-external-locking: noarg_present
+        key_buffer_size: 16M
+        max_allowed_packet: 1M
+        table_open_cache: 64
+        sort_buffer_size: 512K
+        net_buffer_length: 8K
+        read_buffer_size: 256K
+        read_rnd_buffer_size: 512K
+        myisam_sort_buffer_size: 8M
+        log-bin: mysql-bin
+        binlog_format: mixed
+        server-id: 1
+      mysqldump:
+        quick: noarg_present
+        max_allowed_packet: 16M
+      mysql:
+        no-auto-rehash: noarg_present
+      myisamchk:
+        key_buffer_size: 20M
+        sort_buffer_size: 20M
+        read_buffer: 2M
+        write_buffer: 2M
+      mysqlhotcopy:
+        interactive-timeout: noarg_present
 {% endload %}
