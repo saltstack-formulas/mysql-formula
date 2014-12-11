@@ -6,6 +6,7 @@ Ubuntu:
   service: mysql
   python: python-mysqldb
   debconf_utils: debconf-utils
+  dev: libmysqlclient-dev
   config:
     file: /etc/mysql/my.cnf
     sections:
@@ -50,6 +51,7 @@ Debian:
   service: mysql
   python: python-mysqldb
   debconf_utils: debconf-utils
+  dev: libmysqlclient-dev
   config:
     file: /etc/mysql/my.cnf
     sections:
@@ -92,6 +94,7 @@ CentOS:
   client: mysql
   service: mysqld
   python: MySQL-python
+  dev: mysql-devel
   config:
     file: /etc/my.cnf
     sections:
@@ -110,6 +113,7 @@ RedHat:
   client: mysql
   service: mysqld
   python: MySQL-python
+  dev: mysql-devel
   config:
     file: /etc/my.cnf
     sections:
@@ -128,6 +132,7 @@ Amazon:
   client: mysql
   service: mysqld
   python: MySQL-python
+  dev: mysql-devel
   config:
     file: /etc/my.cnf
     sections:
@@ -146,6 +151,7 @@ Gentoo:
   client: dev-db/mysql
   service: mysql
   python: dev-python/mysql-python
+  dev: dev-db/mysqlced
   config:
     file: /etc/mysql/my.cnf
     sections:
@@ -227,6 +233,7 @@ FreeBSD:
   client: mysql56-client
   service: mysql-server
   python: pymysql
+  dev: mysql56-server
   config:
     file: /usr/local/etc/my.cnf
     sections:

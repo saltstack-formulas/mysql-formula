@@ -60,3 +60,8 @@ mysql:
     service: mysql-service
     config: /etc/mysql/my.cnf
     python: python-mysqldb
+
+  # Install MySQL headers
+  dev:
+  	# Install dev package - defaults to False
+  	install: False
