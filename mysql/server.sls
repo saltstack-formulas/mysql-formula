@@ -56,7 +56,7 @@ mysql_delete_anonymous_user_{{ host }}:
 mysqld:
   pkg.installed:
     - name: {{ mysql.server }}
-{% if os_family == 'Debian' %}
+{% if os_family == 'Debian' and mysql_root_password %}
     - require:
       - debconf: mysql_debconf
 {% endif %}
