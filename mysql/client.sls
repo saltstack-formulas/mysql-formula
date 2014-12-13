@@ -2,6 +2,5 @@
 {%- set mysql = salt['grains.filter_by'](rawmap, grain='os', merge=salt['pillar.get']('mysql:server:lookup')) %}
 
 mysql:
-  pkg:
-    - installed
+  pkg.installed:
     - name: {{ mysql.client }}
