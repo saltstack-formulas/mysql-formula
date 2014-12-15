@@ -1,0 +1,16 @@
+# vim
+{% load_yaml as supported_sections %}
+- client
+- mysql
+- mysqldump
+- mysqld_safe
+- mysqlhotcopy
+- mysqladmin
+- mysqlcheck
+- mysqlimport
+- mysqlshow
+- myisampack
+- myisamchk
+- isamchk
+- mysqld
+{% endload %}
