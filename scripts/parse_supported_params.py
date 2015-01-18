@@ -1,10 +1,13 @@
 #!/usr/bin/python3
 # coding: utf-8
+
+
 import argparse
 import re
 import sys
 import urllib.request
 from html_table_parser import HTMLTableParser
+
 
 # Regex for parsing options on MySQL documentation pages
 # Options are (normally) specified as command-line options
@@ -141,11 +144,16 @@ def print_yaml_options(sections, parser, file=sys.stdout):
     A YAML library could be used, but we avoid extra dependencies by
     just using string formatting.
     """
+
     for section, url, yaml in sections:
         options = parser(url, section)
-        print(yaml % {'section': section,
-                      'options': '\n  - '.join(options),
-                      'url': url}, end='', file=file)
+        options_string = '\n  - '.join(options)
+        string = yaml % {
+                'section': section,
+                'options': options_string,
+                'url': url
+            }
+        print(string,file=file,end= "")
 
 
 if __name__ == '__main__':
