@@ -78,3 +78,14 @@ mysql_config:
     - group: root
     - mode: 644
     {% endif %}
+
+# official oracle mysql repo
+# creates this file, that rewrites /etc/mysql/my.cnf setting
+# so, make it empty
+mysql_additional_config:
+  file.managed:
+    - name: /usr/my.cnf
+    - source: salt://mysql/files/usr-my.cnf
+    - create: False
+    - watch_in:
+      - service: mysqld
