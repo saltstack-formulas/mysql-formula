@@ -45,6 +45,11 @@ debconf.
     cryptographically insecure, future formula versions should use the
     newly available ``random.get_str`` method.
 
+``mysql.disabled``
+------------------
+
+Ensure that the MySQL service is not running.
+
 ``mysql.database``
 ------------------
 
