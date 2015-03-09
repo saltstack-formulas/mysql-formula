@@ -58,3 +58,9 @@ mysql:
     client: mysql-client
     service: mysql-service
     python: python-mysqldb
+
+  # Install MySQL headers
+  dev:
+  	# Install dev package - defaults to False
+  	install: False
+
