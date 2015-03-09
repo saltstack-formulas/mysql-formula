@@ -45,6 +45,11 @@ debconf.
     cryptographically insecure, future formula versions should use the
     newly available ``random.get_str`` method.
 
+``mysql.disabled``
+------------------
+
+Ensure that the MySQL service is not running.
+
 ``mysql.database``
 ------------------
 
@@ -91,26 +96,3 @@ Install the MySQL development libraries and header files.
     Note that this state is not installed by the mysql meta-state unless you set
     your pillar data accordingly. 
 
-Updating the supported parameters
-=================================
-
-The ``supported_params.yaml`` file contains the full listing of options that
-are acceptable in the MySQL options file.  On occassion, especially on new
-releases of MySQL, this file may need to be updated.  To update, run the
-supplied script (requires Python 3.x)::
-
-    ./scripts/parse_supported_params.py -o ./mysql/supported_params.yaml
-
-This script will scrape the options from the official MySQL documentation
-online, and thus requires web access.  Scraping is inherently brittle, though
-this script has been defensively coded, where possible.
-
-Once the ``supported_params.yaml`` file has been updated, commit the result to
-the repository.
-
-Support for new applications
-----------------------------
-
-To add support for configuration of other MySQL applications, add the URL and
-section identifier into the relevant section of the script.  Consult the
-comments in the code to determine where your section should be added.

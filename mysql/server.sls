@@ -1,5 +1,5 @@
 {% from "mysql/defaults.yaml" import rawmap with context %}
-{%- set mysql = salt['grains.filter_by'](rawmap, grain='os', merge=salt['pillar.get']('mysql:server:lookup')) %}
+{%- set mysql = salt['grains.filter_by'](rawmap, grain='os', merge=salt['pillar.get']('mysql:lookup')) %}
 
 {% set os = salt['grains.get']('os', None) %}
 {% set os_family = salt['grains.get']('os_family', None) %}
@@ -56,7 +56,7 @@ mysql_delete_anonymous_user_{{ host }}:
 mysqld:
   pkg.installed:
     - name: {{ mysql.server }}
-{% if os_family == 'Debian' %}
+{% if os_family == 'Debian' and mysql_root_password %}
     - require:
       - debconf: mysql_debconf
 {% endif %}
@@ -78,3 +78,14 @@ mysql_config:
     - group: root
     - mode: 644
     {% endif %}
+
+# official oracle mysql repo
+# creates this file, that rewrites /etc/mysql/my.cnf setting
+# so, make it empty
+mysql_additional_config:
+  file.managed:
+    - name: /usr/my.cnf
+    - source: salt://mysql/files/usr-my.cnf
+    - create: False
+    - watch_in:
+      - service: mysqld

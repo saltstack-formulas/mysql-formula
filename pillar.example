@@ -5,13 +5,12 @@ mysql:
     user: mysql
     # my.cnf sections changes 
     mysqld:
+      # you can use either underscore or hyphen in param names
       bind-address: 0.0.0.0
+      log_bin: /var/log/mysql/mysql-bin.log
       port: 3307
-      server-id: 1
-      log-bin: mysql-bin
-      binlog-do-db: foo
+      binlog_do_db: foo
       auto_increment_increment: 5
-      max_connect_errors: 4294967295
     mysql:
       # my.cnf param that not require value
       no-auto-rehash: noarg_present
@@ -28,7 +27,7 @@ mysql:
       load: False
 
   # Manage users
-  # you can get pillar for existent server using import_users.py script
+  # you can get pillar for existent server using scripts/import_users.py script
   user:
     frank:
       password: 'somepass'
@@ -58,7 +57,6 @@ mysql:
     server: mysql-server
     client: mysql-client
     service: mysql-service
-    config: /etc/mysql/my.cnf
     python: python-mysqldb
 
   # Install MySQL headers

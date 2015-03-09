@@ -3,16 +3,27 @@
 {%- set mysql_root_pass = salt['pillar.get']('mysql:server:root_password', 'somepass') %}
 
 {% set user_states = [] %}
+{% set user_hosts = [] %}
 
 include:
   - mysql.python
 
 {% for name, user in salt['pillar.get']('mysql:user', {}).items() %}
-{% set state_id = 'mysql_user_' ~ loop.index0 %}
+
+{% set user_host = salt['pillar.get']('mysql:user:%s:host'|format(name)) %}
+{% if user_host != '' %}
+  {% set user_hosts = [user_host] %}
+{% else %}
+  {% set user_hosts = salt['pillar.get']('mysql:user:%s:hosts'|format(name)) %}
+{% endif %}
+
+{% for host in user_hosts %}
+
+{% set state_id = 'mysql_user_' ~ name ~ '_' ~ host%}
 {{ state_id }}:
   mysql_user.present:
     - name: {{ name }}
-    - host: '{{ user['host'] }}'
+    - host: '{{ host }}'
   {%- if user['password_hash'] is defined %}
     - password_hash: '{{ user['password_hash'] }}'
   {%- elif user['password'] is defined and user['password'] != None %}
@@ -35,7 +46,7 @@ include:
     - database: '{{ db['database'] }}.{{ db['table'] | default('*') }}'
     - grant_option: {{ db['grant_option'] | default(False) }}
     - user: {{ name }}
-    - host: '{{ user['host'] }}'
+    - host: '{{ host }}'
     - connection_host: localhost
     - connection_user: root
     {% if mysql_root_pass -%}
@@ -47,4 +58,5 @@ include:
 {% endfor %}
 
 {% do user_states.append(state_id) %}
+{% endfor %}
 {% endfor %}
