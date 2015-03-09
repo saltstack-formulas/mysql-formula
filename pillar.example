@@ -63,3 +63,4 @@ mysql:
   dev:
   	# Install dev package - defaults to False
   	install: False
+
