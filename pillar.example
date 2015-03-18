@@ -25,6 +25,10 @@ mysql:
       source: salt://mysql/files/foo.schema
     bar:
       load: False
+    baz:
+      load: True
+      source: salt://mysql/files/baz.schema.tmpl
+      template: jinja
 
   # Manage users
   # you can get pillar for existent server using scripts/import_users.py script
