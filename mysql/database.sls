@@ -24,6 +24,10 @@ include:
   file.managed:
     - name: /etc/mysql/{{ database }}.schema
     - source: {{ salt['pillar.get'](['mysql', 'schema', database, 'source']|join(':')) }}
+{%- set template_type = salt['pillar.get'](['mysql', 'schema', database, 'template']|join(':'), False) %}
+{%- if template_type %}
+    - template: {{ template_type }}
+{% endif %}
     - user: {{ salt['pillar.get']('mysql:server:user', 'mysql') }}
     - makedirs: True
 
