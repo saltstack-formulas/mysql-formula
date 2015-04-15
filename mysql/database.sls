@@ -2,6 +2,7 @@
 {%- set mysql = salt['grains.filter_by'](rawmap, grain='os', merge=salt['pillar.get']('mysql:lookup')) %}
 
 {% set mysql_root_pass = salt['pillar.get']('mysql:server:root_password', salt['grains.get']('server_id')) %}
+{% set mysql_host = salt['pillar.get']('mysql:server:host', 'localhost') %}
 {% set db_states = [] %}
 
 include:
@@ -12,7 +13,7 @@ include:
 {{ state_id }}:
   mysql_database.present:
     - name: {{ database }}
-    - host: localhost
+    - connection_host: '{{ mysql_host }}'
     - connection_user: root
     {% if mysql_root_pass %}
     - connection_pass: '{{ mysql_root_pass }}'

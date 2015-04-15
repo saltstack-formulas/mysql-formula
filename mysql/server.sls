@@ -4,6 +4,7 @@
 {% set os = salt['grains.get']('os', None) %}
 {% set os_family = salt['grains.get']('os_family', None) %}
 {% set mysql_root_password = salt['pillar.get']('mysql:server:root_password', salt['grains.get']('server_id')) %}
+{% set mysql_host = salt['pillar.get']('mysql:server:host', 'localhost') %}
 
 {% if mysql_root_password %}
 {% if os_family == 'Debian' %}
@@ -39,7 +40,7 @@ mysql_delete_anonymous_user_{{ host }}:
     - absent
     - host: {{ host or "''" }}
     - name: ''
-    - connection_host: localhost
+    - connection_host: '{{ mysql_host }}'
     - connection_user: root
     - connection_pass: {{ mysql_root_password }}
     - connection_charset: utf8
