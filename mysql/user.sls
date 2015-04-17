@@ -1,6 +1,7 @@
 {% from "mysql/defaults.yaml" import rawmap with context %}
 {%- set mysql = salt['grains.filter_by'](rawmap, grain='os', merge=salt['pillar.get']('mysql:server:lookup')) %}
 {%- set mysql_root_pass = salt['pillar.get']('mysql:server:root_password', 'somepass') %}
+{%- set mysql_host = salt['pillar.get']('mysql:server:host', 'localhost') %}
 
 {% set user_states = [] %}
 {% set user_hosts = [] %}
@@ -31,7 +32,7 @@ include:
   {%- else %}
     - allow_passwordless: True
   {%- endif %}
-    - connection_host: localhost
+    - connection_host: '{{ mysql_host }}'
     - connection_user: root
     {% if mysql_root_pass %}
     - connection_pass: '{{ mysql_root_pass }}'
@@ -47,7 +48,7 @@ include:
     - grant_option: {{ db['grant_option'] | default(False) }}
     - user: {{ name }}
     - host: '{{ host }}'
-    - connection_host: localhost
+    - connection_host: '{{ mysql_host }}'
     - connection_user: root
     {% if mysql_root_pass -%}
     - connection_pass: '{{ mysql_root_pass }}'
