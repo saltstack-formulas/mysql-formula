@@ -1,6 +1,7 @@
 {% from "mysql/defaults.yaml" import rawmap with context %}
 {%- set mysql = salt['grains.filter_by'](rawmap, grain='os', merge=salt['pillar.get']('mysql:lookup')) %}
 
+{% set mysql_root_user = salt['pillar.get']('mysql:server:root_user', 'root') %}
 {% set mysql_root_pass = salt['pillar.get']('mysql:server:root_password', salt['grains.get']('server_id')) %}
 {% set mysql_host = salt['pillar.get']('mysql:server:host', 'localhost') %}
 {% set db_states = [] %}
@@ -14,7 +15,7 @@ include:
   mysql_database.present:
     - name: {{ database }}
     - connection_host: '{{ mysql_host }}'
-    - connection_user: root
+    - connection_user: '{{ mysql_root_user }}'
     {% if mysql_root_pass %}
     - connection_pass: '{{ mysql_root_pass }}'
     {% endif %}
