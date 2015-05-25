@@ -13,4 +13,5 @@
 - myisamchk
 - isamchk
 - mysqld
+- mysqld_multi
 {% endload %}

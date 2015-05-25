@@ -24,7 +24,7 @@ mysql_debconf:
       - pkg: mysqld
     - require:
       - pkg: mysql_debconf_utils
-{% elif os_family == 'RedHat' %}
+{% elif os_family == 'RedHat' or 'Suse' %}
 mysql_root_password:
   cmd.run:
     - name: mysqladmin --user root password '{{ mysql_root_password|replace("'", "'\"'\"'") }}'
