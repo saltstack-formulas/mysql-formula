@@ -70,6 +70,6 @@ mysql:
 
   # Install MySQL headers
   dev:
-  	# Install dev package - defaults to False
-  	install: False
+    # Install dev package - defaults to False
+    install: False
 
