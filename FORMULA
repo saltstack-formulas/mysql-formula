@@ -1,0 +1,8 @@
+name: mysql
+os: RedHat, Debian, Ubuntu, Suse, Gentoo, FreeBSD
+os_family: RedHat, Debian, Suse, Gentoo, FreeBSD
+version: 201507
+release: 1
+minimum_version: 2015.8
+summary: Formula for installing MySQL
+description: Formula for installing MySQL database client and/or server
