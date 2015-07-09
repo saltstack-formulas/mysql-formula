@@ -1,5 +1,5 @@
 name: mysql
-os: RedHat, Debian, Ubuntu, Suse, Gentoo, FreeBSD
+os: RedHat, CentOS, Debian, Ubuntu, Suse, Gentoo, FreeBSD
 os_family: RedHat, Debian, Suse, Gentoo, FreeBSD
 version: 201507
 release: 1
