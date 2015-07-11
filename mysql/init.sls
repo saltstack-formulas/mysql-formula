@@ -25,11 +25,4 @@ extend:
       - require_in:
         {{ requisites('mysql_database', db_states) }}
         {{ requisites('mysql_user', user_states) }}
-  {% for state in user_states %}
-  {{ state }}:
-    mysql_user:
-      - require:
-        - sls: mysql.database
-  {% endfor %}
 {% endif %}
-    

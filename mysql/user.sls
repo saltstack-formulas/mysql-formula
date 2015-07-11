@@ -10,7 +10,7 @@
 include:
   - mysql.python
 
-{% for name, user in salt['pillar.get']('mysql:user', {}).items() %}
+{% for name, user in salt['pillar.get']('mysql:user', {}).iteritems() %}
 
 {% set user_host = salt['pillar.get']('mysql:user:%s:host'|format(name)) %}
 {% if user_host != '' %}
@@ -40,6 +40,26 @@ include:
     {% endif %}
     - connection_charset: utf8
 
+{%- if 'grants' in user %}
+{{ state_id ~ '_grants' }}:
+  mysql_grants.present:
+    - name: {{ name }}
+    - grant: {{ user['grants']|join(",") }}
+    - database: '*.*'
+    - grant_option: {{ user['grant_option'] | default(False) }}
+    - user: {{ name }}
+    - host: '{{ host }}'
+    - connection_host: localhost
+    - connection_user: root
+    {% if mysql_root_pass -%}
+    - connection_pass: '{{ mysql_root_pass }}'
+    {% endif %}
+    - connection_charset: utf8
+    - require:
+      - mysql_user: {{ state_id }}
+{% endif %}
+
+{%- if 'databases' in user %}
 {% for db in user['databases'] %}
 {{ state_id ~ '_' ~ loop.index0 }}:
   mysql_grants.present:
@@ -56,8 +76,9 @@ include:
     {% endif %}
     - connection_charset: utf8
     - require:
-      - mysql_user: {{ name }}
+      - mysql_user: {{ state_id }}
 {% endfor %}
+{% endif %}
 
 {% do user_states.append(state_id) %}
 {% endfor %}
