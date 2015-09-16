@@ -15,11 +15,11 @@ mysql_debconf_utils:
 
 mysql_debconf:
   debconf.set:
-    - name: mysql-server
+    - name: {{ mysql.server }}
     - data:
-        'mysql-server/root_password': {'type': 'password', 'value': '{{ mysql_root_password }}'}
-        'mysql-server/root_password_again': {'type': 'password', 'value': '{{ mysql_root_password }}'}
-        'mysql-server/start_on_boot': {'type': 'boolean', 'value': 'true'}
+        '{{ mysql.server }}/root_password': {'type': 'password', 'value': '{{ mysql_root_password }}'}
+        '{{ mysql.server }}/root_password_again': {'type': 'password', 'value': '{{ mysql_root_password }}'}
+        '{{ mysql.server }}/start_on_boot': {'type': 'boolean', 'value': 'true'}
     - require_in:
       - pkg: mysqld
     - require:
