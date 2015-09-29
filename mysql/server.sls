@@ -24,13 +24,14 @@ mysql_debconf:
       - pkg: mysqld
     - require:
       - pkg: mysql_debconf_utils
-{% elif os_family == 'RedHat' or 'Suse' %}
+{% elif os_family == 'RedHat' or os_family == 'Suse' or os_family == 'Arch' %}
 mysql_root_password:
   cmd.run:
     - name: mysqladmin --user {{ mysql_root_user }} password '{{ mysql_root_password|replace("'", "'\"'\"'") }}'
     - unless: mysql --user {{ mysql_root_user }} --password='{{ mysql_root_password|replace("'", "'\"'\"'") }}' --execute="SELECT 1;"
     - require:
       - service: mysqld
+{% endif %}
 
 include:
   - mysql.python
@@ -54,7 +55,6 @@ mysql_delete_anonymous_user_{{ host }}:
       - cmd: mysql_root_password
       {%- endif %}
 {% endfor %}
-{% endif %}
 {% endif %}
 
 mysqld:
