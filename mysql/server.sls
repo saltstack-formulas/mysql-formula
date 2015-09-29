@@ -69,14 +69,6 @@ mysql_install_datadir:
       - file: mysql_config
     - require_in:
       - service: mysqld
-
-mysql_create_logdir:
-  file.directory:
-    - name: /var/log/mysql
-    - user: mysql
-    - group: mysql
-    - dir_mode: 750
-
 {% endif %}
 
 mysqld:
