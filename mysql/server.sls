@@ -15,11 +15,11 @@ mysql_debconf_utils:
 
 mysql_debconf:
   debconf.set:
-    - name: mysql-server
+    - name: {{ mysql.server }}
     - data:
-        'mysql-server/root_password': {'type': 'password', 'value': '{{ mysql_root_password }}'}
-        'mysql-server/root_password_again': {'type': 'password', 'value': '{{ mysql_root_password }}'}
-        'mysql-server/start_on_boot': {'type': 'boolean', 'value': 'true'}
+        '{{ mysql.server }}/root_password': {'type': 'password', 'value': '{{ mysql_root_password }}'}
+        '{{ mysql.server }}/root_password_again': {'type': 'password', 'value': '{{ mysql_root_password }}'}
+        '{{ mysql.server }}/start_on_boot': {'type': 'boolean', 'value': 'true'}
     - require_in:
       - pkg: mysqld
     - require:
@@ -27,8 +27,8 @@ mysql_debconf:
 {% elif os_family == 'RedHat' or os_family == 'Suse' or os_family == 'Arch' %}
 mysql_root_password:
   cmd.run:
-    - name: mysqladmin --user root password '{{ mysql_root_password|replace("'", "'\"'\"'") }}'
-    - unless: mysql --user root --password='{{ mysql_root_password|replace("'", "'\"'\"'") }}' --execute="SELECT 1;"
+    - name: mysqladmin --user {{ mysql_root_user }} password '{{ mysql_root_password|replace("'", "'\"'\"'") }}'
+    - unless: mysql --user {{ mysql_root_user }} --password='{{ mysql_root_password|replace("'", "'\"'\"'") }}' --execute="SELECT 1;"
     - require:
       - service: mysqld
 {% endif %}
