@@ -57,6 +57,19 @@ mysql_delete_anonymous_user_{{ host }}:
 {% endfor %}
 {% endif %}
 
+# on arch linux: inital mysql datadirectory is not created
+{% if os_family == 'Arch' %}
+  cmd.run:
+    - name: mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+    - user: root
+    - creates: /var/lib/mysql/mysql
+    - require:
+      - pkg: mysqld
+      - file: mysql_config
+    - require_in:
+      - service: mysqld
+{% endif %}
+
 mysqld:
   pkg.installed:
     - name: {{ mysql.server }}
