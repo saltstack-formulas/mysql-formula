@@ -98,8 +98,11 @@ CentOS:
   service: mysqld
   python: MySQL-python
   dev: mysql-devel
+  config_directory: /etc/my.cnf.d/
   config:
     file: /etc/my.cnf
+  server_config:
+    file: server.cnf
     sections:
       mysqld_safe:
         log_error: /var/log/mysqld.log

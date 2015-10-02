@@ -1,4 +1,18 @@
 mysql:
+  global:
+    client-server:
+      default_character_set: utf8
+
+  clients:
+    mysql:
+      default_character_set: utf8
+    mysqldump:
+      default_character_set: utf8
+
+  library:
+    client:
+      default_character_set: utf8
+
   server:
     # Use this account for database admin (defaults to root)
     root_user: 'admin'
