@@ -94,5 +94,5 @@ Install the MySQL development libraries and header files.
 
 .. note::
     Note that this state is not installed by the mysql meta-state unless you set
-    your pillar data accordingly. 
+    your pillar data accordingly.
 

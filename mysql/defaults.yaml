@@ -37,9 +37,9 @@ Ubuntu:
         myisam_recover: BACKUP
         query_cache_limit: 1M
         query_cache_size: 16M
-        log_error: /var/log/mysql/error.log 
+        log_error: /var/log/mysql/error.log
         expire_logs_days: 10
-        max_binlog_size: 100M          
+        max_binlog_size: 100M
       mysqldump:
         quick: noarg_present
         quote_names: noarg_present
@@ -83,7 +83,7 @@ Debian:
         query_cache_limit: 1M
         query_cache_size: 16M
         expire_logs_days: 10
-        max_binlog_size: 100M          
+        max_binlog_size: 100M
       mysqldump:
         quick: noarg_present
         quote_names: noarg_present

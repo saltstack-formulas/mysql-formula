@@ -15,7 +15,7 @@ parser.add_argument('user', metavar='user', help='mysql user that can show grant
 parser.add_argument('password', metavar='password', help='user password')
 args = parser.parse_args()
 
-# PARSE GRANTS 
+# PARSE GRANTS
 mysqlcon = MySQLdb.connect(host=args.host,user=args.user,passwd=args.password,db="mysql",use_unicode=True, charset='utf8')
 mysqlCur = mysqlcon.cursor(MySQLdb.cursors.DictCursor)
 
@@ -42,7 +42,7 @@ for user in users:
 				mgrant = re.search(
 					r"""GRANT ([\s,A-Z]+) ON `?([a-zA-Z0-9_\-*\\]*)`?\.`?([a-zA-Z0-9_\-*\\]*)`? TO .*""",
 					row[0])
-				if mgrant is not None:					
+				if mgrant is not None:
 					user['grants'].append({'grant': [x.strip() for x in mgrant.group(1).split(',')], 'database': mgrant.group(2).replace('\\',''), 'table': mgrant.group(3).replace('\\','')})
 				else:
 					print "ERROR: CAN NOT PARSE GRANTS: ",row[0]
