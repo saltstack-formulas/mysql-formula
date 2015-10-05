@@ -16,7 +16,7 @@ include:
 {% if mysql_dev %}
   - mysql.dev
 {% endif %}
-  
+
 
 {% if (db_states|length() + user_states|length()) > 0 %}
 extend:
