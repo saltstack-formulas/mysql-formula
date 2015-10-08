@@ -6,6 +6,9 @@
 {% set mysql_host = salt['pillar.get']('mysql:server:host', 'localhost') %}
 {% set db_states = [] %}
 
+{% set mysql_salt_user = salt['pillar.get']('mysql:salt_user:salt_user_name', mysql_root_user) %}
+{% set mysql_salt_password = salt['pillar.get']('mysql:salt_user:salt_user_password', mysql_root_password) %}
+
 include:
   - mysql.python
 
@@ -15,9 +18,9 @@ include:
   mysql_database.present:
     - name: {{ database }}
     - connection_host: '{{ mysql_host }}'
-    - connection_user: '{{ mysql_root_user }}'
-    {% if mysql_root_pass %}
-    - connection_pass: '{{ mysql_root_pass }}'
+    - connection_user: '{{ mysql_salt_user }}'
+    {% if mysql_salt_pass %}
+    - connection_pass: '{{ mysql_salt_pass }}'
     {% endif %}
     - connection_charset: utf8
 
@@ -35,7 +38,7 @@ include:
 
 {{ state_id }}_load:
   cmd.wait:
-    - name: mysql -u {{ mysql_root_user }} -p{{ mysql_root_pass }} {{ database }} < /etc/mysql/{{ database }}.schema
+    - name: mysql -u {{ mysql_salt_user }} -p{{ mysql_salt_pass }} {{ database }} < /etc/mysql/{{ database }}.schema
     - watch:
       - file: {{ state_id }}_schema
       - mysql_database: {{ state_id }}
