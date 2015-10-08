@@ -4,6 +4,7 @@ mysql:
     root_user: 'admin'
     # root_password: '' - to have root@localhost without password
     root_password: 'somepass'
+    root_password_hash: '*13883BDDBE566ECECC0501CDE9B293303116521A'
     user: mysql
     # If you only manage the dbs and users and the server is on
     # another host
@@ -19,6 +20,12 @@ mysql:
     mysql:
       # my.cnf param that not require value
       no-auto-rehash: noarg_present
+
+  salt_user:
+    salt_user_name: 'salt'
+    salt_user_password: 'someotherpass'
+    grants:
+      - 'all privileges'
 
   # Manage databases
   database:
