@@ -12,7 +12,7 @@
 include:
   - mysql.python
 
-{% for name, user in salt['pillar.get']('mysql:user', {}).iteritems() %}
+{% for name, user in salt['pillar.get']('mysql:user', {}).items() %}
 
 {% set user_host = salt['pillar.get']('mysql:user:%s:host'|format(name)) %}
 {% if user_host != '' %}
