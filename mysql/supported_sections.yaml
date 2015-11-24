@@ -1,6 +1,9 @@
 # vim
 {% load_yaml as supported_sections %}
+- client-server
 - client
+- client-mariadb
+- mariadb
 - mysql
 - mysqldump
 - mysqld_safe
@@ -9,9 +12,14 @@
 - mysqlcheck
 - mysqlimport
 - mysqlshow
+- mysql_upgrade
+- mysqlbinlog
+- mysqlslap
 - myisampack
 - myisamchk
 - isamchk
 - mysqld
 - mysqld_multi
+- server
+- xtrabackup
 {% endload %}

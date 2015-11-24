@@ -1,3 +1,7 @@
+include:
+  - mysql.config
+  - mysql.python
+
 {% from "mysql/defaults.yaml" import rawmap with context %}
 {%- set mysql = salt['grains.filter_by'](rawmap, grain='os', merge=salt['pillar.get']('mysql:lookup')) %}
 
@@ -33,9 +37,6 @@ mysql_root_password:
     - unless: mysql --user {{ mysql_root_user }} --password='{{ mysql_root_password|replace("'", "'\"'\"'") }}' --execute="SELECT 1;"
     - require:
       - service: mysqld
-
-include:
-  - mysql.python
 
 {% for host in ['localhost', 'localhost.localdomain', salt['grains.get']('fqdn')] %}
 mysql_delete_anonymous_user_{{ host }}:
@@ -85,19 +86,10 @@ mysqld:
     - enable: True
     - watch:
       - pkg: mysqld
-
-mysql_config:
-  file.managed:
-    - name: {{ mysql.config.file }}
-    - template: jinja
-    - source: salt://mysql/files/my.cnf
-    - watch_in:
-      - service: mysqld
-    {% if os_family in ['Debian', 'Gentoo', 'RedHat'] %}
-    - user: root
-    - group: root
-    - mode: 644
-    {% endif %}
+      - file: mysql_config
+{% if "config_directory" in mysql and "server_config" in mysql %}
+      - file: mysql_server_config
+{% endif %}
 
 # official oracle mysql repo
 # creates this file, that rewrites /etc/mysql/my.cnf setting
