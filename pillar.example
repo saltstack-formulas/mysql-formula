@@ -57,7 +57,7 @@ mysql:
       template: jinja
 
   # Manage users
-  # you can get pillar for existent server using scripts/import_users.py script
+  # you can get pillar for existing server using scripts/import_users.py script
   user:
     frank:
       password: 'somepass'
