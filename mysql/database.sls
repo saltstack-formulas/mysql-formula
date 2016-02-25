@@ -38,7 +38,7 @@ include:
 
 {{ state_id }}_load:
   cmd.wait:
-    - name: mysql -u {{ mysql_salt_user }} -p{{ mysql_salt_pass }} {{ database }} < /etc/mysql/{{ database }}.schema
+    - name: mysql -u {{ mysql_salt_user }} -h{{ mysql_host }} -p{{ mysql_salt_pass }} {{ database }} < /etc/mysql/{{ database }}.schema
     - watch:
       - file: {{ state_id }}_schema
       - mysql_database: {{ state_id }}
