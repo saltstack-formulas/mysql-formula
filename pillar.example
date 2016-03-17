@@ -81,6 +81,15 @@ mysql:
       password: ~
       host: localhost
       databases: []
+    application:
+      password: 'somepass'
+      mine_hosts:
+        target: "G@role:database and *.example.com"
+        function: "network.get_hostname"
+        expr_form: compound
+      databases:
+        - database: foo
+          grants: ['select', 'insert', 'update']
 
   # Override any names defined in map.jinja
   lookup:
