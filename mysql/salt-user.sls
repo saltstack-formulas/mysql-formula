@@ -40,6 +40,7 @@ mysql_salt_user_with_salt_user_grants:
     - grant_option: True
     - user: {{ mysql_salt_user }}
     - host: '{{ host }}'
+    - escape: {{ db['escape'] | default(True) }}
     - connection_host: '{{ mysql_host }}'
     - connection_user: '{{ mysql_salt_user }}'
     - connection_pass: '{{ mysql_salt_pass }}'
@@ -77,6 +78,7 @@ mysql_salt_user_with_root_user_grants:
     - grant_option: True
     - user: {{ mysql_salt_user }}
     - host: '{{ host }}'
+    - escape: {{ db['escape'] | default(True) }}
     - connection_host: '{{ mysql_host }}'
     - connection_user: '{{ mysql_root_user }}'
     - connection_pass: '{{ mysql_root_pass }}'
@@ -113,6 +115,7 @@ mysql_salt_user_with_passwordless_root_user_grants:
     - grant_option: True
     - user: {{ mysql_salt_user }}
     - host: '{{ host }}'
+    - escape: {{ db['escape'] | default(True) }}
     - connection_host: '{{ mysql_host }}'
     - connection_user: '{{ mysql_root_user }}'
     - connection_charset: utf8
