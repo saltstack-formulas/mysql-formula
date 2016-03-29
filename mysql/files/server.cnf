@@ -30,6 +30,8 @@
 {%- set indents = 40 - mparam|count %}
 {% if mvalue == "noarg_present" -%}
 {{ mparam }}
+{% elif mvalue == "SETONPLEASE"  %}
+{{ mparam }}{{ '='|indent(indents, true) }} ON
 {%- else -%}
 {{ mparam }}{{ '='|indent(indents, true) }} {{ mvalue }}
 {%- endif -%}
