@@ -12,6 +12,7 @@ include:
 {% set mysql_host = salt['pillar.get']('mysql:server:host', 'localhost') %}
 {% set mysql_salt_user = salt['pillar.get']('mysql:salt_user:salt_user_name', mysql_root_user) %}
 {% set mysql_salt_password = salt['pillar.get']('mysql:salt_user:salt_user_password', mysql_root_password) %}
+{% set mysql_version = salt['pillar.get']('mysql:server:version', '') %}
 
 {% if mysql_root_password %}
 {% if os_family == 'Debian' %}
@@ -77,6 +78,7 @@ mysql_install_datadir:
 mysqld:
   pkg.installed:
     - name: {{ mysql.server }}
+    - version: {{ mysql_version }}
 {% if os_family == 'Debian' and mysql_root_password %}
     - require:
       - debconf: mysql_debconf
