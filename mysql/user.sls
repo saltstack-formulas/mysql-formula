@@ -21,6 +21,16 @@ include:
   {% set user_hosts = salt['pillar.get']('mysql:user:%s:hosts'|format(name)) %}
 {% endif %}
 
+{% if not user_hosts %}
+  {% set mine_target = salt['pillar.get']('mysql:user:%s:mine_hosts:target'|format(name)) %}
+  {% set mine_function = salt['pillar.get']('mysql:user:%s:mine_hosts:function'|format(name)) %}
+  {% set mine_expression_form = salt['pillar.get']('mysql:user:%s:mine_hosts:expr_form'|format(name)) %}
+
+  {% if mine_target and mine_function and mine_expression_form %}
+    {% set user_hosts = salt['mine.get'](mine_target, mine_function, mine_expression_form).values() %}
+  {% endif %}
+{% endif %}
+
 {% for host in user_hosts %}
 
 {% set state_id = 'mysql_user_' ~ name ~ '_' ~ host%}
