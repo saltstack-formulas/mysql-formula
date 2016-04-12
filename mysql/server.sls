@@ -27,7 +27,7 @@ mysql_debconf:
         '{{ mysql.server }}/root_password_again': {'type': 'password', 'value': '{{ mysql_root_password }}'}
         '{{ mysql.server }}/start_on_boot': {'type': 'boolean', 'value': 'true'}
     - require_in:
-      - pkg: mysqld
+      - pkg: {{ mysql.server }}
     - require:
       - pkg: mysql_debconf_utils
 {% elif os_family == 'RedHat' or 'Suse' %}
@@ -74,18 +74,22 @@ mysql_install_datadir:
       - service: mysqld
 {% endif %}
 
-mysqld:
+mysqld-packages:
   pkg.installed:
     - name: {{ mysql.server }}
 {% if os_family == 'Debian' and mysql_root_password %}
     - require:
       - debconf: mysql_debconf
 {% endif %}
+
+mysqld:
   service.running:
     - name: {{ mysql.service }}
     - enable: True
+    - require:
+      - pkg: {{ mysql.server }}
     - watch:
-      - pkg: mysqld
+      - pkg: {{ mysql.server }}
       - file: mysql_config
 {% if "config_directory" in mysql and "server_config" in mysql %}
       - file: mysql_server_config
