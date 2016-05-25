@@ -68,7 +68,7 @@ mysql_install_datadir:
     - user: root
     - creates: /var/lib/mysql/mysql/user.frm
     - require:
-      - pkg: mysqld
+      - pkg: {{ mysql.server }} 
       - file: mysql_config
     - require_in:
       - service: mysqld
