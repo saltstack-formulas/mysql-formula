@@ -91,12 +91,22 @@ mysql:
         - database: foo
           grants: ['select', 'insert', 'update']
 
-  # Override any names defined in map.jinja
+  ## Override any names defined in map.jinja
+  #lookup:
+  #  server: mysql-server
+  #  client: mysql-client
+  #  service: mysql-service
+  #  python: python-mysqldb
+
+  # alternative for mariaDB tested debian Jessie it becomes
   lookup:
-    server: mysql-server
-    client: mysql-client
-    service: mysql-service
+    server: mariadb-server
+    client: mariadb-client
+    debconf_package: mariadb-server-10.0
+    debconf: mysql-server
+    service: mysql
     python: python-mysqldb
+
 
   # Install MySQL headers
   dev:
