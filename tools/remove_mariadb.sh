@@ -5,8 +5,11 @@
 # Usage: 
 #   scp remove_mariadb.sh minion:
 #   ssh minion
-#   chmod a+x
+#   chmod a+x ./remove_mariadb.sh
 #   ./remove_mariadb.sh
+# with salt:
+#   salt-cp 'minion' ./remove_mariadb.sh /root
+#   salt 'minion' cmd.run "chmod a+x remove_mariadb.sh && ./remove_mariadb.sh"
 service mysql stop
 apt-get remove -y --purge $(dpkg -l | awk '/mysql|maria/ { print $2 } ')
 rm -rf /etc/mysql/

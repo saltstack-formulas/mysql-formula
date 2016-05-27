@@ -45,6 +45,28 @@ debconf.
     cryptographically insecure, future formula versions should use the
     newly available ``random.get_str`` method.
 
+.. note::
+    For mariaDB under jessie, use the following pillar values:
+
+    debconf_package: mariadb-server-10.0
+    debconf: mysql-server
+
+    Are new pillar's variable to feed debconf.
+
+::
+
+.. code:: yaml
+    mysql:
+      # Override any names defined in map.jinja
+      lookup:
+        server: mariadb-server
+        client: mariadb-client
+        debconf_package: mariadb-server-10.0
+        debconf: mysql-server
+        service: mysql
+        python: python-mysqldb
+
+
 ``mysql.disabled``
 ------------------
 
