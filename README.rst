@@ -46,25 +46,22 @@ debconf.
     newly available ``random.get_str`` method.
 
 .. note::
-    For mariaDB under jessie, use the following pillar values:
+    For mariaDB under Debian jessie, use the following pillar values: ``debconf_package:``
+    and ``debconf:``
 
-    debconf_package: mariadb-server-10.0
-    debconf: mysql-server
-
-    Are new pillar's variable to feed debconf.
+    They are new pillar's variable to feed debconf.
 
 ::
-
-.. code:: yaml
-    mysql:
-      # Override any names defined in map.jinja
-      lookup:
-        server: mariadb-server
-        client: mariadb-client
-        debconf_package: mariadb-server-10.0
-        debconf: mysql-server
-        service: mysql
-        python: python-mysqldb
+  
+  # example of pillar
+  mysql:
+    lookup:
+      server: mariadb-server
+      client: mariadb-client
+      debconf_package: mariadb-server-10.0
+      debconf: mysql-server
+      service: mysql
+      python: python-mysqldb
 
 
 ``mysql.disabled``
@@ -117,4 +114,5 @@ Install the MySQL development libraries and header files.
 .. note::
     Note that this state is not installed by the mysql meta-state unless you set
     your pillar data accordingly.
+
 
