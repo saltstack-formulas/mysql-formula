@@ -95,6 +95,26 @@ mysql:
       databases:
         - database: foo
           grants: ['select', 'insert', 'update']
+    # some users to remove. user as the mysql.user table point of view.
+    alice:
+      absent: True
+      # you may keep existing parmeters for your history
+      password_hash: '*6C8989366EAF75BB670AD8EA7A7FC1176A95CEF4'
+      host: localhost
+      databases:
+        - database: foo
+    # the following user was allowed to connect from many host
+    # some are removed
+    sylvain:
+      password: 'echo some | more'
+      hosts:
+        - localhost
+        - 10.0.0.22
+      # will add/tested for present on the hosts: above and removed from hosts_absent:
+      hosts_absent:
+        - 10.0.0.3
+      databases:
+        - database: foo
 
   ## Override any names defined in mysql/defaults.yaml
   #lookup:
