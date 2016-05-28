@@ -1,3 +1,4 @@
+# vim: set ft=yaml:
 mysql:
   global:
     client-server:
@@ -61,7 +62,11 @@ mysql:
   user:
     frank:
       password: 'somepass'
-      host: localhost
+      # frank is allowed to connect from multiple remote host, thus producing
+      # multiple mysql's users in the mysql.user table (hosts plural)
+      hosts:
+        - localhost
+        - 10.0.0.22
       databases:
         - database: foo
           grants: ['select', 'insert', 'update']
@@ -91,22 +96,23 @@ mysql:
         - database: foo
           grants: ['select', 'insert', 'update']
 
-  ## Override any names defined in map.jinja
+  ## Override any names defined in mysql/defaults.yaml
   #lookup:
   #  server: mysql-server
   #  client: mysql-client
   #  service: mysql-service
   #  python: python-mysqldb
 
-  # alternative for mariaDB tested debian Jessie it becomes
+  # alternative for mariaDB: tested on debian Jessie it becomes
   lookup:
+    # those two are debian packgage's name
     server: mariadb-server
     client: mariadb-client
+    # /!\ debconf_package is different from lookup.server
     debconf_package: mariadb-server-10.0
     debconf: mysql-server
     service: mysql
     python: python-mysqldb
-
 
   # Install MySQL headers
   dev:
