@@ -22,7 +22,7 @@ mysql_debconf_utils:
 
 mysql_debconf:
   debconf.set:
-    - name: {{ mysql.debconf_package }}
+    - name: {{ mysql.server }}
     - data:
         '{{ mysql.debconf }}/root_password': {'type': 'password', 'value': '{{ mysql_root_password }}'}
         '{{ mysql.debconf }}/root_password_again': {'type': 'password', 'value': '{{ mysql_root_password }}'}
