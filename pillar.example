@@ -126,10 +126,9 @@ mysql:
   # alternative for mariaDB: tested on debian Jessie it becomes
   lookup:
     # those two are debian packgage's name
-    server: mariadb-server
+    # /!\ debconf expect the exact package name mariaDB
+    server: mariadb-server-10.0
     client: mariadb-client
-    # /!\ debconf_package is different from lookup.server
-    debconf_package: mariadb-server-10.0
     debconf: mysql-server
     service: mysql
     python: python-mysqldb
