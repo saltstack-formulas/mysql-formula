@@ -64,11 +64,7 @@ mysql:
   user:
     frank:
       password: 'somepass'
-      # frank is allowed to connect from multiple remote host, thus producing
-      # multiple mysql's users in the mysql.user table (hosts plural)
-      hosts:
-        - localhost
-        - 10.0.0.22
+      host: localhost
       databases:
         - database: foo
           grants: ['select', 'insert', 'update']
@@ -97,42 +93,12 @@ mysql:
       databases:
         - database: foo
           grants: ['select', 'insert', 'update']
-    # some users to remove. user as the mysql.user table point of view.
-    alice:
-      absent: True
-      # you may keep existing parmeters for your history
-      password_hash: '*6C8989366EAF75BB670AD8EA7A7FC1176A95CEF4'
-      host: localhost
-      databases:
-        - database: foo
-    # the following user was allowed to connect from many host
-    # some are removed
-    sylvain:
-      password: 'echo some | more'
-      hosts:
-        - localhost
-        - 10.0.0.22
-      # will add/tested for present on the hosts: above and removed from hosts_absent:
-      hosts_absent:
-        - 10.0.0.3
-      databases:
-        - database: foo
 
-  ## Override any names defined in mysql/defaults.yaml
-  #lookup:
-  #  server: mysql-server
-  #  client: mysql-client
-  #  service: mysql-service
-  #  python: python-mysqldb
-
-  # alternative for mariaDB: tested on debian Jessie it becomes
+  # Override any names defined in map.jinja
   lookup:
-    # those two are debian packgage's name
-    # /!\ debconf expect the exact package name mariaDB
-    server: mariadb-server-10.0
-    client: mariadb-client
-    debconf: mysql-server
-    service: mysql
+    server: mysql-server
+    client: mysql-client
+    service: mysql-service
     python: python-mysqldb
 
   # Install MySQL headers

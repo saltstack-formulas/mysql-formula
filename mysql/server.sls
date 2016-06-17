@@ -27,9 +27,9 @@ mysql_debconf:
   debconf.set:
     - name: {{ mysql.server }}
     - data:
-        '{{ mysql.debconf }}/root_password': {'type': 'password', 'value': '{{ mysql_root_password }}'}
-        '{{ mysql.debconf }}/root_password_again': {'type': 'password', 'value': '{{ mysql_root_password }}'}
-        '{{ mysql.debconf }}/start_on_boot': {'type': 'boolean', 'value': 'true'}
+        '{{ mysql.server }}/root_password': {'type': 'password', 'value': '{{ mysql_root_password }}'}
+        '{{ mysql.server }}/root_password_again': {'type': 'password', 'value': '{{ mysql_root_password }}'}
+        '{{ mysql.server }}/start_on_boot': {'type': 'boolean', 'value': 'true'}
     - require_in:
       - pkg: {{ mysql.server }}
     - require:
@@ -72,7 +72,7 @@ mysql_install_datadir:
     - user: root
     - creates: /var/lib/mysql/mysql/user.frm
     - require:
-      - pkg: mysqld
+      - pkg: {{ mysql.server }}
       - file: mysql_config
     - require_in:
       - service: mysqld

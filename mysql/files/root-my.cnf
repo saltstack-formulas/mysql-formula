@@ -1,5 +1,5 @@
 {#-
-vim: set ft=jinja: 
+vim: set ft=jinja:
 
 This file is used for giving password less root access to shell's root user
 for command line tools: mysql, mysqladmin, mysqldump, etc.
