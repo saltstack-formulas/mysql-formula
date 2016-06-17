@@ -2,6 +2,9 @@
 include:
   - mysql.config
   - mysql.python
+{% if salt['pillar.get']('mysql:server:enable_root_my_cnf', False) %}
+  - mysql.root_my_cnf
+{% endif %}
 
 {% from "mysql/defaults.yaml" import rawmap with context %}
 {%- set mysql = salt['grains.filter_by'](rawmap, grain='os', merge=salt['pillar.get']('mysql:lookup')) %}
@@ -107,25 +110,3 @@ mysql_additional_config:
     - watch_in:
       - service: mysqld
 
-# This create a passwordless access for root
-mysql_root_my_cnf:
-  file.managed:
-    - name: /root/.my.cnf
-    - source: salt://mysql/files/root-my.cnf
-    - template: jinja
-    - user: root
-    - group: root
-    - mode: 600
-    - create: True
-
-# This use above config file to store mysql's root password for salt
-mysql_minion_root_my_cnf:
-  file.managed:
-    - name: /etc/salt/minion.d/55-mysql-cnf.conf
-    # use quote for the content
-    - contents:
-      - "mysql.default_file: '/root/.my.cnf'"
-    - user: root
-    - group: root
-    - mode: 600
-    - create: True

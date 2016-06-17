@@ -16,6 +16,9 @@ include:
 {% if mysql_dev %}
   - mysql.dev
 {% endif %}
+{% if salt['pillar.get']('mysql:server:enable_root_my_cnf', False) %}
+  - mysql.change_root_password
+{% endif %}
 
 
 {% if (db_states|length() + user_states|length()) > 0 %}

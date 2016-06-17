@@ -116,3 +116,21 @@ Install the MySQL development libraries and header files.
     your pillar data accordingly.
 
 
+``mysql.root_my_cnf``
+---------------------
+
+Store the root password in clear text in ``/root/.my.cnf`` on the mysql server, chmod 600.
+Used by ``mysql.change_root_password``. You must set ``enable_root_my_cnf`` at True in the pillar.
+
+.. note::
+    Note that this state is included by the mysql.server, and so in mysql meta-state.
+
+
+``mysql.change_root_password``
+------------------------------
+
+Change all user ``root`` with the password field in the pillar ``mysql_root_password``.
+Recreate ``/root/.my.cnf``, with the new password. If call directly don't check ``enable_root_my_cnf`` True
+
+.. note::
+    salt '*' saltutil.refresh_pillar
