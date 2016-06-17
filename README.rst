@@ -102,17 +102,21 @@ Install the MySQL development libraries and header files.
 ---------------------
 
 Store the root password in clear text in ``/root/.my.cnf`` on the mysql server, chmod 600.
-Used by ``mysql.change_root_password``. You must set ``enable_root_my_cnf`` at True in the pillar.
+Used by ``mysql.change_root_password``. If you set ``enable_root_my_cnf`` at True in the pillar, it becomes available 
+in ``highstate``.
 
 .. note::
-    Note that this state is included by the mysql.server, and so in mysql meta-state.
+    Note that this state is included by the state ``mysql.server``.
 
 
 ``mysql.change_root_password``
 ------------------------------
 
-Change all user ``root`` with the password field in the pillar ``mysql_root_password``.
-Recreate ``/root/.my.cnf``, with the new password. If call directly don't check ``enable_root_my_cnf`` True
+Change all rows for user ``root`` with the password field in the pillar ``mysql_root_password``.
+Recreate ``/root/.my.cnf``, with the new password. If call directly don't check ``enable_root_my_cnf`` True.
+
+**Warning**: it does not handle ``authentication_string`` column of the ``mysql.user`` table (MySQL 5.7, mariaDB 5.5). Would need to be 
+coded as python module.
 
 .. note::
-    salt '*' saltutil.refresh_pillar
+    ``salt '*' saltutil.refresh_pillar``
