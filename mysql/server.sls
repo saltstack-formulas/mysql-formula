@@ -4,6 +4,7 @@ include:
   - mysql.python
 {% if salt['pillar.get']('mysql:server:enable_root_my_cnf', False) %}
   - mysql.root_my_cnf
+  - mysql.change_root_password
 {% endif %}
 
 {% from "mysql/defaults.yaml" import rawmap with context %}
