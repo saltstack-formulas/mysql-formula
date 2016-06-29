@@ -32,6 +32,7 @@ change_all_root_pass:
     - runas: root
     - cwd: /root
     # trigger mysql_root_my_cnf rebuild
+    - onlyif: test -e {{ my_cnf }}
     - require_in:
       - file: mysql_root_my_cnf
 

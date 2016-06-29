@@ -28,10 +28,10 @@ mysql_minion_root_my_cnf:
     - create: True
     - require:
       - file: mysql_root_my_cnf
+    - require_in:
+      - module: minion-restart
 
 minion-restart:
   module.wait:
     - name: service.restart
     - m_name: salt-minion
-    - watch:
-      - file: mysql_minion_root_my_cnf
