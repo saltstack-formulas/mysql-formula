@@ -25,15 +25,13 @@
 {% set escaped_root_pass = mysql_root_password|replace("'", "''") %}
 {% set my_cnf = '/root/.my.cnf' %}
 
-# WARNING: no double quote in the query
-{% set query = """
-UPDATE user SET password = password('" ~ escaped_root_pass ~ "') WHERE user = 'root';
-FLUSH PRIVILEGES;
-""" %}
 change_all_root_pass:
-  cmd.run:
-    - name: mysql --defaults-file={{ my_cnf }} -e "{{ query|replace("\n", '') }}" mysql
-    - unless: grep -q "\<{{ escaped_root_pass }}$" {{ my_cnf }}
+  cmd.script:
+    - source: salt://mysql/files/change_root_pass.sh
+    - name: change_root_pass.sh "{{ my_cnf }}" "{{ escaped_root_pass }}"
+    - runas: root
+    - cwd: /root
+    # trigger mysql_root_my_cnf rebuild
     - require_in:
       - file: mysql_root_my_cnf
 
