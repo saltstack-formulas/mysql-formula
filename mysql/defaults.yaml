@@ -135,7 +135,7 @@ Fedora:
   server: mariadb-server
   client: mariadb
   service: mariadb
-  python: MySQL-python
+  python: python2-mysql
   config:
     file: /etc/my.cnf.d/server.cnf
     sections:
