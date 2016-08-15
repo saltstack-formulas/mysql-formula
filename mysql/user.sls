@@ -79,6 +79,20 @@ include:
     - grant: {{db['grants']|join(",")}}
     - database: '{{ db['database'] }}.{{ db['table'] | default('*') }}'
     - grant_option: {{ db['grant_option'] | default(False) }}
+    - ssl_option:
+      - SSL: {{ user['ssl'] | default(False) }}
+    {% if user['ssl-X509'] is defined %}
+      - X509: {{ user['ssl-X509'] }}
+    {% endif %}
+    {% if user['ssl-SUBJECT'] is defined %}
+      - SUBJECT: {{ user['ssl-SUBJECT'] }}
+    {% endif %}
+    {% if user['ssl-ISSUER'] is defined %}
+      - ISSUER: {{ user['ssl-ISSUER'] }}
+    {% endif %}
+    {% if user['ssl-CIPHER'] is defined %}
+      - CIPHER: {{ user['ssl-CIPHER'] }}
+    {% endif %}
     - user: {{ name }}
     - host: '{{ host }}'
     - connection_host: '{{ mysql_host }}'
