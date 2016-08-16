@@ -70,6 +70,11 @@ mysql:
     bob:
       password_hash: '*6C8989366EAF75BB670AD8EA7A7FC1176A95CEF4'
       host: localhost
+      ssl: True
+      ssl-X509: True
+      ssl-SUBJECT: Subject
+      ssl-ISSUER: Name
+      ssl-CIPHER: Cipher
       databases:
         - database: foo
           grants: ['all privileges']
