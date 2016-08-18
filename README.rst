@@ -50,6 +50,11 @@ debconf.
 
 Create and manage MySQL databases.
 
+``mysql.php``
+------------------
+
+Install mysql php bindings.
+
 ``mysql.python``
 ------------------
 
@@ -81,4 +86,3 @@ priority.
 Remove the database called ``test``, normally created as part of a default
 MySQL installation.  This state is **not** included as part of the meta-state
 above as this name may conflict with a real database.
-
