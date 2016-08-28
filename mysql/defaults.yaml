@@ -21,7 +21,7 @@ Ubuntu:
         nice: 0
       mysqld:
         user: mysql
-        pid-file: /var/run/mysqld/mysqld.pid
+        pid_file: /var/run/mysqld/mysqld.pid
         socket: /var/run/mysqld/mysqld.sock
         port: 3306
         basedir: /usr
@@ -65,7 +65,7 @@ Debian:
         nice: 0
       mysqld:
         user: mysql
-        pid-file: /var/run/mysqld/mysqld.pid
+        pid_file: /var/run/mysqld/mysqld.pid
         socket: /var/run/mysqld/mysqld.sock
         port: 3306
         basedir: /usr
@@ -104,7 +104,7 @@ CentOS:
     sections:
       mysqld_safe:
         log_error: /var/log/mysqld.log
-        pid-file: /var/run/mysqld/mysqld.pid
+        pid_file: /var/run/mysqld/mysqld.pid
       mysqld:
         datadir: /var/lib/mysql
         socket: /var/lib/mysql/mysql.sock
@@ -123,7 +123,7 @@ RedHat:
     sections:
       mysqld_safe:
         log_error: /var/log/mysqld.log
-        pid-file: /var/run/mysqld/mysqld.pid
+        pid_file: /var/run/mysqld/mysqld.pid
       mysqld:
         datadir: /var/lib/mysql
         socket: /var/lib/mysql/mysql.sock
@@ -141,7 +141,7 @@ Fedora:
     sections:
       mysqld_safe:
         log_error: /var/log/mysqld.log
-        pid-file: /var/run/mysqld/mysqld.pid
+        pid_file: /var/run/mysqld/mysqld.pid
       mysqld:
         datadir: /var/lib/mysql
         socket: /var/lib/mysql/mysql.sock
@@ -231,7 +231,7 @@ Amazon:
     sections:
       mysqld_safe:
         log_error: /var/log/mysqld.log
-        pid-file: /var/run/mysqld/mysqld.pid
+        pid_file: /var/run/mysqld/mysqld.pid
       mysqld:
         datadir: /var/lib/mysql
         socket: /var/lib/mysql/mysql.sock
@@ -284,7 +284,7 @@ Gentoo:
         user: mysql
         port: 3306
         socket: /var/run/mysqld/mysqld.sock
-        pid-file: /var/run/mysqld/mysqld.pid
+        pid_file: /var/run/mysqld/mysqld.pid
         log_error: /var/log/mysql/mysqld.err
         basedir: /usr
         datadir: /var/lib/mysql
