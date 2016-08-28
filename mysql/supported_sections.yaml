@@ -3,6 +3,7 @@
 - client-server
 - client
 - client-mariadb
+- galera
 - mariadb
 - mysql
 - mysqldump
