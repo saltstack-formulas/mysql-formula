@@ -26,6 +26,19 @@ mysql_server_config:
     {% endif %}
 {% endif %}
 
+{% if "galera_config" in mysql %}
+mysql_galera_config:
+  file.managed:
+    - name: {{ mysql.config_directory + mysql.galera_config.file }}
+    - template: jinja
+    - source: salt://mysql/files/galera.cnf
+    {% if os_family in ['Debian', 'Gentoo', 'RedHat'] %}
+    - user: root
+    - group: root
+    - mode: 644
+    {% endif %}
+{% endif %}
+
 {% if "library_config" in mysql %}
 mysql_library_config:
   file.managed:
