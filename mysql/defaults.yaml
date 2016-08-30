@@ -136,8 +136,11 @@ Fedora:
   client: mariadb
   service: mariadb
   python: python2-mysql
+  config_directory: /etc/my.cnf.d/
   config:
-    file: /etc/my.cnf.d/server.cnf
+    file: /etc/my.cnf
+  server_config:
+    file: server.cnf
     sections:
       mysqld_safe:
         log_error: /var/log/mysqld.log
@@ -149,6 +152,29 @@ Fedora:
         port: 3306
         bind_address: 127.0.0.1
         symbolic_links: 0
+  galera_config:
+    file: galera.cnf
+    sections:
+      mysqld:
+        binlog_format: ROW
+        default-storage-engine: innodb
+        innodb_autoinc_lock_mode: 2
+        bind-address: 0.0.0.0
+        wsrep_provider: /usr/lib64/galera/libgalera_smm.so
+        wsrep_cluster_name: "my_wsrep_cluster"
+        wsrep_slave_threads: 1
+        wsrep_certify_nonPK: 1
+        wsrep_max_ws_rows: 131072
+        wsrep_max_ws_size: 1073741824
+        wsrep_debug: 0
+        wsrep_convert_LOCK_to_trx: 0
+        wsrep_retry_autocommit: 1
+        wsrep_auto_increment_control: 1
+        wsrep_drupal_282555_workaround: 0
+        wsrep_causal_reads: 0
+        wsrep_notify_cmd: noarg_present
+        wsrep_sst_method: rsync
+        wsrep_sst_auth: "root:"
 
 openSUSE:
   server: mariadb
