@@ -67,6 +67,8 @@ mysql_install_datadir:
     - name: mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
     - user: root
     - creates: /var/lib/mysql/mysql/user.frm
+    - env:
+        - TMPDIR: '/tmp'
     - require:
       - pkg: {{ mysql.server }} 
       - file: mysql_config
