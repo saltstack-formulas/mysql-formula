@@ -79,6 +79,7 @@ include:
     - grant: {{db['grants']|join(",")}}
     - database: '{{ db['database'] }}.{{ db['table'] | default('*') }}'
     - grant_option: {{ db['grant_option'] | default(False) }}
+    {% if 'ssl' in user or 'ssl-X509' in user %}
     - ssl_option:
       - SSL: {{ user['ssl'] | default(False) }}
     {% if user['ssl-X509'] is defined %}
@@ -92,6 +93,7 @@ include:
     {% endif %}
     {% if user['ssl-CIPHER'] is defined %}
       - CIPHER: {{ user['ssl-CIPHER'] }}
+    {% endif %}
     {% endif %}
     - user: {{ name }}
     - host: '{{ host }}'
