@@ -55,6 +55,20 @@ mysql:
       load: True
       source: salt://mysql/files/baz.schema.tmpl
       template: jinja
+    qux:
+      load: True
+      source: salt://mysql/files/qux.schema.tmpl
+      template: jinja
+      context:
+        encabulator: Turbo
+        girdlespring: differential
+    quux:
+      load: True
+      source: salt://mysql/files/qux.schema.tmpl
+      template: jinja
+      context:
+        encabulator: Retro
+        girdlespring: integral
 
   # Manage users
   # you can get pillar for existing server using scripts/import_users.py script

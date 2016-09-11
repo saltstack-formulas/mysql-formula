@@ -30,8 +30,10 @@ include:
     - name: /etc/mysql/{{ database }}.schema
     - source: {{ salt['pillar.get'](['mysql', 'schema', database, 'source']|join(':')) }}
 {%- set template_type = salt['pillar.get'](['mysql', 'schema', database, 'template']|join(':'), False) %}
+{%- set template_context = salt['pillar.get'](['mysql', 'schema', database, 'context']|join(':'), {}) %}
 {%- if template_type %}
     - template: {{ template_type }}
+    - context: {{ template_context|yaml }}
 {% endif %}
     - user: {{ salt['pillar.get']('mysql:server:user', 'mysql') }}
     - makedirs: True
