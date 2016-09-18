@@ -96,3 +96,13 @@ Install the MySQL development libraries and header files.
     Note that this state is not installed by the mysql meta-state unless you set
     your pillar data accordingly.
 
+``mysql.repo``
+--------------
+
+Add the official MySQL 5.7 repository.
+
+.. note::
+    Note that this state currently only supports MySQL 5.7 for RHEL systems.
+    Debian and Suse support to be added. Also need to add the option to allow
+    selection of MySQL version (5.6 and 5.5 repos are added but disabled) and
+    changed enabled repository accordingly.
