@@ -12,6 +12,7 @@ include:
 {% set mysql_host = salt['pillar.get']('mysql:server:host', 'localhost') %}
 {% set mysql_salt_user = salt['pillar.get']('mysql:salt_user:salt_user_name', mysql_root_user) %}
 {% set mysql_salt_password = salt['pillar.get']('mysql:salt_user:salt_user_password', mysql_root_password) %}
+{% set mysql_datadir = salt['pillar.get']('mysql:server:mysqld:datadir', '/var/lib/mysql') %}
 
 {% if mysql_root_password %}
 {% if os_family == 'Debian' %}
@@ -65,12 +66,12 @@ mysql_delete_anonymous_user_{{ host }}:
 mysql_install_datadir:
   cmd.run:
 {% if mysql.version >= 5.7 %}
-    - name: mysqld --initialize-insecure --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+    - name: mysqld --initialize-insecure --user=mysql --basedir=/usr --datadir={{ mysql_datadir }}
 {% else %}
-    - name: mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+    - name: mysql_install_db --user=mysql --basedir=/usr --datadir={{ mysql_datadir }}
 {% endif %}
     - user: root
-    - creates: /var/lib/mysql/mysql/user.frm
+    - creates: {{ mysql_datadir }}/mysql/user.frm
     - env:
         - TMPDIR: '/tmp'
     - require:
@@ -92,9 +93,9 @@ mysqld-packages:
 # Initialize mysql database with --initialize-insecure option before starting service so we don't get locked out.
 mysql_initialize:
   cmd.run:
-    - name: mysqld --initialize-insecure --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+    - name: mysqld --initialize-insecure --user=mysql --basedir=/usr --datadir={{ mysql_datadir }}
     - user: root
-    - creates: /var/lib/mysql/mysql/
+    - creates: {{ mysql_datadir}}/mysql/
     - require:
       - pkg: {{ mysql.server }}
 {% endif %}
