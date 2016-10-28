@@ -117,11 +117,11 @@ mysql:
           grants: ['select', 'insert', 'update']
 
   # Override any names defined in map.jinja
-  lookup:
-    server: mysql-server
-    client: mysql-client
-    service: mysql-service
-    python: python-mysqldb
+#  lookup:
+#    server: mysql-server
+#    client: mysql-client
+#    service: mysql-service
+#    python: python-mysqldb
 
   # Install MySQL headers
   dev:
