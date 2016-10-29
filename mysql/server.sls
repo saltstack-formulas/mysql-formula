@@ -65,7 +65,7 @@ mysql_delete_anonymous_user_{{ host }}:
 # on arch linux: inital mysql datadirectory is not created
 mysql_install_datadir:
   cmd.run:
-{% if mysql.version >= 5.7 %}
+{% if mysql.version is defined and mysql.version >= 5.7 %}
     - name: mysqld --initialize-insecure --user=mysql --basedir=/usr --datadir={{ mysql_datadir }}
 {% else %}
     - name: mysql_install_db --user=mysql --basedir=/usr --datadir={{ mysql_datadir }}
@@ -89,7 +89,7 @@ mysqld-packages:
       - debconf: mysql_debconf
 {% endif %}
 
-{% if os_family in ['RedHat', 'Suse'] and mysql.version >= 5.7 %}
+{% if os_family in ['RedHat', 'Suse'] and mysql.version is defined and mysql.version >= 5.7 %}
 # Initialize mysql database with --initialize-insecure option before starting service so we don't get locked out.
 mysql_initialize:
   cmd.run:
@@ -106,7 +106,7 @@ mysqld:
     - enable: True
     - require:
       - pkg: {{ mysql.server }}
-{% if os_family in ['RedHat', 'Suse'] and mysql.version >= 5.7 %}
+{% if os_family in ['RedHat', 'Suse'] and mysql.version is defined and mysql.version >= 5.7 %}
       - cmd: mysql_initialize
 {% endif %}
     - watch:
