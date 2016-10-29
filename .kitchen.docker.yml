@@ -1,0 +1,6 @@
+---
+driver:
+  name: docker
+  hostname: salt-formula.ci.local
+  use_sudo: true
+  require_chef_omnibus: false
