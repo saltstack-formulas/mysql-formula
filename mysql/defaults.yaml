@@ -91,9 +91,18 @@ Debian:
     append: |
       !includedir /etc/mysql/conf.d/
 CentOS:
-  server: mysql-server
+  # https://mariadb.com/blog/rhel7-transition-mysql-mariadb-first-look
+  {%- if salt['grains.get']('osmajorrelease') in ['7'] %}
+  {% set mysql_engine = 'mariadb' %}
+  {% set mysql_service = 'mariadb' %}
+  {%- else %}
+  {% set mysql_engine = 'mysql' %}
+  {% set mysql_service = 'mysqld' %}
+  {%- endif %}
+
+  server: {{ mysql_engine }}-server
+  service: {{ mysql_service }}
   client: mysql
-  service: mysqld
   python: MySQL-python
   dev: mysql-devel
   config_directory: /etc/my.cnf.d/
@@ -103,8 +112,8 @@ CentOS:
     file: server.cnf
     sections:
       mysqld_safe:
-        log_error: /var/log/mysqld.log
-        pid_file: /var/run/mysqld/mysqld.pid
+        log_error: /var/log/{{ mysql_engine }}/mysqld.log
+        pid_file: /var/run/{{ mysql_engine }}/mysqld.pid
       mysqld:
         datadir: /var/lib/mysql
         socket: /var/lib/mysql/mysql.sock
@@ -113,17 +122,26 @@ CentOS:
         bind_address: 127.0.0.1
         symbolic_links: 0
 RedHat:
-  server: mysql-server
+  # https://mariadb.com/blog/rhel7-transition-mysql-mariadb-first-look
+  {%- if salt['grains.get']('osmajorrelease') in ['7'] %}
+  {% set mysql_engine = 'mariadb' %}
+  {% set mysql_service = 'mariadb' %}
+  {%- else %}
+  {% set mysql_engine = 'mysql' %}
+  {% set mysql_service = 'mysqld' %}
+  {%- endif %}
+
+  server: {{ mysql_engine }}-server
+  service: {{ mysql_service }}
   client: mysql
-  service: mysqld
   python: MySQL-python
   dev: mysql-devel
   config:
     file: /etc/my.cnf
     sections:
       mysqld_safe:
-        log_error: /var/log/mysqld.log
-        pid_file: /var/run/mysqld/mysqld.pid
+        log_error: /var/log/{{ mysql_engine }}/mysqld.log
+        pid_file: /var/run/{{ mysql_engine }}/mysqld.pid
       mysqld:
         datadir: /var/lib/mysql
         socket: /var/lib/mysql/mysql.sock
