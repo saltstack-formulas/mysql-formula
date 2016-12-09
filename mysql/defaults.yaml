@@ -327,7 +327,8 @@ Gentoo:
         user: mysql
         port: 3306
         socket: /var/run/mysqld/mysqld.sock
-        pid_file: /var/run/mysqld/mysqld.pid
+        # note: on gentoo the init.d script specifically relies on the variable called pid-file, so don't use the underscore
+        pid-file: /var/run/mysqld/mysqld.pid
         log_error: /var/log/mysql/mysqld.err
         basedir: /usr
         datadir: /var/lib/mysql

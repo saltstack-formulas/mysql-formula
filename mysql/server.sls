@@ -100,13 +100,23 @@ mysql_initialize:
       - pkg: {{ mysql.server }}
 {% endif %}
 
+{% if os_family in ['Gentoo'] %}
+mysql_initialize:
+  cmd.run:
+    - name: emerge --config {{ mysql.server }}
+    - user: root
+    - creates: {{ mysql_datadir}}/mysql/
+    - require:
+      - pkg: {{ mysql.server }}
+{% endif %}
+
 mysqld:
   service.running:
     - name: {{ mysql.service }}
     - enable: True
     - require:
       - pkg: {{ mysql.server }}
-{% if os_family in ['RedHat', 'Suse'] and mysql.version is defined and mysql.version >= 5.7 %}
+{% if (os_family in ['RedHat', 'Suse'] and mysql.version is defined and mysql.version >= 5.7) or (os_family in ['Gentoo']) %}
       - cmd: mysql_initialize
 {% endif %}
     - watch:
