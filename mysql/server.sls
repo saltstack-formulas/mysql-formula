@@ -91,7 +91,7 @@ mysqld-packages:
     - require_in:
       - file: mysql_config
 
-{% if os_family in ['RedHat', 'Suse'] and mysql.version is defined and mysql.version >= 5.7 and mysql.server != 'mariadb-server' %}
+{% if os_family in ['RedHat', 'Suse'] and mysql.version is defined and mysql.version >= 5.7 and mysql.server == 'mysql-server' %}
 # Initialize mysql database with --initialize-insecure option before starting service so we don't get locked out.
 mysql_initialize:
   cmd.run:
@@ -130,7 +130,7 @@ mysqld:
     - enable: True
     - require:
       - pkg: {{ mysql.server }}
-{% if (os_family in ['RedHat', 'Suse'] and mysql.version is defined and mysql.version >= 5.7 and mysql.server != 'mariadb-server') or (os_family in ['Gentoo']) %}
+{% if (os_family in ['RedHat', 'Suse'] and mysql.version is defined and mysql.version >= 5.7 and mysql.server == 'mysql-server') or (os_family in ['Gentoo']) %}
       - cmd: mysql_initialize
 {% elif os_family in ['RedHat', 'Suse'] and mysql.server == 'mariadb-server' %}
       - file: {{ mysql_datadir }}
