@@ -91,13 +91,25 @@ mysqld-packages:
     - require_in:
       - file: mysql_config
 
-{% if os_family in ['RedHat', 'Suse'] and mysql.version is defined and mysql.version >= 5.7 %}
+{% if os_family in ['RedHat', 'Suse'] and mysql.version is defined and mysql.version >= 5.7 and mysql.server != 'mariadb-server' %}
 # Initialize mysql database with --initialize-insecure option before starting service so we don't get locked out.
 mysql_initialize:
   cmd.run:
     - name: mysqld --initialize-insecure --user=mysql --basedir=/usr --datadir={{ mysql_datadir }}
     - user: root
     - creates: {{ mysql_datadir}}/mysql/
+    - require:
+      - pkg: {{ mysql.server }}
+{% endif %}
+
+{% if os_family in ['RedHat', 'Suse'] and mysql.server == 'mariadb-server' %}
+# For MariaDB it's enough to only create the datadir
+mysql_initialize:
+  file.directory:
+    - name: {{ mysql_datadir }}
+    - user: mysql
+    - group: mysql
+    - makedirs: True
     - require:
       - pkg: {{ mysql.server }}
 {% endif %}
@@ -118,8 +130,10 @@ mysqld:
     - enable: True
     - require:
       - pkg: {{ mysql.server }}
-{% if (os_family in ['RedHat', 'Suse'] and mysql.version is defined and mysql.version >= 5.7) or (os_family in ['Gentoo']) %}
+{% if (os_family in ['RedHat', 'Suse'] and mysql.version is defined and mysql.version >= 5.7 and mysql.server != 'mariadb-server') or (os_family in ['Gentoo']) %}
       - cmd: mysql_initialize
+{% elif os_family in ['RedHat', 'Suse'] and mysql.server == 'mariadb-server' %}
+      - file: {{ mysql_datadir }}
 {% endif %}
     - watch:
       - pkg: {{ mysql.server }}
