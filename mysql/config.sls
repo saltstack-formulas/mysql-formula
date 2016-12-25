@@ -70,8 +70,6 @@ mysql_clients_config:
 mysql_config:
   file.managed:
     - name: {{ mysql.config.file }}
-    - require:
-      - pkg: {{ mysql.server }}
     - template: jinja
 {% if "config_directory" in mysql %}
     - source: salt://mysql/files/my-include.cnf
