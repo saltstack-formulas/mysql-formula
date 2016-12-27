@@ -102,9 +102,9 @@ CentOS:
 
   server: {{ mysql_engine }}-server
   service: {{ mysql_service }}
-  client: mysql
+  client: {{ mysql_engine }}
   python: MySQL-python
-  dev: mysql-devel
+  dev: {{ mysql_engine }}-devel
   config_directory: /etc/my.cnf.d/
   config:
     file: /etc/my.cnf
@@ -133,9 +133,9 @@ RedHat:
 
   server: {{ mysql_engine }}-server
   service: {{ mysql_service }}
-  client: mysql
+  client: {{ mysql_engine }}
   python: MySQL-python
-  dev: mysql-devel
+  dev: {{ mysql_engine }}-devel
   config:
     file: /etc/my.cnf
     sections:
