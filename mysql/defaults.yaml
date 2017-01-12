@@ -82,6 +82,9 @@ Debian:
         query_cache_size: 16M
         expire_logs_days: 10
         max_binlog_size: 100M
+        innodb_flush_log_at_trx_commit: 1
+        innodb_lock_wait_timeout: 50
+        innodb_file_per_table: noarg_present
       mysqldump:
         quick: noarg_present
         quote_names: noarg_present
