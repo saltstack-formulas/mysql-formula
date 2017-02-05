@@ -193,7 +193,7 @@ Fedora:
         wsrep_sst_method: rsync
         wsrep_sst_auth: "root:"
 
-openSUSE:
+SUSE:
   server: mariadb
   client: mariadb-client
   service: mysql
