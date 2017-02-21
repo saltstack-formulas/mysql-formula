@@ -21,7 +21,7 @@ include:
 # A lookup table for MySQL Repo GPG keys & RPM URLs for various RedHat releases
   {% set pkg = {
     'key': 'http://repo.mysql.com/RPM-GPG-KEY-mysql',
-    'key_hash': 'md5=e9efdf96207c90f4487462cd1f3ff764',
+    'key_hash': 'md5=472a4a4867adfd31a68e8c9bbfacc23d',
     'rpm': rpm_source
  } %}
 
