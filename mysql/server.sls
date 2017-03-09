@@ -57,6 +57,9 @@ mysql_delete_anonymous_user_{{ host }}:
       {%- if (mysql_salt_user == mysql_root_user) and mysql_root_password %}
       - cmd: mysql_root_password
       {%- endif %}
+      {%- if (mysql_salt_user != mysql_root_user) %}
+      - sls: mysql.salt-user
+      {%- endif %}
 {% endfor %}
 {% endif %}
 {% endif %}
