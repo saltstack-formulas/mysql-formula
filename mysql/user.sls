@@ -61,6 +61,7 @@ include:
     - grant_option: {{ user['grant_option'] | default(False) }}
     - user: {{ name }}
     - host: '{{ host }}'
+    - escape: {{ db['escape'] | default(True) }}
     - connection_host: localhost
     - connection_user: '{{ mysql_salt_user }}'
     {% if mysql_salt_pass -%}
@@ -97,6 +98,7 @@ include:
     {% endif %}
     - user: {{ name }}
     - host: '{{ host }}'
+    - escape: {{ db['escape'] | default(True) }}
     - connection_host: '{{ mysql_host }}'
     - connection_user: '{{ mysql_salt_user }}'
     {% if mysql_salt_pass -%}
