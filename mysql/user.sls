@@ -61,7 +61,7 @@ include:
     - grant_option: {{ user['grant_option'] | default(False) }}
     - user: {{ name }}
     - host: '{{ host }}'
-    - connection_host: localhost
+    - connection_host: '{{ mysql_host }}'
     - connection_user: '{{ mysql_salt_user }}'
     {% if mysql_salt_pass -%}
     - connection_pass: '{{ mysql_salt_pass }}'
