@@ -39,7 +39,7 @@ mysql_root_password:
     - require:
       - service: mysqld
 
-{% for host in ['localhost', 'localhost.localdomain', salt['grains.get']('fqdn')] %}
+{% for host in {'localhost': '', 'localhost.localdomain': '', salt['grains.get']('fqdn'): ''}.keys() %}
 mysql_delete_anonymous_user_{{ host }}:
   mysql_user:
     - absent
