@@ -85,6 +85,7 @@ mysql:
       databases:
         - database: foo
           grants: ['select', 'insert', 'update']
+          escape: True
         - database: bar
           grants: ['all privileges']
     bob:
@@ -96,9 +97,10 @@ mysql:
       ssl-ISSUER: Name
       ssl-CIPHER: Cipher
       databases:
-        - database: foo
+        - database: "foo_%%"
           grants: ['all privileges']
           grant_option: True
+          escape: False
         - database: bar
           table: foobar
           grants: ['select', 'insert', 'update', 'delete']
