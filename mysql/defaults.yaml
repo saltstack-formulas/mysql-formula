@@ -139,9 +139,9 @@ RedHat:
   config:
     file: /etc/my.cnf
     sections:
-      mysqld_safe:
-        log_error: /var/log/{{ mysql_engine }}/mysqld.log
-        pid_file: /var/run/{{ mysql_engine }}/mysqld.pid
+#      mysqld_safe:
+#        log_error: /var/log/{{ mysql_engine }}/mysqld.log
+#        pid_file: /var/run/{{ mysql_engine }}/mysqld.pid
       mysqld:
         datadir: /var/lib/mysql
         socket: /var/lib/mysql/mysql.sock
