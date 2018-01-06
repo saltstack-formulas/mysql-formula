@@ -197,7 +197,7 @@ SUSE:
   server: mariadb
   client: mariadb-client
   service: mysql
-  python: python-MySQL-python
+  python: python2-PyMySQL
   config:
     file: /etc/my.cnf
     sections:
