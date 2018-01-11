@@ -9,8 +9,12 @@
 
 {% set mysql_dev = salt['pillar.get']('mysql:dev:install', False) %}
 {% set mysql_salt_user = salt['pillar.get']('mysql:salt_user:salt_user_name', False) %}
+{% set mysql_repo = salt['pillar.get']('mysql:repo', False) %}
 
 include:
+{% if mysql_repo %}
+  - mysql.repo
+{% endif %}
   - mysql.server
 {% if mysql_salt_user %}
   - mysql.salt-user

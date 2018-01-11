@@ -5,28 +5,31 @@ formula = YAML.load_file('FORMULA')
 formula_name = formula['name']
 %>
 ---
-verifier:
-  name: inspec
+driver:
+  name: vagrant
 
 platforms:
-  - name: ubuntu-12.04
-  - name: ubuntu-14.04
-  - name: ubuntu-16.04
-  - name: debian-7
-  - name: debian-8
+  - name: centos-7.3
 
 provisioner:
   name: salt_solo
   salt_install: bootstrap
   salt_bootstrap_url: https://bootstrap.saltstack.com
   salt_version: latest
-  salt_pillar_root: pillar.example
   log_level: <%= ENV['SALT_DEBUG_LEVEL'] || 'info' %>
-  formula: <%= formula_name %>
+  formula: mysql
   state_top:
     base:
       '*':
-        - <%= formula_name %>
+        - mysql
+  pillars:
+    top.sls:
+      base:
+        '*':
+          - mysql
 
 suites:
   - name: default
+    provisioner:
+      pillars-from-files:
+        mysql.sls: pillar.extenda
