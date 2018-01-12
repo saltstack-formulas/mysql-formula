@@ -1,0 +1,40 @@
+mysql:
+  repo: True
+
+  global:
+    client-server:
+      default_character_set: utf8
+
+  clients:
+    mysql:
+      default_character_set: utf8
+    mysqldump:
+      default_character_set: utf8
+
+  library:
+    client:
+      default_character_set: utf8
+
+  server:
+    # Use this account for database admin (defaults to root)
+    #to have root@localhost without password
+    root_password: ''
+    # my.cnf sections changes
+    mysqld:
+      skip-grant-tables: noarg_present
+
+    mysql:
+      # my.cnf param that not require value
+      no-auto-rehash: noarg_present
+
+  # Override any names defined in map.jinja
+  lookup:
+    server: mysql-community-server
+    client: mysql-community-client
+    service: mysqld
+#    python: python-mysqldb
+
+  # Install MySQL headers
+  dev:
+    # Install dev package - defaults to False
+    install: False
