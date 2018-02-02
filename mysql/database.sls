@@ -12,8 +12,9 @@
 include:
   - mysql.python
 
-{% for database in salt['pillar.get']('mysql:database', []) %}
+{% for database_obj in salt['pillar.get']('mysql:database', []) %}
 {% set state_id = 'mysql_db_' ~ loop.index0 %}
+{% set database = database_obj.get('name') if database_obj is mapping else database_obj %}
 {{ state_id }}:
   mysql_database.present:
     - name: {{ database }}
@@ -21,6 +22,10 @@ include:
     - connection_user: '{{ mysql_salt_user }}'
     {% if mysql_salt_pass %}
     - connection_pass: '{{ mysql_salt_pass }}'
+    {% endif %}
+    {% if database_obj is mapping %}
+    - character_set: {{ database_obj.get('character_set', '') }}
+    - collate: {{ database_obj.get('collate', '') }}
     {% endif %}
     - connection_charset: utf8
 
