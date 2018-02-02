@@ -49,8 +49,12 @@ mysql:
 
   # Manage databases
   database:
+    # Simple definition using default charset and collate
     - foo
-    - bar
+    # Detailed definition
+    - name: bar
+      character_set: utf8
+      collate: utf8_general_ci
   schema:
     foo:
       load: True
