@@ -45,6 +45,12 @@ debconf.
     cryptographically insecure, future formula versions should use the
     newly available ``random.get_str`` method.
 
+``mysql.server_checks``
+-----------------------
+
+Enforces a root password to be set.
+
+
 ``mysql.disabled``
 ------------------
 
