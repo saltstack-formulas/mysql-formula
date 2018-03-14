@@ -368,7 +368,7 @@ FreeBSD:
   server: mysql56-server
   client: mysql56-client
   service: mysql-server
-  python: pymysql
+  python: py27-pymysql
   dev: mysql56-server
   config:
     file: /usr/local/etc/my.cnf
