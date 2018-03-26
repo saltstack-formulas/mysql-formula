@@ -12,6 +12,7 @@ mysql remove test database:
     - name: test
     - host: '{{ mysql_host }}'
     - connection_user: '{{ mysql_salt_user }}'
+    - connection_host: '{{ mysql_host }}'
     {% if mysql_salt_pass %}
     - connection_pass: '{{ mysql_salt_pass }}'
     {% endif %}

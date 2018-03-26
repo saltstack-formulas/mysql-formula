@@ -125,7 +125,9 @@ mysql:
 #    server: mysql-server
 #    client: mysql-client
 #    service: mysql-service
-#    python: python-mysqldb
+#  server:
+#    lookup:
+#      python: python-mysqldb
 
   # Install MySQL headers
   dev:
