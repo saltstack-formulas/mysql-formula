@@ -48,12 +48,20 @@ Ubuntu:
     append: |
       !includedir /etc/mysql/conf.d/
 Debian:
-  server: mysql-server
-  client: mysql-client
-  service: mysql
+  {%- if salt['grains.get']('osmajorrelease')|int >= 9 %}
+  {% set mysql_engine = 'mariadb' %}
+  {% set mysql_service = 'mysql' %}
+  {%- else %}
+  {% set mysql_engine = 'mysql' %}
+  {% set mysql_service = 'mysql' %}
+  {%- endif %}
+
+  server: {{ mysql_engine }}-server
+  service: {{ mysql_service }}
+  client: {{ mysql_engine }}-client
   python: python-mysqldb
   debconf_utils: debconf-utils
-  dev: libmysqlclient-dev
+  dev: lib{{ mysql_engine }}client-dev
   config:
     file: /etc/mysql/my.cnf
     sections:
@@ -90,6 +98,9 @@ Debian:
         key_buffer_size: 16M
     append: |
       !includedir /etc/mysql/conf.d/
+      # {% if salt['grains.get']('osmajorrelease')|int >= 9 -%}
+      # !includedir /etc/mysql/mariadb.conf.d/
+      # {%- endif %}
 CentOS:
   # https://mariadb.com/blog/rhel7-transition-mysql-mariadb-first-look
   {%- if salt['grains.get']('osmajorrelease')|int in [7] %}
