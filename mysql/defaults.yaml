@@ -208,7 +208,12 @@ SUSE:
   server: mariadb
   client: mariadb-client
   service: mysql
-  python: python2-PyMySQL
+  {%- if salt['grains.get']('osmajorrelease')|int == 42 %}
+  # "old" package name up to Leap 42.x
+  python: python-PyMySQL
+  {% else %}
+  python: python2-pymysql
+  {% endif %}
   config:
     file: /etc/my.cnf
     sections:
