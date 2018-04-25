@@ -41,6 +41,7 @@ mysql_password_debconf:
       - pkg: {{ mysql.server }}
     - require:
       - pkg: mysql_debconf_utils
+{% endif %}
 
 {% elif os_family in ['RedHat', 'Suse', 'FreeBSD'] %}
 mysql_root_password:
