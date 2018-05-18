@@ -1,8 +1,8 @@
 include:
-  - mysql.config
-  - mysql.python
+  - .config
+  - .python
 
-{% from "mysql/defaults.yaml" import rawmap with context %}
+{% from tpldir ~ "/defaults.yaml" import rawmap with context %}
 {%- set mysql = salt['grains.filter_by'](rawmap, grain='os', merge=salt['pillar.get']('mysql:lookup')) %}
 
 {% set os = salt['grains.get']('os', None) %}
@@ -163,7 +163,7 @@ mysqld:
 mysql_additional_config:
   file.managed:
     - name: /usr/my.cnf
-    - source: salt://mysql/files/usr-my.cnf
+    - source: salt://{{ tpldir }}/files/usr-my.cnf
     - create: False
     - watch_in:
       - service: mysqld

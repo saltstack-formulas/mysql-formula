@@ -58,23 +58,23 @@ mysql:
   schema:
     foo:
       load: True
-      source: salt://mysql/files/foo.schema
+      source: salt://{{ tpldir }}/files/foo.schema
     bar:
       load: False
     baz:
       load: True
-      source: salt://mysql/files/baz.schema.tmpl
+      source: salt://{{ tpldir }}/files/baz.schema.tmpl
       template: jinja
     qux:
       load: True
-      source: salt://mysql/files/qux.schema.tmpl
+      source: salt://{{ tpldir }}/files/qux.schema.tmpl
       template: jinja
       context:
         encabulator: Turbo
         girdlespring: differential
     quux:
       load: True
-      source: salt://mysql/files/qux.schema.tmpl
+      source: salt://{{ tpldir }}/files/qux.schema.tmpl
       template: jinja
       context:
         encabulator: Retro

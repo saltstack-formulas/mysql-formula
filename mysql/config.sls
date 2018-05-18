@@ -1,4 +1,4 @@
-{% from "mysql/defaults.yaml" import rawmap with context %}
+{% from tpldir ~ "/defaults.yaml" import rawmap with context %}
 {%- set mysql = salt['grains.filter_by'](rawmap, grain='os', merge=salt['pillar.get']('mysql:lookup')) %}
 {% set os_family = salt['grains.get']('os_family', None) %}
 
@@ -18,7 +18,7 @@ mysql_server_config:
   file.managed:
     - name: {{ mysql.config_directory + mysql.server_config.file }}
     - template: jinja
-    - source: salt://mysql/files/server.cnf
+    - source: salt://{{ tpldir }}/files/server.cnf
     {% if os_family in ['Debian', 'Gentoo', 'RedHat'] %}
     - user: root
     - group: root
@@ -31,7 +31,7 @@ mysql_galera_config:
   file.managed:
     - name: {{ mysql.config_directory + mysql.galera_config.file }}
     - template: jinja
-    - source: salt://mysql/files/galera.cnf
+    - source: salt://{{ tpldir }}/files/galera.cnf
     {% if os_family in ['Debian', 'Gentoo', 'RedHat'] %}
     - user: root
     - group: root
@@ -44,7 +44,7 @@ mysql_library_config:
   file.managed:
     - name: {{ mysql.config_directory + mysql.library_config.file }}
     - template: jinja
-    - source: salt://mysql/files/client.cnf
+    - source: salt://{{ tpldir }}/files/client.cnf
     {% if os_family in ['Debian', 'Gentoo', 'RedHat'] %}
     - user: root
     - group: root
@@ -57,7 +57,7 @@ mysql_clients_config:
   file.managed:
     - name: {{ mysql.config_directory + mysql.clients_config.file }}
     - template: jinja
-    - source: salt://mysql/files/mysql-clients.cnf
+    - source: salt://{{ tpldir }}/files/mysql-clients.cnf
     {% if os_family in ['Debian', 'Gentoo', 'RedHat'] %}
     - user: root
     - group: root
@@ -72,9 +72,9 @@ mysql_config:
     - name: {{ mysql.config.file }}
     - template: jinja
 {% if "config_directory" in mysql %}
-    - source: salt://mysql/files/my-include.cnf
+    - source: salt://{{ tpldir }}/files/my-include.cnf
 {% else %}
-    - source: salt://mysql/files/my.cnf
+    - source: salt://{{ tpldir }}/files/my.cnf
 {% endif %}
     {% if os_family in ['Debian', 'Gentoo', 'RedHat'] %}
     - user: root

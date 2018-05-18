@@ -1,4 +1,4 @@
-{% from "mysql/defaults.yaml" import rawmap with context %}
+{% from tpldir ~ "/defaults.yaml" import rawmap with context %}
 {%- set mysql = salt['grains.filter_by'](rawmap, grain='os', merge=salt['pillar.get']('mysql:server:lookup')) %}
 {%- set mysql_root_user = salt['pillar.get']('mysql:server:root_user', 'root') %}
 {%- set mysql_root_pass = salt['pillar.get']('mysql:server:root_password', salt['grains.get']('server_id')) %}
@@ -10,7 +10,7 @@
 {% set user_hosts = [] %}
 
 include:
-  - mysql.python
+  - .python
 
 {% for name, user in salt['pillar.get']('mysql:user', {}).items() %}
 

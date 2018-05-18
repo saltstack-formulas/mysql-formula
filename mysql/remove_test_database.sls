@@ -5,7 +5,7 @@
 {% set mysql_salt_pass = salt['pillar.get']('mysql:salt_user:salt_user_password', mysql_root_pass) %}
 
 include:
-  - mysql.python
+  - .python
 
 mysql remove test database:
   mysql_database.absent:
