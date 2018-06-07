@@ -9,8 +9,9 @@ Ubuntu:
   service: mysql
   python: python-mysqldb
   debconf_utils: debconf-utils
-  debconf_root_password: mysql-server/root_password
-  debconf_root_password_again: mysql-server/root_password_again
+  ## Having some auto-detect for some different pkg if not explicitly set
+  #debconf_root_password: mysql-server/root_password
+  #debconf_root_password_again: mysql-server/root_password_again
   dev: libmysqlclient-dev
   config:
     file: /etc/mysql/my.cnf
@@ -63,8 +64,9 @@ Debian:
   client: {{ mysql_engine }}-client
   python: python-mysqldb
   debconf_utils: debconf-utils
-  debconf_root_password: mysql-server/root_password
-  debconf_root_password_again: mysql-server/root_password_again
+  ## Having some auto-detect for some different pkg if not explicitly set
+  #debconf_root_password: mysql-server/root_password
+  #debconf_root_password_again: mysql-server/root_password_again
   dev: lib{{ mysql_engine }}client-dev
   config:
     file: /etc/mysql/my.cnf
