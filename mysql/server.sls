@@ -31,8 +31,12 @@ include:
 {%       set debconf_root_password_again = mysql.server + '/re-root-pass' %}
 {%     endif %}
 {%   else %}
-{%     set debconf_root_password = 'mysql-server/root_password' %}
-{%     set debconf_root_password_again = 'mysql-server/root_password_again' %}
+{%     if salt['grains.get']('osmajorrelease')|int < 9 or not salt['grains.get']('os')|lower == 'debian' %}
+{%       set debconf_root_password = 'mysql-server/root_password' %}
+{%       set debconf_root_password_again = 'mysql-server/root_password_again' %}
+{%     else %}
+{%       set debconf_root_password = False %}
+{%     endif %}
 {%   endif %}
 
 mysql_debconf_utils:
@@ -49,7 +53,7 @@ mysql_debconf:
     - require:
       - pkg: mysql_debconf_utils
 
-{% if salt['grains.get']('osmajorrelease')|int < 9 or not salt['grains.get']('os')|lower == 'debian' %}
+{% if debconf_root_password %}
 mysql_password_debconf:
   debconf.set:
     - name: mysql-server
