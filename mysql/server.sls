@@ -60,7 +60,7 @@ mysql_password_debconf:
     - data:
         {{debconf_root_password}}: {'type': 'password', 'value': '{{ mysql_root_password }}'}
         {{debconf_root_password_again}}: {'type': 'password', 'value': '{{ mysql_root_password }}'}
-    - require_in:
+    - prereq:
       - pkg: {{ mysql.server }}
     - require:
       - pkg: mysql_debconf_utils
