@@ -1,4 +1,4 @@
-{% from "mysql/defaults.yaml" import rawmap with context %}
+{% from tpldir ~ "/defaults.yaml" import rawmap with context %}
 {%- set mysql = salt['grains.filter_by'](rawmap, grain='os', merge=salt['pillar.get']('mysql:lookup')) %}
 
 {% set mysql_root_user = salt['pillar.get']('mysql:server:root_user', 'root') %}
@@ -10,7 +10,7 @@
 {% set mysql_salt_pass = salt['pillar.get']('mysql:salt_user:salt_user_password', mysql_root_pass) %}
 
 include:
-  - mysql.python
+  - .python
 
 {% for database_obj in salt['pillar.get']('mysql:database', []) %}
 {% set state_id = 'mysql_db_' ~ loop.index0 %}

@@ -1,5 +1,5 @@
 include:
-  - mysql.server
+  - .server
 
 {% set os_family = salt['grains.get']('os_family', None) %}
 {% set mysql_salt_user = salt['pillar.get']('mysql:salt_user:salt_user_name', 'salt') %}
