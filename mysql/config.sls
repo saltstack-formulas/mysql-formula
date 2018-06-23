@@ -20,6 +20,8 @@ mysql_server_config:
     - template: jinja
     - source: salt://{{ tpldir }}/files/server.cnf
     {% if os_family in ['Debian', 'Gentoo', 'RedHat'] %}
+    - context:
+      tpldir: {{ tpldir }}
     - user: root
     - group: root
     - mode: 644
@@ -33,6 +35,8 @@ mysql_galera_config:
     - template: jinja
     - source: salt://{{ tpldir }}/files/galera.cnf
     {% if os_family in ['Debian', 'Gentoo', 'RedHat'] %}
+    - context:
+      tpldir: {{ tpldir }}
     - user: root
     - group: root
     - mode: 644
@@ -46,6 +50,8 @@ mysql_library_config:
     - template: jinja
     - source: salt://{{ tpldir }}/files/client.cnf
     {% if os_family in ['Debian', 'Gentoo', 'RedHat'] %}
+    - context:
+      tpldir: {{ tpldir }}
     - user: root
     - group: root
     - mode: 644
@@ -59,6 +65,8 @@ mysql_clients_config:
     - template: jinja
     - source: salt://{{ tpldir }}/files/mysql-clients.cnf
     {% if os_family in ['Debian', 'Gentoo', 'RedHat'] %}
+    - context:
+      tpldir: {{ tpldir }}
     - user: root
     - group: root
     - mode: 644
@@ -76,6 +84,8 @@ mysql_config:
 {% else %}
     - source: salt://{{ tpldir }}/files/my.cnf
 {% endif %}
+    - context:
+      tpldir: {{ tpldir }}
     {% if os_family in ['Debian', 'Gentoo', 'RedHat'] %}
     - user: root
     - group: root
