@@ -4,8 +4,8 @@
 {#-
 ===== FETCH DATA =====
 -#}
-{%- from "mysql/defaults.yaml" import rawmap with context -%}
-{%- from "mysql/supported_sections.yaml" import supported_sections with context -%}
+{%- from tpldir ~ "/defaults.yaml" import rawmap with context -%}
+{%- from tpldir ~ "/supported_sections.yaml" import supported_sections with context -%}
 {%- set datamap = salt['grains.filter_by'](rawmap, grain='os', merge=salt['pillar.get']('mysql:server:lookup')) -%}
 {#-
 ===== COMBINE DATA =====
