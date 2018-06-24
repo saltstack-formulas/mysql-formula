@@ -1,8 +1,7 @@
 include:
   - .config
 
-{% from tpldir ~ "/defaults.yaml" import rawmap with context %}
-{%- set mysql = salt['grains.filter_by'](rawmap, grain='os', merge=salt['pillar.get']('mysql:lookup')) %}
+{% from tpldir ~ "/map.jinja" import mysql with context %}
 
 # Completely ignore non-RHEL based systems
 # TODO: Add Debian and Suse systems.
@@ -40,10 +39,10 @@ mysql57_community_release:
       - file: install_pubkey_mysql
     - require_in:
       {% if "server_config" in mysql %}
-      - pkg: {{ mysql.server }}
+      - pkg: {{ mysql.serverpkg }}
       {% endif %}
       {% if "clients_config" in mysql %}
-      - pkg: {{ mysql.client }}
+      - pkg: {{ mysql.clientpkg }}
       {% endif %}
 
 set_pubkey_mysql:

@@ -1,5 +1,4 @@
-{% from tpldir ~ "/defaults.yaml" import rawmap with context %}
-{%- set mysql = salt['grains.filter_by'](rawmap, grain='os', merge=salt['pillar.get']('mysql:lookup')) %}
+{% from tpldir ~ "/map.jinja" import mysql with context %}
 {% set os_family = salt['grains.get']('os_family', None) %}
 
 {% if "config_directory" in mysql %}
@@ -20,6 +19,8 @@ mysql_server_config:
     - template: jinja
     - source: salt://{{ tpldir }}/files/server.cnf
     {% if os_family in ['Debian', 'Gentoo', 'RedHat'] %}
+    - context:
+      tpldir: {{ tpldir }}
     - user: root
     - group: root
     - mode: 644
@@ -33,6 +34,8 @@ mysql_galera_config:
     - template: jinja
     - source: salt://{{ tpldir }}/files/galera.cnf
     {% if os_family in ['Debian', 'Gentoo', 'RedHat'] %}
+    - context:
+      tpldir: {{ tpldir }}
     - user: root
     - group: root
     - mode: 644
@@ -46,6 +49,8 @@ mysql_library_config:
     - template: jinja
     - source: salt://{{ tpldir }}/files/client.cnf
     {% if os_family in ['Debian', 'Gentoo', 'RedHat'] %}
+    - context:
+      tpldir: {{ tpldir }}
     - user: root
     - group: root
     - mode: 644
@@ -59,6 +64,8 @@ mysql_clients_config:
     - template: jinja
     - source: salt://{{ tpldir }}/files/mysql-clients.cnf
     {% if os_family in ['Debian', 'Gentoo', 'RedHat'] %}
+    - context:
+      tpldir: {{ tpldir }}
     - user: root
     - group: root
     - mode: 644
@@ -76,6 +83,8 @@ mysql_config:
 {% else %}
     - source: salt://{{ tpldir }}/files/my.cnf
 {% endif %}
+    - context:
+      tpldir: {{ tpldir }}
     {% if os_family in ['Debian', 'Gentoo', 'RedHat'] %}
     - user: root
     - group: root

@@ -2,8 +2,7 @@ include:
   - .config
   - .python
 
-{% from tpldir ~ "/defaults.yaml" import rawmap with context %}
-{%- set mysql = salt['grains.filter_by'](rawmap, grain='os', merge=salt['pillar.get']('mysql:lookup')) %}
+{% from tpldir ~ "/map.jinja" import mysql with context %}
 
 {% set os = salt['grains.get']('os', None) %}
 {% set os_family = salt['grains.get']('os_family', None) %}
@@ -26,7 +25,7 @@ mysql_debconf:
     - data:
         '{{ mysql.server }}/start_on_boot': {'type': 'boolean', 'value': 'true'}
     - require_in:
-      - pkg: {{ mysql.server }}
+      - pkg: {{ mysql.serverpkg }}
     - require:
       - pkg: mysql_debconf_utils
 
@@ -38,7 +37,7 @@ mysql_password_debconf:
         'mysql-server/root_password': {'type': 'password', 'value': '{{ mysql_root_password }}'}
         'mysql-server/root_password_again': {'type': 'password', 'value': '{{ mysql_root_password }}'}
     - require_in:
-      - pkg: {{ mysql.server }}
+      - pkg: {{ mysql.serverpkg }}
     - require:
       - pkg: mysql_debconf_utils
 {% endif %}
@@ -90,7 +89,7 @@ mysql_install_datadir:
     - env:
         - TMPDIR: '/tmp'
     - require:
-      - pkg: {{ mysql.server }}
+      - pkg: {{ mysql.serverpkg }}
       - file: mysql_config
     - require_in:
       - service: mysqld
@@ -98,7 +97,7 @@ mysql_install_datadir:
 
 mysqld-packages:
   pkg.installed:
-    - name: {{ mysql.server }}
+    - name: {{ mysql.serverpkg }}
 {% if os_family == 'Debian' and mysql_root_password %}
     - require:
       - debconf: mysql_debconf
@@ -114,7 +113,7 @@ mysql_initialize:
     - user: root
     - creates: {{ mysql_datadir}}/mysql/
     - require:
-      - pkg: {{ mysql.server }}
+      - pkg: {{ mysql.serverpkg }}
 {% endif %}
 
 {% if os_family in ['RedHat', 'Suse'] and mysql.server == 'mariadb-server' %}
@@ -126,7 +125,7 @@ mysql_initialize:
     - group: mysql
     - makedirs: True
     - require:
-      - pkg: {{ mysql.server }}
+      - pkg: {{ mysql.serverpkg }}
 {% endif %}
 
 {% if os_family in ['Gentoo'] %}
@@ -136,7 +135,7 @@ mysql_initialize:
     - user: root
     - creates: {{ mysql_datadir}}/mysql/
     - require:
-      - pkg: {{ mysql.server }}
+      - pkg: {{ mysql.serverpkg }}
 {% endif %}
 
 mysqld:
@@ -144,14 +143,14 @@ mysqld:
     - name: {{ mysql.service }}
     - enable: True
     - require:
-      - pkg: {{ mysql.server }}
+      - pkg: {{ mysql.serverpkg }}
 {% if (os_family in ['RedHat', 'Suse'] and mysql.version is defined and mysql.version >= 5.7 and mysql.server != 'mariadb-server') or (os_family in ['Gentoo']) %}
       - cmd: mysql_initialize
 {% elif os_family in ['RedHat', 'Suse'] and mysql.server == 'mariadb-server' %}
       - file: {{ mysql_datadir }}
 {% endif %}
     - watch:
-      - pkg: {{ mysql.server }}
+      - pkg: {{ mysql.serverpkg }}
       - file: mysql_config
 {% if "config_directory" in mysql and "server_config" in mysql %}
       - file: mysql_server_config

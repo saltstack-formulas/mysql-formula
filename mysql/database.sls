@@ -1,5 +1,4 @@
-{% from tpldir ~ "/defaults.yaml" import rawmap with context %}
-{%- set mysql = salt['grains.filter_by'](rawmap, grain='os', merge=salt['pillar.get']('mysql:lookup')) %}
+{% from tpldir ~ "/map.jinja" import mysql with context %}
 
 {% set mysql_root_user = salt['pillar.get']('mysql:server:root_user', 'root') %}
 {% set mysql_root_pass = salt['pillar.get']('mysql:server:root_password', salt['grains.get']('server_id')) %}
