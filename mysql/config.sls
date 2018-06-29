@@ -1,5 +1,4 @@
-{% from tpldir ~ "/defaults.yaml" import rawmap with context %}
-{%- set mysql = salt['grains.filter_by'](rawmap, grain='os', merge=salt['pillar.get']('mysql:lookup')) %}
+{% from tpldir ~ "/map.jinja" import mysql with context %}
 {% set os_family = salt['grains.get']('os_family', None) %}
 
 {% if "config_directory" in mysql %}
