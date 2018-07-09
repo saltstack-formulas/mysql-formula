@@ -21,9 +21,9 @@ mysql_debconf_utils:
 
 mysql_debconf:
   debconf.set:
-    - name: {{ mysql.server }}
+    - name: {{ mysql.serverpkg }}
     - data:
-        '{{ mysql.server }}/start_on_boot': {'type': 'boolean', 'value': 'true'}
+        '{{ mysql.serverpkg }}/start_on_boot': {'type': 'boolean', 'value': 'true'}
     - require_in:
       - pkg: {{ mysql.serverpkg }}
     - require:
@@ -105,7 +105,7 @@ mysqld-packages:
     - require_in:
       - file: mysql_config
 
-{% if os_family in ['RedHat', 'Suse'] and mysql.version is defined and mysql.version >= 5.7 and mysql.server != 'mariadb-server' %}
+{% if os_family in ['RedHat', 'Suse'] and mysql.version is defined and mysql.version >= 5.7 and mysql.serverpkg != 'mariadb-server' %}
 # Initialize mysql database with --initialize-insecure option before starting service so we don't get locked out.
 mysql_initialize:
   cmd.run:
@@ -116,7 +116,7 @@ mysql_initialize:
       - pkg: {{ mysql.serverpkg }}
 {% endif %}
 
-{% if os_family in ['RedHat', 'Suse'] and mysql.server == 'mariadb-server' %}
+{% if os_family in ['RedHat', 'Suse'] and mysql.serverpkg == 'mariadb-server' %}
 # For MariaDB it's enough to only create the datadir
 mysql_initialize:
   file.directory:
@@ -131,7 +131,7 @@ mysql_initialize:
 {% if os_family in ['Gentoo'] %}
 mysql_initialize:
   cmd.run:
-    - name: emerge --config {{ mysql.server }}
+    - name: emerge --config {{ mysql.serverpkg }}
     - user: root
     - creates: {{ mysql_datadir}}/mysql/
     - require:
@@ -144,9 +144,9 @@ mysqld:
     - enable: True
     - require:
       - pkg: {{ mysql.serverpkg }}
-{% if (os_family in ['RedHat', 'Suse'] and mysql.version is defined and mysql.version >= 5.7 and mysql.server != 'mariadb-server') or (os_family in ['Gentoo']) %}
+{% if (os_family in ['RedHat', 'Suse'] and mysql.version is defined and mysql.version >= 5.7 and mysql.serverpkg != 'mariadb-server') or (os_family in ['Gentoo']) %}
       - cmd: mysql_initialize
-{% elif os_family in ['RedHat', 'Suse'] and mysql.server == 'mariadb-server' %}
+{% elif os_family in ['RedHat', 'Suse'] and mysql.serverpkg == 'mariadb-server' %}
       - file: {{ mysql_datadir }}
 {% endif %}
     - watch:
