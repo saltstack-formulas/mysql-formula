@@ -49,28 +49,32 @@ mysql:
 
   # Manage databases
   database:
+    # Simple definition using default charset and collate
     - foo
-    - bar
+    # Detailed definition
+    - name: bar
+      character_set: utf8
+      collate: utf8_general_ci
   schema:
     foo:
       load: True
-      source: salt://mysql/files/foo.schema
+      source: salt://{{ tpldir }}/files/foo.schema
     bar:
       load: False
     baz:
       load: True
-      source: salt://mysql/files/baz.schema.tmpl
+      source: salt://{{ tpldir }}/files/baz.schema.tmpl
       template: jinja
     qux:
       load: True
-      source: salt://mysql/files/qux.schema.tmpl
+      source: salt://{{ tpldir }}/files/qux.schema.tmpl
       template: jinja
       context:
         encabulator: Turbo
         girdlespring: differential
     quux:
       load: True
-      source: salt://mysql/files/qux.schema.tmpl
+      source: salt://{{ tpldir }}/files/qux.schema.tmpl
       template: jinja
       context:
         encabulator: Retro
@@ -121,7 +125,9 @@ mysql:
 #    server: mysql-server
 #    client: mysql-client
 #    service: mysql-service
-#    python: python-mysqldb
+#  server:
+#    lookup:
+#      python: python-mysqldb
 
   # Install MySQL headers
   dev:

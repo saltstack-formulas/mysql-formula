@@ -1,5 +1,5 @@
-{% from 'mysql/database.sls' import db_states with context %}
-{% from 'mysql/user.sls' import user_states with context %}
+{% from tpldir ~ '/database.sls' import db_states with context %}
+{% from tpldir ~ '/user.sls' import user_states with context %}
 
 {% macro requisites(type, states) %}
       {%- for state in states %}
@@ -11,14 +11,14 @@
 {% set mysql_salt_user = salt['pillar.get']('mysql:salt_user:salt_user_name', False) %}
 
 include:
-  - mysql.server
+  - .server
 {% if mysql_salt_user %}
-  - mysql.salt-user
+  - .salt-user
 {% endif %}
-  - mysql.database
-  - mysql.user
+  - .database
+  - .user
 {% if mysql_dev %}
-  - mysql.dev
+  - .dev
 {% endif %}
 
 

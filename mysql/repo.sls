@@ -1,18 +1,17 @@
 include:
-  - mysql.config
+  - .config
 
-{% from "mysql/defaults.yaml" import rawmap with context %}
-{%- set mysql = salt['grains.filter_by'](rawmap, grain='os', merge=salt['pillar.get']('mysql:lookup')) %}
+{% from tpldir ~ "/map.jinja" import mysql with context %}
 
 # Completely ignore non-RHEL based systems
 # TODO: Add Debian and Suse systems.
 # TODO: Allow user to specify MySQL version and alter yum repo file accordingly.
 {% if grains['os_family'] == 'RedHat' %}
-  {% if grains['osmajorrelease'][0] == '5' %}
+  {% if grains['osmajorrelease']|int == 5 %}
   {% set rpm_source = "http://repo.mysql.com/mysql57-community-release-el5.rpm" %}
-  {% elif grains['osmajorrelease'][0] == '6' %}
+  {% elif grains['osmajorrelease']|int == 6 %}
   {% set rpm_source = "http://repo.mysql.com/mysql57-community-release-el6.rpm" %}
-  {% elif grains['osmajorrelease'][0] == '7' %}
+  {% elif grains['osmajorrelease']|int == 7 %}
   {% set rpm_source = "http://repo.mysql.com/mysql57-community-release-el7.rpm" %}
   {% endif %}
 {% endif %}
@@ -40,10 +39,10 @@ mysql57_community_release:
       - file: install_pubkey_mysql
     - require_in:
       {% if "server_config" in mysql %}
-      - pkg: {{ mysql.server }}
+      - pkg: {{ mysql.serverpkg }}
       {% endif %}
       {% if "clients_config" in mysql %}
-      - pkg: {{ mysql.client }}
+      - pkg: {{ mysql.clientpkg }}
       {% endif %}
 
 set_pubkey_mysql:
