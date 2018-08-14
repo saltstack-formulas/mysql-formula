@@ -5,13 +5,14 @@
 {% set mysql_salt_pass = salt['pillar.get']('mysql:salt_user:salt_user_password', mysql_root_pass) %}
 
 include:
-  - mysql.python
+  - .python
 
 mysql remove test database:
   mysql_database.absent:
     - name: test
     - host: '{{ mysql_host }}'
     - connection_user: '{{ mysql_salt_user }}'
+    - connection_host: '{{ mysql_host }}'
     {% if mysql_salt_pass %}
     - connection_pass: '{{ mysql_salt_pass }}'
     {% endif %}

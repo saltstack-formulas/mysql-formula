@@ -1,5 +1,4 @@
-{% from "mysql/defaults.yaml" import rawmap with context %}
-{%- set mysql = salt['grains.filter_by'](rawmap, grain='os', merge=salt['pillar.get']('mysql:lookup')) %}
+{% from tpldir ~ "/map.jinja" import mysql with context %}
 
 {% set mysql_root_user = salt['pillar.get']('mysql:server:root_user', 'root') %}
 {% set mysql_root_pass = salt['pillar.get']('mysql:server:root_password', salt['grains.get']('server_id')) %}
@@ -10,10 +9,11 @@
 {% set mysql_salt_pass = salt['pillar.get']('mysql:salt_user:salt_user_password', mysql_root_pass) %}
 
 include:
-  - mysql.python
+  - .python
 
-{% for database in salt['pillar.get']('mysql:database', []) %}
+{% for database_obj in salt['pillar.get']('mysql:database', []) %}
 {% set state_id = 'mysql_db_' ~ loop.index0 %}
+{% set database = database_obj.get('name') if database_obj is mapping else database_obj %}
 {{ state_id }}:
   mysql_database.present:
     - name: {{ database }}
@@ -21,6 +21,10 @@ include:
     - connection_user: '{{ mysql_salt_user }}'
     {% if mysql_salt_pass %}
     - connection_pass: '{{ mysql_salt_pass }}'
+    {% endif %}
+    {% if database_obj is mapping %}
+    - character_set: {{ database_obj.get('character_set', '') }}
+    - collate: {{ database_obj.get('collate', '') }}
     {% endif %}
     - connection_charset: utf8
 
@@ -40,7 +44,7 @@ include:
 
 {{ state_id }}_load:
   cmd.wait:
-    - name: mysql -u {{ mysql_salt_user }} -h{{ mysql_host }} -p{{ mysql_salt_pass }} {{ database }} < /etc/mysql/{{ database }}.schema
+    - name: mysql -u {{ mysql_salt_user }} -h{{ mysql_host }} {% if mysql_salt_pass %}-p{% endif %}{{ mysql_salt_pass }} {{ database }} < /etc/mysql/{{ database }}.schema
     - watch:
       - file: {{ state_id }}_schema
       - mysql_database: {{ state_id }}
