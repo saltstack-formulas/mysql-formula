@@ -26,6 +26,7 @@
 
 [{{ sname }}]
 {%- for mparam, mvalue in sdata.items()|default([])|sort -%}
+{%- if mvalue is none %}{% continue %}{% endif -%}
 {%- set indents = 40 - mparam|count %}
 {% if mvalue == "noarg_present" -%}
 {{ mparam }}
