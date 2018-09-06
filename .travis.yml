@@ -8,11 +8,10 @@ services: docker
 
 env:
   matrix:
-  - INSTANCE=default-ubuntu-1204
-  - INSTANCE=default-ubuntu-1404
   - INSTANCE=default-ubuntu-1604
-  - INSTANCE=default-debian-7
-  - INSTANCE=default-debian-8
+  - INSTANCE=default-ubuntu-1804
+  - INSTANCE=default-debian-9
+  - INSTANCE=centos-7
 
 # https://github.com/zuazo/kitchen-in-travis-native/issues/1#issuecomment-142455888
 before_script: sudo iptables -L DOCKER || sudo iptables -N DOCKER
