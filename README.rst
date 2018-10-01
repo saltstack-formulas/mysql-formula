@@ -2,7 +2,7 @@
 mysql
 =====
 
-Install the MySQL client and/or server.
+Install the MySQL client and/or server on Linux and MacOS.
 
 .. note::
 
@@ -18,23 +18,29 @@ Available states
 ``mysql``
 ---------
 
-Meta-state that includes all server packages in the correct order.
+Meta-state including all server packages in correct order. This meta-state does **not** include ``mysql.remove_test_database``.
 
-This meta-state does **not** include ``mysql.remove_test_database``; see
-below for details.
+``mysql.macos``
+----------------
+
+Install "MySQL Community Server", "MySQL Workbench", and any other enabled products on MacOS.
+
+``mysql.macos.remove``
+----------------
+
+Remove "MySQL Community Server", "MySQL Workbench", and any other enabled products from MacOS.
 
 ``mysql.client``
 ----------------
 
-Install the MySQL client package.
+Install the MySQL client package on Linux.
 
 ``mysql.server``
 ----------------
 
 Install the MySQL server package and start the service.
 
-Debian OS family supports setting MySQL root password during install via
-debconf.
+Debian OS family supports setting MySQL root password during install via debconf.
 
 .. note::
 
