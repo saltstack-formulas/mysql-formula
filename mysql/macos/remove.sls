@@ -4,13 +4,13 @@
 {%- from salt.file.dirname(tpldir) ~ "/map.jinja" import mysql with context -%}
 
   {%- set dl = mysql.macos.dl %}
-  {%- for product, data in mysql.macos.products.items() if "enabled" in data and data.enabled %}
+  {%- for product, data in mysql.macos.products.items() if "app" in data and data.app and "url" in data and data.url  %}
       {%- set archivename = data.url.split('/')[-1]|replace('.dmg', '')|replace('.tar.gz', '')|replace('.zip', '') %}
 
 mysql-macos-{{ product }}-remove-destdir:
   file.absent:
     - names:
-      - {{ data.path }}
+      - {{ '/Applications' ~ data.app ~ '.app' if "isapp" in data and data.isapp else dl.prefix ~ '/' ~ archivename  }}
 
 mysql-macos-{{ product }}-desktop-shortcut-remove:
   file.managed:
@@ -21,8 +21,9 @@ mysql-macos-{{ product }}-desktop-shortcut-remove:
     - context:
       user: {{ mysql.macos.user }}
       home: {{ mysql.macos.userhomes }}
-      dir: {{'/Applications/' ~ data.app ~ '.app' if "isapp" in data and data.isapp else dl.prefix ~ '/' ~ archivename ~ '/bin'}}
       app: {{ data.app }}
+      dir: {{ '/Applications' if "isapp" in data and data.isapp else dl.prefix ~ '/' ~ archivename ~ '/bin' }}
+      suffix: {{ '.app' if "isapp" in data and data.isapp else '' }}
   cmd.run:
     - name: /tmp/mac_shortcut.sh remove
     - runas: {{ mysql.macos.user }}

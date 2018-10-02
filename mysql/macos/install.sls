@@ -90,8 +90,9 @@ mysql-macos-{{ product }}-desktop-shortcut-add:
     - context:
       user: {{ mysql.macos.user }}
       home: {{ mysql.macos.userhomes }}
-      dir: {{'/Applications/' ~ data.app ~ '.app' if "isapp" in data and data.isapp else dl.prefix ~ '/' ~ archivename ~ '/bin'}}
       app: {{ data.app }}
+      dir: {{ '/Applications' if "isapp" in data and data.isapp else dl.prefix ~ '/' ~ archivename ~ '/bin' }}
+      suffix: {{ '.app' if "isapp" in data and data.isapp else '' }}
   cmd.run:
     - name: /tmp/mac_shortcut.sh add
     - runas: {{ mysql.macos.user }}
