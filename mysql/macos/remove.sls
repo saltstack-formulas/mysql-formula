@@ -3,13 +3,31 @@
 # vim: ft=yaml
 {%- from salt.file.dirname(tpldir) ~ "/map.jinja" import mysql with context -%}
 
-  {%- for product, data in mysql.macos.products.items() if data.enabled %}
-      {%- set archivename = data.url.split('/')[-1] %}
+  {%- set dl = mysql.macos.dl %}
+  {%- for product, data in mysql.macos.products.items() if "enabled" in data and data.enabled %}
+      {%- set archivename = data.url.split('/')[-1]|replace('.dmg', '')|replace('.tar.gz', '')|replace('.zip', '') %}
 
 mysql-macos-{{ product }}-remove-destdir:
   file.absent:
     - names:
-      - {{ data.dest }}
+      - {{ data.path }}
+
+mysql-macos-{{ product }}-desktop-shortcut-remove:
+  file.managed:
+    - name: /tmp/mac_shortcut.sh
+    - source: salt://mysql/files/mac_shortcut.sh
+    - mode: 755
+    - template: jinja
+    - context:
+      user: {{ mysql.macos.user }}
+      home: {{ mysql.macos.userhomes }}
+      dir: {{'/Applications/' ~ data.app ~ '.app' if "isapp" in data and data.isapp else dl.prefix ~ '/' ~ archivename ~ '/bin'}}
+      app: {{ data.app }}
+  cmd.run:
+    - name: /tmp/mac_shortcut.sh remove
+    - runas: {{ mysql.macos.user }}
+    - require:
+      - file: mysql-macos-{{ product }}-desktop-shortcut-remove
 
   {%- endfor %}
 

@@ -23,7 +23,7 @@ Meta-state including all server packages in correct order. This meta-state does 
 ``mysql.macos``
 ----------------
 
-Install "MySQL Community Server", "MySQL Workbench", and any other enabled products on MacOS.
+Install "MySQL Community Server", "MySQL Workbench", and other related mysql products on MacOS (and create Desktop shortcuts).
 
 ``mysql.macos.remove``
 ----------------
