@@ -1,6 +1,16 @@
 # vim: ft=sls
 # vim: sts=2 ts=2 sw=2 et ai
 
+  {% if grains.os == 'MacOS' %}
+MacOS:
+  macos:
+    user:  {{ salt['pillar.get']('mysql:user', salt['cmd.run']("stat -f '%Su' /dev/console")) }}
+    group: {{ salt['pillar.get']('mysql:group', salt['cmd.run']("stat -f '%Sg' /dev/console")) }}
+  {% endif %}
+
+Debian:
+  service: mysql
+
 Ubuntu:
   service: mysql
   devpkg: libmysqlclient-dev
