@@ -156,6 +156,13 @@ mysqld:
       - file: mysql_server_config
 {% endif %}
 
+mysql_what_is_status_of_{{ mysql.service }}:
+  cmd.run:
+    - names:
+      - service {{ mysql.service }} status
+    - onfail:
+      - service: mysqld
+
 # official oracle mysql repo
 # creates this file, that rewrites /etc/mysql/my.cnf setting
 # so, make it empty
