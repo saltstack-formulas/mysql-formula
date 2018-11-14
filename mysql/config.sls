@@ -25,6 +25,8 @@ mysql_server_config:
     - group: root
     - mode: 644
     {% endif %}
+    - require:
+      - file: mysql_config_directory
 {% endif %}
 
 {% if "galera_config" in mysql %}
@@ -40,6 +42,8 @@ mysql_galera_config:
     - group: root
     - mode: 644
     {% endif %}
+    - require:
+      - file: mysql_config_directory
 {% endif %}
 
 {% if "library_config" in mysql %}
@@ -55,6 +59,8 @@ mysql_library_config:
     - group: root
     - mode: 644
     {% endif %}
+    - require:
+      - file: mysql_config_directory
 {% endif %}
 
 {% if "clients_config" in mysql %}
@@ -70,6 +76,8 @@ mysql_clients_config:
     - group: root
     - mode: 644
     {% endif %}
+    - require:
+      - file: mysql_config_directory
 {% endif %}
 
 {% endif %}

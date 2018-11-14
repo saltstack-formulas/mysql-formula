@@ -104,6 +104,9 @@ mysqld-packages:
 {% endif %}
     - require_in:
       - file: mysql_config
+{% if "config_directory" in mysql %}
+      - file: mysql_config_directory
+{% endif %}
 
 {% if os_family in ['RedHat', 'Suse'] and mysql.version is defined and mysql.version >= 5.7 and mysql.serverpkg.lower() != 'mariadb-server' %}
 # Initialize mysql database with --initialize-insecure option before starting service so we don't get locked out.
