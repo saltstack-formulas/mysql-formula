@@ -118,3 +118,20 @@ Add the official MySQL 5.7 repository.
     Debian and Suse support to be added. Also need to add the option to allow
     selection of MySQL version (5.6 and 5.5 repos are added but disabled) and
     changed enabled repository accordingly.
+
+``mysql.config``
+------------------
+
+Manage the MySQL configuration.
+
+.. note::
+    There are currently two common ways to configure MySQL, a monolithic configuration file
+    or a configuration directory with configuration files per component. By default this
+    state will use a configuration directory for CentOS and Fedora, and a monolithic
+    configuration file for all other supported OSes.
+
+    Whether the configuration directory is used or not depends on whether `mysql.config_directory`
+    is defined in the pillar. If it is present it will pick the configuration from individual
+    component keys (`mysql.server`, `mysql.galera`, `mysql.libraries`, etc) with optional global
+    configuration from `mysql.global`. The monolithic configuration, however, is defined separately
+    in `mysql.config`.
