@@ -58,6 +58,22 @@ include:
     - grant: {{ user['grants']|join(",") }}
     - database: '*.*'
     - grant_option: {{ user['grant_option'] | default(False) }}
+    {% if 'ssl' in user or 'ssl-X509' in user %}
+    - ssl_option:
+      - SSL: {{ user['ssl'] | default(False) }}
+    {% if user['ssl-X509'] is defined %}
+      - X509: {{ user['ssl-X509'] }}
+    {% endif %}
+    {% if user['ssl-SUBJECT'] is defined %}
+      - SUBJECT: {{ user['ssl-SUBJECT'] }}
+    {% endif %}
+    {% if user['ssl-ISSUER'] is defined %}
+      - ISSUER: {{ user['ssl-ISSUER'] }}
+    {% endif %}
+    {% if user['ssl-CIPHER'] is defined %}
+      - CIPHER: {{ user['ssl-CIPHER'] }}
+    {% endif %}
+    {% endif %}
     - user: {{ name }}
     - host: '{{ host }}'
     - connection_host: '{{ mysql_host }}'
