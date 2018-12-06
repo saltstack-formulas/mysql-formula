@@ -29,7 +29,8 @@ mysql_debconf:
     - require:
       - pkg: mysql_debconf_utils
 
-{% if salt['grains.get']('osmajorrelease')|int < 9 or not salt['grains.get']('os')|lower == 'debian' %}
+  {% if salt['grains.get']('osmajorrelease')|int < 9 or not salt['grains.get']('os')|lower == 'debian' %}
+
 mysql_password_debconf:
   debconf.set:
     - name: mysql-server
@@ -40,7 +41,8 @@ mysql_password_debconf:
       - pkg: {{ mysql.serverpkg }}
     - require:
       - pkg: mysql_debconf_utils
-{% endif %}
+
+  {% endif %}
 
 {% elif os_family in ['RedHat', 'Suse', 'FreeBSD'] %}
 mysql_root_password:
@@ -48,7 +50,7 @@ mysql_root_password:
     - name: mysqladmin --host "{{ mysql_host }}" --user {{ mysql_root_user }} password '{{ mysql_root_password|replace("'", "'\"'\"'") }}'
     - unless: mysql --host "{{ mysql_host }}" --user {{ mysql_root_user }} --password='{{ mysql_root_password|replace("'", "'\"'\"'") }}' --execute="SELECT 1;"
     - require:
-      - service: mysqld
+      - service: mysqld-service-running
 
 {% for host in {'localhost': '', 'localhost.localdomain': '', salt['grains.get']('fqdn'): ''}.keys() %}
 mysql_delete_anonymous_user_{{ host }}:
@@ -63,7 +65,7 @@ mysql_delete_anonymous_user_{{ host }}:
     {% endif %}
     - connection_charset: utf8
     - require:
-      - service: mysqld
+      - service: mysqld-service-running
       - pkg: mysql_python
       {%- if (mysql_salt_user == mysql_root_user) and mysql_root_password %}
       - cmd: mysql_root_password
@@ -92,7 +94,7 @@ mysql_install_datadir:
       - pkg: {{ mysql.serverpkg }}
       - file: mysql_config
     - require_in:
-      - service: mysqld
+      - service: mysqld-service-running
 {% endif %}
 
 mysqld-packages:
@@ -141,7 +143,14 @@ mysql_initialize:
       - pkg: {{ mysql.serverpkg }}
 {% endif %}
 
-mysqld:
+mysqld-service-running:
+  file.append:
+    - name: {{ mysql.config.apparmor.dir }}/{{ mysql.config.apparmor.file }}
+    - onlyif: test -d {{ mysql.config.apparmor.dir }}
+    - makedirs: True
+    - text:
+      - '{{ mysql.config.sections.mysqld.datadir }}/ r,'
+      - '{{ mysql.config.sections.mysqld.datadir }}/** rwk,'
   service.running:
     - name: {{ mysql.service }}
     - enable: True
@@ -164,7 +173,7 @@ mysql_what_is_status_of_{{ mysql.service }}:
     - names:
       - service {{ mysql.service }} status
     - onfail:
-      - service: mysqld
+      - service: mysqld-service-running
 
 # official oracle mysql repo
 # creates this file, that rewrites /etc/mysql/my.cnf setting
@@ -175,4 +184,4 @@ mysql_additional_config:
     - source: salt://{{ tpldir }}/files/usr-my.cnf
     - create: False
     - watch_in:
-      - service: mysqld
+      - service: mysqld-service-running
