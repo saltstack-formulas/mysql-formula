@@ -20,6 +20,9 @@ mysql:
         socket: /var/run/mysqld/mysqld.sock
         port: 3306
         datadir: /var/lib/mysql
+    apparmor:
+      dir: /etc/apparmor.d/local
+      file: usr.sbin.mysqld
 
   macos:
     userhomes: /Users
