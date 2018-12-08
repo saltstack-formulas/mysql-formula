@@ -24,7 +24,7 @@ include:
 
 {% if (db_states|length() + user_states|length()) > 0 %}
 extend:
-  mysqld:
+  mysqld-service-running:
     service:
       - require_in:
         {{ requisites('mysql_database', db_states) }}
