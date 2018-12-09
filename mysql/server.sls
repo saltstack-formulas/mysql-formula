@@ -1,7 +1,6 @@
 include:
   - .config
   - .python
-  - .apparmor
 
 {% from tpldir ~ "/map.jinja" import mysql with context %}
 
