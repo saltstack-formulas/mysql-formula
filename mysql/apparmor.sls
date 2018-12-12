@@ -1,5 +1,7 @@
 {% from tpldir ~ "/map.jinja" import mysql with context %}
 
+{%- if "apparmor" in mysql.config %}
+
 mysqld-apparmor-allow:
   file.append:
     - name: {{ mysql.config.apparmor.dir }}/{{ mysql.config.apparmor.file }}
@@ -8,3 +10,5 @@ mysqld-apparmor-allow:
     - text:
       - '{{ mysql.config.sections.mysqld.datadir }}/ r,'
       - '{{ mysql.config.sections.mysqld.datadir }}/** rwk,'
+
+{%- endif %}
