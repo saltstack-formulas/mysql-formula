@@ -47,6 +47,23 @@ mysql:
     grants:
       - 'all privileges'
 
+  # Manage config
+  config:
+    file: ~/.my.cnf
+    sections:
+      client:
+        port: 33306
+        socket: /var/lib/mysql-socket/mysql.sock
+      mysqld_safe:
+        plugin-dir: '~/mysql/plugins'
+      mysqld:
+        user: myself
+        port: 33306
+        datadir: ~/mysql/datadir
+    apparmor:
+      dir: /etc/apparmor.d/local
+      file: usr.sbin.mysqld
+
   # Manage databases
   database:
     # Simple definition using default charset and collate
