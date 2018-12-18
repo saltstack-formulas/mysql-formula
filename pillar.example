@@ -97,7 +97,11 @@ mysql:
       ssl-ISSUER: Name
       ssl-CIPHER: Cipher
       databases:
-        - database: "foo_%%"
+        # https://github.com/saltstack/salt/issues/41178
+        # If you want to refer to databases using wildcards, turn off escape so
+        # the renderer does not escape them, enclose the string in '`' and
+        # use two '%'
+        - database: '`foo\_%%`'
           grants: ['all privileges']
           grant_option: True
           escape: False
