@@ -112,6 +112,7 @@ include:
     {% endif %}
     - user: {{ name }}
     - host: '{{ host }}'
+    - escape: {{ db['escape'] | default(True) }}
     - connection_host: '{{ mysql_host }}'
     - connection_user: '{{ mysql_salt_user }}'
     {% if mysql_salt_pass -%}

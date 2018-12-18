@@ -106,6 +106,7 @@ mysql:
       databases:
         - database: foo
           grants: ['select', 'insert', 'update']
+          escape: True
         - database: bar
           grants: ['all privileges']
     bob:
@@ -117,9 +118,14 @@ mysql:
       ssl-ISSUER: Name
       ssl-CIPHER: Cipher
       databases:
-        - database: foo
+        # https://github.com/saltstack/salt/issues/41178
+        # If you want to refer to databases using wildcards, turn off escape so
+        # the renderer does not escape them, enclose the string in '`' and
+        # use two '%'
+        - database: '`foo\_%%`'
           grants: ['all privileges']
           grant_option: True
+          escape: False
         - database: bar
           table: foobar
           grants: ['select', 'insert', 'update', 'delete']
