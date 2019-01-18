@@ -4,6 +4,7 @@ include:
 
 {% from tpldir ~ "/map.jinja" import mysql with context %}
 
+
 {% set os = salt['grains.get']('os', None) %}
 {% set os_family = salt['grains.get']('os_family', None) %}
 {% set mysql_root_user = salt['pillar.get']('mysql:server:root_user', 'root') %}
@@ -12,9 +13,21 @@ include:
 {% set mysql_salt_user = salt['pillar.get']('mysql:salt_user:salt_user_name', mysql_root_user) %}
 {% set mysql_salt_password = salt['pillar.get']('mysql:salt_user:salt_user_password', mysql_root_password) %}
 {% set mysql_datadir = salt['pillar.get']('mysql:server:mysqld:datadir', '/var/lib/mysql') %}
-
+{% set lsb_distrib_codename = salt['grains.get']('lsb_distrib_codename', None) %}
 {% if mysql_root_password %}
 {% if os_family == 'Debian' %}
+
+{% if mysql.serverpkg == 'mysql-community-server' %}
+mysql-community-server_repo:
+  pkgrepo.managed:
+    - humanname: "Mysql official repo"
+    - name: deb http://repo.mysql.com/apt/ubuntu/ {{ lsb_distrib_codename }} mysql-8.0
+    - file: /etc/apt/sources.list.d/mysql.list
+    - refresh: True
+    - require_in:
+      - pkg: mysql-community-server
+{% endif %}
+
 mysql_debconf_utils:
   pkg.installed:
     - name: {{ mysql.debconf_utils }}
@@ -31,18 +44,32 @@ mysql_debconf:
 
   {% if salt['grains.get']('osmajorrelease')|int < 9 or not salt['grains.get']('os')|lower == 'debian' %}
 
+{% if mysql.serverpkg == 'mysql-community-server' %}
 mysql_password_debconf:
   debconf.set:
-    - name: mysql-server
+    - name: 'mysql-community-server'
     - data:
-        'mysql-server/root_password': {'type': 'password', 'value': '{{ mysql_root_password }}'}
-        'mysql-server/root_password_again': {'type': 'password', 'value': '{{ mysql_root_password }}'}
+        'mysql-community-server/root-pass': {'type': 'password', 'value': '{{ mysql_root_password }}'}
+        'mysql-community-server/re-root-pass': {'type': 'password', 'value': '{{ mysql_root_password }}'}
+        'mysql-server/default-auth-override': {'type': 'string', 'value':'Use Legacy Authentication Method (Retain MySQL 5.x Compatibility)'}
+    - require_in:
+      - pkg: {{ mysql.serverpkg }}
+    - require:
+      - pkg: mysql_debconf_utils
+{% else %}
+mysql_password_debconf:
+  debconf.set:
+    - name: {{ mysql.serverpkg }}
+    - data:
+        '{{ mysql.serverpkg }}/root_password': {'type': 'password', 'value': '{{ mysql_root_password }}'}
+        '{{ mysql.serverpkg }}/root_password_again': {'type': 'password', 'value': '{{ mysql_root_password }}'}
     - require_in:
       - pkg: {{ mysql.serverpkg }}
     - require:
       - pkg: mysql_debconf_utils
 
-  {% endif %}
+{% endif %}
+ {% endif %}
 
 {% elif os_family in ['RedHat', 'Suse', 'FreeBSD'] %}
 mysql_root_password:
