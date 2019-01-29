@@ -9,28 +9,24 @@ mysql-macos-extract-dirs:
   file.directory:
     - name: {{ dl.tmpdir }}
     - makedirs: True
-    - clean: True
 
   {%- for product, data in mysql.macos.products.items() if "enabled" in data and data.enabled %}
       {%- set archivefile = data.url.split('/')[-1] %}
       {%- set archiveformat = archivefile.split('.')[-1] %}
       {%- set archivename = archivefile|replace('.dmg', '')|replace('.tar.gz', '')|replace('.zip', '') %}
 
-mysql-macos-remove-previous-{{ product }}-download-archive:
-  file.absent:
-    - name: {{ dl.tmpdir }}/{{ archivefile }}
-    - require_in:
-      - mysql-macos-download-{{ product }}-archive
-
 mysql-macos-download-{{ product }}-archive:
   pkg.installed:
     - name: curl
   cmd.run:
     - name: curl {{ dl.opts }} -o {{ dl.tmpdir }}/{{ archivefile }} {{ data.url }}
+    - unless: test -f {{ dl.tmpdir }}/{{ archivefile }}
       {% if grains['saltversioninfo'] >= [2017, 7, 0] %}
     - retry:
         attempts: {{ dl.retries }}
         interval: {{ dl.interval }}
+        until: True
+        splay: 10
       {% endif %}
     - require:
       - mysql-macos-extract-dirs
@@ -41,8 +37,8 @@ mysql-macos-check-{{ product }}-archive-hash:
      - name: file.check_hash
      - path: {{ dl.tmpdir }}/{{ archivefile }}
      - file_hash: {{ data.sum }}
-     - onchanges:
-       - mysql-macos-download-{{ product }}-archive
+     - require:
+       - cmd: mysql-macos-download-{{ product }}-archive
      - require_in:
        - mysql-macos-{{ product }}-install
     {%- endif %}
@@ -68,10 +64,7 @@ mysql-macos-{{ product }}-install:
     - source_hash: {{ data.sum }}
     - onchanges:
       - mysql-macos-download-{{ product }}-archive
-
     {%- endif %}
-    - require_in:
-      - mysql-macos-tidyup-{{ product }}
 
       {%- if "path" in data and data.path and "app" in data and data.app %}
 
@@ -100,12 +93,4 @@ mysql-macos-{{ product }}-desktop-shortcut-add:
       - file: mysql-macos-{{ product }}-desktop-shortcut-add
 
     {%- endif %}
-
-mysql-macos-tidyup-{{ product }}:
-  file.absent:
-    - name: {{ dl.tmpdir }}/{{ archivefile }}
-    - onchanges:
-      - mysql-macos-download-{{ product }}-archive
-
   {% endfor %}
-
