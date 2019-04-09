@@ -34,22 +34,28 @@ include:
 
 {% set state_id = 'mysql_user_' ~ name ~ '_' ~ host%}
 {{ state_id }}:
-  mysql_user.present:
-    - name: {{ name }}
-    - host: '{{ host }}'
-  {%- if user['password_hash'] is defined %}
-    - password_hash: '{{ user['password_hash'] }}'
-  {%- elif user['password'] is defined and user['password'] != None %}
-    - password: '{{ user['password'] }}'
+  {%- if user.get('present', True) %}
+    mysql_user.present:
+      - name: {{ name }}
+      - host: '{{ host }}'
+    {%- if user['password_hash'] is defined %}
+      - password_hash: '{{ user['password_hash'] }}'
+    {%- elif user['password'] is defined and user['password'] != None %}
+      - password: '{{ user['password'] }}'
+    {%- else %}
+      - allow_passwordless: True
+    {%- endif %}
   {%- else %}
-    - allow_passwordless: True
+    mysql_user.absent:
+      - name: {{ name }}
+      - host: '{{ host }}'
   {%- endif %}
-    - connection_host: '{{ mysql_host }}'
-    - connection_user: '{{ mysql_salt_user }}'
-    {% if mysql_salt_pass %}
-    - connection_pass: '{{ mysql_salt_pass }}'
-    {% endif %}
-    - connection_charset: utf8
+      - connection_host: '{{ mysql_host }}'
+      - connection_user: '{{ mysql_salt_user }}'
+  {%- if mysql_salt_pass %}
+      - connection_pass: '{{ mysql_salt_pass }}'
+  {%- endif %}
+      - connection_charset: utf8
 
 {%- if 'grants' in user %}
 {{ state_id ~ '_grants' }}:
