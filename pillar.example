@@ -72,6 +72,9 @@ mysql:
     - name: bar
       character_set: utf8
       collate: utf8_general_ci
+    # Delete DB
+    - name: obsolete_db
+      present: False
   schema:
     foo:
       load: True
