@@ -13,18 +13,30 @@ include:
 
 {% for database_obj in salt['pillar.get']('mysql:database', []) %}
 {% set state_id = 'mysql_db_' ~ loop.index0 %}
-{% set database = database_obj.get('name') if database_obj is mapping else database_obj %}
+{% if not database_obj %}{# in case database_obj == [] #}
+{%   continue %}
+{% elif database_obj is mapping %}
+{%   set database = database_obj.get('name') %}
+{%   set present = database_obj.get('present', True) %}
+{% else %}
+{%   set database = database_obj %}
+{%   set present = True %}
+{% endif %}
 {{ state_id }}:
+  {%- if present %}
   mysql_database.present:
+    {% if database_obj is mapping %}
+    - character_set: {{ database_obj.get('character_set', '') }}
+    - collate: {{ database_obj.get('collate', '') }}
+    {% endif %}
+  {% else %}
+  mysql_database.absent:
+  {% endif %}
     - name: {{ database }}
     - connection_host: '{{ mysql_host }}'
     - connection_user: '{{ mysql_salt_user }}'
     {% if mysql_salt_pass %}
     - connection_pass: '{{ mysql_salt_pass }}'
-    {% endif %}
-    {% if database_obj is mapping %}
-    - character_set: {{ database_obj.get('character_set', '') }}
-    - collate: {{ database_obj.get('collate', '') }}
     {% endif %}
     - connection_charset: utf8
 

@@ -72,6 +72,9 @@ mysql:
     - name: bar
       character_set: utf8
       collate: utf8_general_ci
+    # Delete DB
+    - name: obsolete_db
+      present: False
   schema:
     foo:
       load: True
@@ -142,6 +145,12 @@ mysql:
       databases:
         - database: foo
           grants: ['select', 'insert', 'update']
+
+    # Remove a user
+    obsoleteuser:
+      host: localhost
+      # defaults to True
+      present: False
 
   # Override any names defined in map.jinja
   # serverpkg: mysql-server
