@@ -13,7 +13,9 @@ include:
 
 {% for database_obj in salt['pillar.get']('mysql:database', []) %}
 {% set state_id = 'mysql_db_' ~ loop.index0 %}
-{% if database_obj is mapping %}
+{% if not database_obj %}{# in case database_obj == [] #}
+{%   continue %}
+{% elif database_obj is mapping %}
 {%   set database = database_obj.get('name') %}
 {%   set present = database_obj.get('present', True) %}
 {% else %}
