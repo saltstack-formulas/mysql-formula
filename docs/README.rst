@@ -1,42 +1,72 @@
-=====
+.. _readme:
+
 mysql
 =====
 
+|img_travis| |img_sr|
+
+.. |img_travis| image:: https://travis-ci.com/saltstack-formulas/mysql-formula.svg?branch=master
+   :alt: Travis CI Build Status
+   :scale: 100%
+   :target: https://travis-ci.com/saltstack-formulas/mysql-formula
+.. |img_sr| image:: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
+   :alt: Semantic Release
+   :scale: 100%
+   :target: https://github.com/semantic-release/semantic-release
+
 Install the MySQL client and/or server on Linux and MacOS.
 
-.. note::
+.. contents:: **Table of Contents**
 
-   See the full `Salt Formulas installation and usage instructions
-   <http://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html>`_.
+General notes
+-------------
+
+See the full `SaltStack Formulas installation and usage instructions
+<https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html>`_.
+
+If you are interested in writing or contributing to formulas, please pay attention to the `Writing Formula Section
+<https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html#writing-formulas>`_.
+
+If you want to use this formula, please pay attention to the ``FORMULA`` file and/or ``git tag``,
+which contains the currently released version. This formula is versioned according to `Semantic Versioning <http://semver.org/>`_.
+
+See `Formula Versioning Section <https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html#versioning>`_ for more details.
+
+Contributing to this repo
+-------------------------
+
+**Commit message formatting is significant!!**
+
+Please see :ref:`How to contribute <CONTRIBUTING>` for more details.
 
 Available states
-================
+----------------
 
 .. contents::
     :local:
 
 ``mysql``
----------
+^^^^^^^^^
 
 Meta-state including all server packages in correct order. This meta-state does **not** include ``mysql.remove_test_database``.
 
 ``mysql.macos``
-----------------
+^^^^^^^^^^^^^^^^
 
 Install "MySQL Community Server", "MySQL Workbench", and other related mysql products on MacOS (and create Desktop shortcuts).
 
 ``mysql.macos.remove``
-----------------
+^^^^^^^^^^^^^^^^
 
 Remove "MySQL Community Server", "MySQL Workbench", and any other enabled products from MacOS.
 
 ``mysql.client``
-----------------
+^^^^^^^^^^^^^^^^
 
 Install the MySQL client package on Linux.
 
 ``mysql.server``
-----------------
+^^^^^^^^^^^^^^^^
 
 Install the MySQL server package and start the service.
 
@@ -52,28 +82,28 @@ Debian OS family supports setting MySQL root password during install via debconf
     newly available ``random.get_str`` method.
 
 ``mysql.server_checks``
------------------------
+^^^^^^^^^^^^^^^^^^^^^^^
 
 Enforces a root password to be set.
 
 
 ``mysql.disabled``
-------------------
+^^^^^^^^^^^^^^^^^^
 
 Ensure that the MySQL service is not running.
 
 ``mysql.database``
-------------------
+^^^^^^^^^^^^^^^^^^
 
 Create and manage MySQL databases.
 
 ``mysql.python``
-----------------
+^^^^^^^^^^^^^^^^
 
 Install mysql python bindings.
 
 ``mysql.user``
---------------
+^^^^^^^^^^^^^^
 
 Create and manage MySQL database users with definable GRANT privileges.
 
@@ -88,7 +118,7 @@ priority.
     Make sure to **quote the passwords** in the pillar so YAML doesn't throw an exception.
 
 ``mysql.remove_test_database``
-------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. warning::
 
@@ -100,7 +130,7 @@ MySQL installation.  This state is **not** included as part of the meta-state
 above as this name may conflict with a real database.
 
 ``mysql.dev``
--------------
+^^^^^^^^^^^^^
 
 Install the MySQL development libraries and header files.
 
@@ -109,7 +139,7 @@ Install the MySQL development libraries and header files.
     your pillar data accordingly.
 
 ``mysql.repo``
---------------
+^^^^^^^^^^^^^^
 
 Add the official MySQL 5.7 repository.
 
@@ -120,7 +150,7 @@ Add the official MySQL 5.7 repository.
     changed enabled repository accordingly.
 
 ``mysql.config``
-------------------
+^^^^^^^^^^^^^^^^^^
 
 Manage the MySQL configuration.
 
@@ -135,3 +165,49 @@ Manage the MySQL configuration.
     component keys (`mysql.server`, `mysql.galera`, `mysql.libraries`, etc) with optional global
     configuration from `mysql.global`. The monolithic configuration, however, is defined separately
     in `mysql.config`.
+
+
+Testing
+-------
+
+Linux testing is done with ``kitchen-salt``.
+
+Requirements
+^^^^^^^^^^^^
+
+* Ruby
+* Docker
+
+.. code-block:: bash
+
+   $ gem install bundler
+   $ bundle install
+   $ bin/kitchen test [platform]
+
+Where ``[platform]`` is the platform name defined in ``kitchen.yml``,
+e.g. ``debian-9-2019-2-py3``.
+
+``bin/kitchen converge``
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Creates the docker instance and runs the ``mysql`` main state, ready for testing.
+
+``bin/kitchen verify``
+^^^^^^^^^^^^^^^^^^^^^^
+
+Runs the ``inspec`` tests on the actual instance.
+
+``bin/kitchen destroy``
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Removes the docker instance.
+
+``bin/kitchen test``
+^^^^^^^^^^^^^^^^^^^^
+
+Runs all of the stages above in one go: i.e. ``destroy`` + ``converge`` + ``verify`` + ``destroy``.
+
+``bin/kitchen login``
+^^^^^^^^^^^^^^^^^^^^^
+
+Gives you SSH access to the instance for manual testing.
