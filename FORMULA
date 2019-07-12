@@ -1,7 +1,7 @@
 name: mysql
 os: RedHat, CentOS, Debian, Ubuntu, Suse, Gentoo, FreeBSD
 os_family: RedHat, Debian, Suse, Gentoo, FreeBSD
-version: 201507
+version: 0.50.0
 release: 1
 minimum_version: 2015.8
 summary: Formula for installing MySQL
