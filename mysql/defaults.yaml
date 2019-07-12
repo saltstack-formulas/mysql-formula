@@ -4,7 +4,11 @@ mysql:
   serverpkg: mysql-server
   clientpkg: mysql-client
   service: mysql
+  {%- if grains.pythonversion[0] == 2 %}
   pythonpkg: python-mysqldb
+  {% else %}
+  pythonpkg: python3-mysqldb
+  {% endif %}
   devpkg: mysql-devel
   debconf_utils: debconf-utils
 

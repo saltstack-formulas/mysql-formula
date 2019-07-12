@@ -25,9 +25,9 @@ mysql_salt_user_with_salt_user:
     - connection_user: '{{ mysql_salt_user }}'
     - connection_pass: '{{ mysql_salt_pass }}'
     - connection_charset: utf8
-    - onlyif:
-      - mysql --user {{ mysql_salt_user }} --password='{{ mysql_salt_pass|replace("'", "'\"'\"'") }}' -h {{ mysql_host }} --execute="SELECT 1;"
-      - VALUE=$(mysql --user {{ mysql_salt_user }} --password='{{ mysql_salt_pass|replace("'", "'\"'\"'") }}' -ss -e "SELECT Grant_priv FROM mysql.user WHERE user = '{{ mysql_salt_user }}' AND host = '{{ host }}';"); if [ "$VALUE" = 'Y' ]; then /bin/true; else /bin/false; fi
+    # - onlyif:
+    #   - mysql --user {{ mysql_salt_user }} --password='{{ mysql_salt_pass|replace("'", "'\"'\"'") }}' -h {{ mysql_host }} --execute="SELECT 1;"
+    #   - VALUE=$(mysql --user {{ mysql_salt_user }} --password='{{ mysql_salt_pass|replace("'", "'\"'\"'") }}' -ss -e "SELECT Grant_priv FROM mysql.user WHERE user = '{{ mysql_salt_user }}' AND host = '{{ host }}';"); if [ "$VALUE" = 'Y' ]; then /bin/true; else /bin/false; fi
 {% if os_family in ['RedHat', 'Suse'] %}
     - require_in:
       - mysql_user: mysql_root_password
