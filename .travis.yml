@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+---
 stages:
   - test
   - commitlint
@@ -42,7 +45,7 @@ env:
     # - INSTANCE: default-amazonlinux-2-2017-7-py2
 
 script:
-  - bundle exec kitchen verify ${INSTANCE}
+  - bin/kitchen verify ${INSTANCE}
 
 jobs:
   include:

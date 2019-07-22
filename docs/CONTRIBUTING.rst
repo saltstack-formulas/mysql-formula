@@ -156,3 +156,4 @@ An example of that:
    BREAKING CHANGE: With the removal of all of the `.sls` files under
    `template package`, this formula no longer supports the installation of
    packages.
+

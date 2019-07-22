@@ -1,4 +1,4 @@
-name: mysql
+name: default
 title: mysql formula
 maintainer: SaltStack Formulas
 license: Apache-2.0
@@ -10,3 +10,5 @@ supports:
   - platform-name: fedora
   - platform-name: opensuse
   - platform-name: suse
+  - platform-name: freebsd
+  - platform-name: amazon
