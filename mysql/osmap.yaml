@@ -24,7 +24,7 @@ Ubuntu:
 
 CentOS:
   # https://mariadb.com/blog/rhel7-transition-mysql-mariadb-first-look
-  {%- if salt['grains.get']('osmajorrelease')|int in [7] %}
+  {%- if 'osmajorrelease' in grains and salt['grains.get']('osmajorrelease')|int in [7] %}
     {% set fork = 'mariadb' %}
     {% set service = 'mariadb' %}
   {%- else %}

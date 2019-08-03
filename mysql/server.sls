@@ -29,7 +29,7 @@ mysql_debconf:
     - require:
       - pkg: mysql_debconf_utils
 
-  {% if salt['grains.get']('osmajorrelease')|int < 9 or not salt['grains.get']('os')|lower == 'debian' %}
+  {% if 'osmajorrelease' in grains and salt['grains.get']('osmajorrelease')|int < 9 or not salt['grains.get']('os')|lower == 'debian' %}
 
 mysql_password_debconf:
   debconf.set:
