@@ -194,7 +194,7 @@ mysql:
         enabled: False  #default
         url: https://downloads.mysql.com/archives/get/file/mysql-proxy-0.8.5-osx10.7-x86-32bit.tar.gz
         sum: 'md5=107df22412aa8c483d2021e1af24ee22'
-      connnector:
+      connector:
         enabled: False  #default
         url: https://downloads.mysql.com/archives/get/file/mysql-connector-nodejs-8.0.11.tar.gz
         sum: 'md5=dece7fe5607918ba68499ef07c31508d'
