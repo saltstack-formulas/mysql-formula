@@ -6,7 +6,7 @@ include:
 # Completely ignore non-RHEL based systems
 # TODO: Add Debian and Suse systems.
 # TODO: Allow user to specify MySQL version and alter yum repo file accordingly.
-{% if grains['os_family'] == 'RedHat' %}
+{% if grains['os_family'] == 'RedHat' and `osmajorrelease` in grains %}
   {% if grains['osmajorrelease']|int == 5 %}
   {% set rpm_source = "http://repo.mysql.com/mysql57-community-release-el5.rpm" %}
   {% elif grains['osmajorrelease']|int == 6 %}

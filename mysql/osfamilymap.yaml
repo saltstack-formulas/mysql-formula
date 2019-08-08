@@ -2,7 +2,7 @@
 #
 
 Debian:
-    {% if salt['grains.get']('osmajorrelease')|int >= 9 %}
+    {% if 'osmajorrelease' in grains and salt['grains.get']('osmajorrelease')|int >= 9 %}
   serverpkg: mariadb-server
   service: mariadb
   clientpkg: mariadb-client
@@ -42,13 +42,13 @@ Debian:
         key_buffer_size: 16M
     append: |
       !includedir /etc/mysql/conf.d/
-      # {% if salt['grains.get']('osmajorrelease')|int >= 9 -%}
+      # {% if 'osmajorrelease' in grains and salt['grains.get']('osmajorrelease')|int >= 9 -%}
       # !includedir /etc/mysql/mariadb.conf.d/
       # {%- endif %}
 
 RedHat:
   #https://mariadb.com/blog/rhel7-transition-mysql-mariadb-first-look
-   {%- if salt['grains.get']('osmajorrelease')|int in [7] %}
+   {%- if 'osmajorrelease' in grains and salt['grains.get']('osmajorrelease')|int in [7] %}
      {% set fork = 'mariadb' %}
   serverpkg: mariadb-server
   service: mariadb
@@ -75,7 +75,7 @@ RedHat:
 Suse:
   serverpkg: mariadb
   clientpkg: mariadb-client
-  {%- if salt['grains.get']('osmajorrelease')|int == 42 %}
+  {%- if 'osmajorrelease' in grains and salt['grains.get']('osmajorrelease')|int == 42 %}
     # "old" package name up to Leap 42.x
   pythonpkg: python-PyMySQL
     {% else %}
