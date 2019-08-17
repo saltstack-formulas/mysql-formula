@@ -2,6 +2,15 @@
 Changelog
 =========
 
+`0.52.0 <https://github.com/saltstack-formulas/mysql-formula/compare/v0.51.0...v0.52.0>`_ (2019-08-17)
+----------------------------------------------------------------------------------------------------------
+
+Features
+^^^^^^^^
+
+
+* **yamllint:** include for this repo and apply rules throughout (\ `9f739fa <https://github.com/saltstack-formulas/mysql-formula/commit/9f739fa>`_\ )
+
 `0.51.0 <https://github.com/saltstack-formulas/mysql-formula/compare/v0.50.0...v0.51.0>`_ (2019-08-08)
 ----------------------------------------------------------------------------------------------------------
 
