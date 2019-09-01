@@ -1,6 +1,3 @@
-include:
-  - .config
-
 {% from tpldir ~ "/map.jinja" import mysql with context %}
 
 # Completely ignore non-RHEL based systems
