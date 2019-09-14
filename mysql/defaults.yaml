@@ -26,8 +26,9 @@ mysql:
 
   macos:
     userhomes: /Users
-    user:
-    group:
+    # `user` and `group` are set from `map.jinja`
+    # user: ~
+    # group: ~
     dl:
       tmpdir: /tmp/mysqltmp
       prefix: /usr/local

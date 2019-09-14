@@ -43,7 +43,7 @@ RedHat:
   config:
     file: /etc/my.cnf
     sections:
-      client:
+      client: {}
       mysqld_safe:
         log_error: /var/log/mysql/mysqld.log
         pid_file: /var/run/mysql/mysqld.pid
@@ -63,11 +63,14 @@ Suse:
       client:
         socket: /var/run/mysql/mysql.sock
       mysqld:
+        # Empty values below to be resolved, disabling the rule in the meantime
+        # yamllint disable rule:empty-values
         port:
         user:
         socket:
         datadir:
         tmpdir:
+        # yamllint enable rule:empty-values
         innodb_file_format: Barracuda
         innodb_file_per_table: 'ON'
         server-id: 1
@@ -84,6 +87,8 @@ Arch:
   clientpkg: mariadb-clients
   service: mysqld
   pythonpkg: mysql-python
+  # Empty value below to be resolved, disabling the rule in the meantime
+  # yamllint disable-line rule:empty-values
   dev:
 
   config:
@@ -213,8 +218,11 @@ FreeBSD:
       client:
         socket: /tmp/mysql.sock
       mysqld:
+        # Empty values below to be resolved, disabling the rule in the meantime
+        # yamllint disable rule:empty-values
         user:
         datadir:
+        # yamllint enable rule:empty-values
         socket: /tmp/mysql.sock
         skip-external-locking: noarg_present
         key_buffer_size: 16M

@@ -6,12 +6,26 @@ extends: default
 
 # Files to ignore completely
 # 1. All YAML files under directory `node_modules/`, introduced during the Travis run
-# 2. Any YAML files using Jinja (result in `yamllint` syntax errors)
+# 2. Any SLS files under directory `test/`, which are actually state files
+# 3. Any YAML files using Jinja (result in `yamllint` syntax errors)
 ignore: |
   node_modules/
+  test/**/states/**/*.sls
   mysql/supported_sections.yaml
 
+yaml-files:
+  # Default settings
+  - '*.yaml'
+  - '*.yml'
+  - .yamllint
+  # SaltStack Formulas additional settings
+  - '*.example'
+  - test/**/*.sls
+
 rules:
+  empty-values:
+    forbid-in-block-mappings: true
+    forbid-in-flow-mappings: true
   line-length:
     # Increase from default of `80`
     # Based on https://github.com/PyCQA/flake8-bugbear#opinionated-warnings (`B950`)
