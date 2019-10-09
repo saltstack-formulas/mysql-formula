@@ -32,7 +32,7 @@ include:
 
 {% for host in user_hosts %}
 
-{% set state_id = 'mysql_user_' ~ name ~ '_' ~ host%}
+{% set state_id = 'mysql_user_' ~ name ~ '_' ~ host %}
 {{ state_id }}:
   {%- if user.get('present', True) %}
     mysql_user.present:
@@ -97,7 +97,7 @@ include:
 {{ state_id ~ '_' ~ loop.index0 }}:
   mysql_grants.present:
     - name: {{ name ~ '_' ~ db['database']  ~ '_' ~ db['table'] | default('all') }}
-    - grant: {{db['grants']|join(",")}}
+    - grant: {{ db['grants']|join(",") }}
     - database: '{{ db['database'] }}.{{ db['table'] | default('*') }}'
     - grant_option: {{ db['grant_option'] | default(False) }}
     {% if 'ssl' in user or 'ssl-X509' in user %}
