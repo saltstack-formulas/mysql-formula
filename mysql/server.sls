@@ -116,7 +116,7 @@ mysql_initialize:
   cmd.run:
     - name: mysqld --initialize-insecure --user=mysql --basedir=/usr --datadir={{ mysql_datadir }}
     - runas: root
-    - creates: {{ mysql_datadir}}/mysql/
+    - creates: {{ mysql_datadir }}/mysql/
     - require:
       - pkg: {{ mysql.serverpkg }}
 {% endif %}
@@ -138,7 +138,7 @@ mysql_initialize:
   cmd.run:
     - name: emerge --config {{ mysql.serverpkg }}
     - runas: root
-    - creates: {{ mysql_datadir}}/mysql/
+    - creates: {{ mysql_datadir }}/mysql/
     - require:
       - pkg: {{ mysql.serverpkg }}
 {% endif %}
