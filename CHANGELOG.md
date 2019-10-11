@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.52.2](https://github.com/saltstack-formulas/mysql-formula/compare/v0.52.1...v0.52.2) (2019-10-11)
+
+
+### Bug Fixes
+
+* **rubocop:** add fixes using `rubocop --safe-auto-correct` ([](https://github.com/saltstack-formulas/mysql-formula/commit/fca3b04))
+
+
+### Continuous Integration
+
+* merge travis matrix, add `salt-lint` & `rubocop` to `lint` job ([](https://github.com/saltstack-formulas/mysql-formula/commit/b2b8863))
+* **travis:** merge `rubocop` linter into main `lint` job ([](https://github.com/saltstack-formulas/mysql-formula/commit/26dc562))
+
 ## [0.52.1](https://github.com/saltstack-formulas/mysql-formula/compare/v0.52.0...v0.52.1) (2019-10-10)
 
 
