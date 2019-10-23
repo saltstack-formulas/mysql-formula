@@ -2,6 +2,7 @@
 # vim: ft=yaml
 ---
 exclude_paths: []
+rules: {}
 skip_list:
   # TODO: Formula-specific override to remove eventually
   #       A lot of attention is going to be needed to resolve the existing long lines
