@@ -1,4 +1,4 @@
-{% from tpldir ~ "/map.jinja" import mysql with context %}
+{%- from tpldir ~ "/map.jinja" import mysql with context %}
 
 mysql:
   service.dead:
