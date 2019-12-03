@@ -2,6 +2,43 @@
 Changelog
 =========
 
+`0.52.3 <https://github.com/saltstack-formulas/mysql-formula/compare/v0.52.2...v0.52.3>`_ (2019-12-03)
+----------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **mac_shortcut.sh:** fix ``shellcheck`` errors (\ `7b309f8 <https://github.com/saltstack-formulas/mysql-formula/commit/7b309f8da272ebdcb36dbfa7619a0fc9872a79a7>`_\ )
+* **release.config.js:** use full commit hash in commit link [skip ci] (\ `3f51b8b <https://github.com/saltstack-formulas/mysql-formula/commit/3f51b8bbc231a7455e6763b415221abff636d8a2>`_\ )
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* **kitchen:** use ``debian-10-master-py3`` instead of ``develop`` [skip ci] (\ `5efe938 <https://github.com/saltstack-formulas/mysql-formula/commit/5efe9387fde63e0c09d99d5771f3b623fb934242>`_\ )
+* **kitchen:** use ``develop`` image until ``master`` is ready (\ ``amazonlinux``\ ) [skip ci] (\ `63bfb4a <https://github.com/saltstack-formulas/mysql-formula/commit/63bfb4a0f25b62bdc45c1738d438ce5ec64f2183>`_\ )
+* **kitchen+travis:** upgrade matrix after ``2019.2.2`` release [skip ci] (\ `27ac5a3 <https://github.com/saltstack-formulas/mysql-formula/commit/27ac5a3f684325a8e15736bb85d4774807061534>`_\ )
+* **travis:** apply changes from build config validation [skip ci] (\ `d520848 <https://github.com/saltstack-formulas/mysql-formula/commit/d520848c815a9c2815ee3f1943e3e3962a26c7cf>`_\ )
+* **travis:** opt-in to ``dpl v2`` to complete build config validation [skip ci] (\ `1a8d914 <https://github.com/saltstack-formulas/mysql-formula/commit/1a8d914fbd5e43f78ee2334b9c5ccd51ee65ad57>`_\ )
+* **travis:** quote pathspecs used with ``git ls-files`` [skip ci] (\ `3fb5a82 <https://github.com/saltstack-formulas/mysql-formula/commit/3fb5a82de66dda9a05decc5ee7263729ef913533>`_\ )
+* **travis:** run ``shellcheck`` during lint job [skip ci] (\ `0931835 <https://github.com/saltstack-formulas/mysql-formula/commit/0931835f1cfc77022a43242bd3ab04cbed2a3a02>`_\ )
+* **travis:** update ``salt-lint`` config for ``v0.0.10`` [skip ci] (\ `1512279 <https://github.com/saltstack-formulas/mysql-formula/commit/1512279c2eac26638720461cc7e847d93d2c77d6>`_\ )
+* **travis:** use build config validation (beta) [skip ci] (\ `40d4b97 <https://github.com/saltstack-formulas/mysql-formula/commit/40d4b9763f252f5811d31b2b2df156260bde2b6d>`_\ )
+
+Documentation
+^^^^^^^^^^^^^
+
+
+* **contributing:** remove to use org-level file instead [skip ci] (\ `6afcc80 <https://github.com/saltstack-formulas/mysql-formula/commit/6afcc80396dc4ec2044d8611f18a6ed9075c6a52>`_\ )
+* **readme:** update link to ``CONTRIBUTING`` [skip ci] (\ `01f25a3 <https://github.com/saltstack-formulas/mysql-formula/commit/01f25a3ebfbf59d1db2bec73bc5fef9d8bcafd7e>`_\ )
+
+Performance Improvements
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+* **travis:** improve ``salt-lint`` invocation [skip ci] (\ `1980c63 <https://github.com/saltstack-formulas/mysql-formula/commit/1980c634b9021c7d29be914bd2a63ddf3c31c8ad>`_\ )
+
 `0.52.2 <https://github.com/saltstack-formulas/mysql-formula/compare/v0.52.1...v0.52.2>`_ (2019-10-11)
 ----------------------------------------------------------------------------------------------------------
 
