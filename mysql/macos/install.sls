@@ -21,13 +21,13 @@ mysql-macos-download-{{ product }}-archive:
   cmd.run:
     - name: curl {{ dl.opts }} -o {{ dl.tmpdir }}/{{ archivefile }} {{ data.url }}
     - unless: test -f {{ dl.tmpdir }}/{{ archivefile }}
-      {% if grains['saltversioninfo'] >= [2017, 7, 0] %}
+      {%- if grains['saltversioninfo'] >= [2017, 7, 0] %}
     - retry:
         attempts: {{ dl.retries }}
         interval: {{ dl.interval }}
         until: True
         splay: 10
-      {% endif %}
+      {%- endif %}
     - require:
       - mysql-macos-extract-dirs
 
@@ -93,4 +93,4 @@ mysql-macos-{{ product }}-desktop-shortcut-add:
       - file: mysql-macos-{{ product }}-desktop-shortcut-add
 
     {%- endif %}
-  {% endfor %}
+  {%- endfor %}
