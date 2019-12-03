@@ -2,6 +2,15 @@
 Changelog
 =========
 
+`0.52.4 <https://github.com/saltstack-formulas/mysql-formula/compare/v0.52.3...v0.52.4>`_ (2019-12-03)
+----------------------------------------------------------------------------------------------------------
+
+Styles
+^^^^^^
+
+
+* remove previous line from jinja directives (\ `ec0e2a7 <https://github.com/saltstack-formulas/mysql-formula/commit/ec0e2a765a587d0df94b0afb9f7a4ef78a5319ab>`_\ )
+
 `0.52.3 <https://github.com/saltstack-formulas/mysql-formula/compare/v0.52.2...v0.52.3>`_ (2019-12-03)
 ----------------------------------------------------------------------------------------------------------
 
