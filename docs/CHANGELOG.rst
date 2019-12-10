@@ -2,6 +2,15 @@
 Changelog
 =========
 
+`0.52.5 <https://github.com/saltstack-formulas/mysql-formula/compare/v0.52.4...v0.52.5>`_ (2019-12-10)
+----------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **db_load:** preserve space between -h and -p on the db load ``cmd.wait`` (\ `a05f263 <https://github.com/saltstack-formulas/mysql-formula/commit/a05f263f4b9eac52a5854fd57a6a24f997ccb291>`_\ )
+
 `0.52.4 <https://github.com/saltstack-formulas/mysql-formula/compare/v0.52.3...v0.52.4>`_ (2019-12-03)
 ----------------------------------------------------------------------------------------------------------
 
