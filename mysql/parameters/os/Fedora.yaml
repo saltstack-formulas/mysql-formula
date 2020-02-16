@@ -1,33 +1,25 @@
 # -*- coding: utf-8 -*-
 # vim: ft=yaml
+#
+# Setup variables specific to salt['config.get']('os') == Fedora.
+# You just need to add the key:values for this `os` that differ
+# from `defaults.yaml` + `<osarch>.yaml` + `<os_family>.yaml`.
+#
+# If you do not need to provide defaults via the `os` config,
+# you can remove this file or provide at least an empty dict, e.g.
+# values: {}
+#
+# This file will be merged with `salt.slsutil.merge`:
+#
+# You can select the merging strategy by defining the `strategy` dict
+# with one of: `aggregate`, `list`, `overwrite`, `recurse`, `smart`, e.g.
+# strategy: 'recurse'
+#
+# If you use the `recurse` or `overwrite` strategy, you can aggregate
+# the lists by defining the `merge_lists` dict with a boolean, e.g.
+# merge_lists: 'true'
 ---
-Debian:
-  service: mysql
-
-Ubuntu:
-  service: mysql
-  devpkg: libmysqlclient-dev
-  config:
-    sections:
-      mysqld:
-        tmpdir: /tmp
-        log_error: /var/log/mysql/error.log
-    append: |
-      !includedir /etc/mysql/conf.d/
-
-CentOS:
-  config_directory: /etc/my.cnf.d/
-  server_config:
-    file: server.cnf
-    sections:
-      mysqld_safe:
-        log_error: /var/log/mysql/mysqld.log
-        pid_file: /var/run/mysql/mysqld.pid
-      mysqld:
-        socket: /var/lib/mysql/mysql.sock
-        bind_address: 127.0.0.1
-
-Fedora:
+values:
   serverpkg: mariadb-server
   clientpkg: mariadb
   service: mariadb
@@ -66,8 +58,4 @@ Fedora:
         wsrep_causal_reads: 0
         wsrep_sst_method: rsync
         wsrep_sst_auth: "root:"
-
-Amazon:
-  clientpkg: mysql
-  service: mysqld
-  pythonpkg: MySQL-python
+...
