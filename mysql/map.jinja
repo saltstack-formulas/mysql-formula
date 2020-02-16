@@ -1,55 +1,93 @@
 # -*- coding: utf-8 -*-
 # vim: ft=jinja
 
-{#- Get the `tplroot` from `tpldir` #}
-{%- set tplroot = tpldir.split('/')[0] %}
-{#- Start imports as #}
-{%- import_yaml tplroot ~ "/defaults.yaml" as default_settings %}
-{%- import_yaml tplroot ~ "/osfamilymap.yaml" as osfamilymap %}
-{%- import_yaml tplroot ~ "/osmap.yaml" as osmap %}
-{%- import_yaml tplroot ~ "/osfingermap.yaml" as osfingermap %}
-
-{#- Retrieve the config dict only once #}
-{%- set _config = salt['config.get'](tplroot, default={}) %}
-
+{# mysql-formula specific initialisation #}
 {%- set py_ver_settings = {
       2: {'pythonpkg': 'python-mysqldb'},
       3: {'pythonpkg': 'python3-mysqldb'},
     } %}
 
-{%- set defaults = salt['grains.filter_by'](
-      py_ver_settings,
-      default=grains.pythonversion[0],
-      merge=salt['grains.filter_by'](
-        default_settings,
-        default=tplroot,
-        merge=salt['grains.filter_by'](
-          osfamilymap,
-          grain='os_family',
-          merge=salt['grains.filter_by'](
-            osmap,
-            grain='os',
-            merge=salt['grains.filter_by'](
-              osfingermap,
-              grain='osfinger',
-              merge=salt['grains.filter_by'](
-                _config,
-                default='lookup'
-              )
-            )
-          )
-        )
-      )
-    )
-%}
 
-{%- set config = salt['grains.filter_by'](
-      {'defaults': defaults},
-      default='defaults',
-      merge=_config
-    )
-%}
+{#- Get the `tplroot` from `tpldir` #}
+{%- set tplroot = tpldir.split('/')[0] %}
 
+{# Where to lookup parameters source files #}
+{%- set map_sources_dir = tplroot | path_join('parameters') %}
+
+{#- Load defaults first to allow per formula default map.jinja configuration #}
+{%- set _defaults_filename = map_sources_dir | path_join('defaults.yaml') %}
+{%- do salt.log.debug('map.jinja: initialise parameters from ' ~ _defaults_filename ) %}
+{%- import_yaml _defaults_filename as default_settings %}
+
+{# Reproduce previous behaviour #}
+{%- set default_settings = salt.slsutil.merge(py_ver_settings[grains.pythonversion[0]],
+                                              default_settings) %}
+
+{# List of sources to lookup for parameters #}
+{%- do salt.log.debug('map.jinja: lookup map.jinja configuration sources') %}
+{# Fallback to previously used grains #}
+{%- set map_sources = ['osarch', 'os_family', 'os', 'osfinger'] %}
+{# Configure map.jinja from defaults.yaml #}
+{# Do not use the `traverse` SaltStack jinja2 filter to support version 2017 #}
+{%- set _defaults_map_jinja = default_settings.get('map.jinja', {}) %}
+{%- set map_sources = _defaults_map_jinja.get('sources', map_sources) %}
+
+{# Lookup global sources #}
+{%- set map_sources = salt['config.get']('map.jinja:sources', map_sources) %}
+{# Lookup per formula sources #}
+{%- set map_sources = salt['config.get'](tplroot ~ ':map.jinja:sources', map_sources) %}
+
+{%- do salt.log.debug('map.jinja: load parameters with sources from ' ~ map_sources) %}
+
+{# Work around assignment inside for loop #}
+{# Do not clobber namespace with too much variables #}
+{%- set _config = { 'stack': default_settings, 'formula': {} } %}
+
+{%- for map_source in map_sources %}
+  {# Lookup the grain/pillar/... #}
+  {# Fallback to use the source name as a direct filename #}
+  {%- set map_values = salt['config.get'](map_source, []) %}
+
+  {# Mangle `map_source` to use it as literal path #}
+  {%- if map_values|length == 0 %}
+    {%- set map_source_parts = map_source.split('/') %}
+    {%- set map_source = map_source_parts[0:-1] | join('/') %}
+    {%- set map_values = map_source_parts[-1].rstrip('.yaml') %}
+  {%- endif %}
+
+  {# Some configuration return list #}
+  {%- if map_values is string %}
+    {%- set map_values = [map_values] %}
+  {%- endif %}
+
+  {%- for map_value in map_values %}
+    {%- set yamlfile = map_sources_dir | path_join(map_source, map_value ~ '.yaml') %}
+    {%- do salt.log.debug('map.jinja: load parameters from file ' ~ yamlfile) %}
+    {%- load_yaml as loaded_values %}
+      {%- include yamlfile ignore missing %}
+    {%- endload %}
+
+    {%- if loaded_values %}
+      {# Merge loaded values on the stack #}
+      {%- do salt.log.debug('map.jinja: merge parameters from ' ~ yamlfile) %}
+      {%- do _config.update({'stack': salt.slsutil.merge(_config['stack'],
+                                                         loaded_values.get('values', {}),
+                                                         strategy=loaded_values.get('strategy', 'smart'),
+                                                         merge_lists=loaded_values.get('merge_lists', False) | to_bool)})
+        %}
+    {%- endif %}
+  {%- endfor %}
+{%- endfor %}
+
+{#- Retrieve the config dict only once #}
+{%- do _config.update({'formula': salt['config.get'](tplroot, default={})}) %}
+
+{# Merge the lookup dict at top level #}
+{%- set config = salt.slsutil.merge(_config['stack'], _config['formula'].get('lookup', {})) %}
+{# Merge the config dict #}
+{%- set config = salt.slsutil.merge(config, _config['formula']) %}
+
+{%- do salt.log.debug('map.jinja: save parameters in variable "mysql"') %}
 {%- set mysql = config %}
 
 {#- Post-processing for specific non-YAML customisations #}
