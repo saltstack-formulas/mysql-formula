@@ -1,0 +1,68 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+#
+# Setup variables specific to salt['config.get']('os_family') == Arch.
+# You just need to add the key:values for this `os_family` that differ
+# from `defaults.yaml` + `<osarch>.yaml`.
+#
+# If you do not need to provide defaults via the `os_family` config,
+# you can remove this file or provide at least an empty dict, e.g.
+# values: {}
+#
+# This file will be merged with `salt.slsutil.merge`:
+#
+# You can select the merging strategy by defining the `strategy` dict
+# with one of: `aggregate`, `list`, `overwrite`, `recurse`, `smart`, e.g.
+# strategy: 'recurse'
+#
+# If you use the `recurse` or `overwrite` strategy, you can aggregate
+# the lists by defining the `merge_lists` dict with a boolean, e.g.
+# merge_lists: 'true'
+---
+values:
+  serverpkg: mariadb
+  clientpkg: mariadb-clients
+  service: mysqld
+  pythonpkg: mysql-python
+  # Empty value below to be resolved, disabling the rule in the meantime
+  # yamllint disable-line rule:empty-values
+  dev:
+
+  config:
+    sections:
+      client:
+        socket: /run/mysqld/mysqld.sock
+      mysqld:
+        datadir: /var/lib/mysql
+        socket: /run/mysqld/mysqld.sock
+        symbolic_links: 0
+        log-bin: mysql-bin
+        key_buffer_size: 16M
+        max_allowed_packet: 1M
+        table_open_cache: 64
+        sort_buffer_size: 512K
+        net_buffer_length: 8K
+        read_buffer_size: 256K
+        read_rnd_buffer_size: 512K
+        myisam_sort_buffer_size: 8M
+        binlog_format: mixed
+        server-id: 1
+        skip-external-locking: noarg_present
+
+      mysqldump:
+        max_allowed_packet: 16M
+        quick: noarg_present
+
+      mysql:
+        no-auto-rehash: noarg_present
+
+      myisamchk:
+        key_buffer_size: 20M
+        sort_buffer_size: 20M
+        read_buffer: 2M
+        write_buffer: 2M
+
+      mysqlhotcopy:
+        interactive-timeout: noarg_present
+
+...

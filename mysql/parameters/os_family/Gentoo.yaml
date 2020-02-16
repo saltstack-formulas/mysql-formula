@@ -1,0 +1,99 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+#
+# Setup variables specific to salt['config.get']('os_family') == Gentoo.
+# You just need to add the key:values for this `os_family` that differ
+# from `defaults.yaml` + `<osarch>.yaml`.
+#
+# If you do not need to provide defaults via the `os_family` config,
+# you can remove this file or provide at least an empty dict, e.g.
+# values: {}
+#
+# This file will be merged with `salt.slsutil.merge`:
+#
+# You can select the merging strategy by defining the `strategy` dict
+# with one of: `aggregate`, `list`, `overwrite`, `recurse`, `smart`, e.g.
+# strategy: 'recurse'
+#
+# If you use the `recurse` or `overwrite` strategy, you can aggregate
+# the lists by defining the `merge_lists` dict with a boolean, e.g.
+# merge_lists: 'true'
+---
+values:
+  serverpkg: dev-db/mysql
+  clientpkg: dev-db/mysql
+  pythonpkg: dev-python/mysql-python
+  devpkg: dev-db/mysqlced
+
+  config:
+    sections:
+      mysql:
+        character_sets_dir: /usr/share/mysql/charsets
+        default_character_set: utf8
+      mysqladmin:
+        character_sets_dir: /usr/share/mysql/charsets
+        default_character_set: utf8
+      mysqlcheck:
+        character_sets_dir: /usr/share/mysql/charsets
+        default_character_set: utf8
+      mysqldump:
+        character_sets_dir: /usr/share/mysql/charsets
+        default_character_set: utf8
+        quick: noarg_present
+        max_allowed_packet: 16M
+      mysqlimport:
+        character_sets_dir: /usr/share/mysql/charsets
+        default_character_set: utf8
+      mysqlshow:
+        character_sets_dir: /usr/share/mysql/charsets
+        default_character_set: utf8
+      myisamchk:
+        character_sets_dir: /usr/share/mysql/charsets
+        key_buffer: 20M   ## ????? key_buffer_size ?
+        sort_buffer_size: 20M
+        read_buffer: 2M
+        write_buffer: 2M
+      myisampack:
+        character_sets_dir: /usr/share/mysql/charsets
+      mysqld_safe:
+        err_log: /var/log/mysql/mysql.err
+      mysqld:
+        character_set_serverpkg: utf8
+        # note: the gentoo init.d script specifically needs pid-file
+        # (dash not underscore)
+        pid-file: /var/run/mysqld/mysqld.pid
+        log_error: /var/log/mysql/mysqld.err
+        basedir: /usr
+        datadir: /var/lib/mysql
+        skip_external_locking: noarg_present
+        key_buffer_size: 16M
+        max_allowed_packet: 1M
+        table_open_cache: 64
+        sort_buffer_size: 512K
+        net_buffer_length: 8K
+        read_buffer_size: 256K
+        read_rnd_buffer_size: 512K
+        myisam_sort_buffer_size: 8M
+        language: /usr/share/mysql/english
+        bind_address: 127.0.0.1
+        log_bin: noarg_present
+        server_id: 1
+        tmpdir: /tmp
+        innodb_buffer_pool_size: 16M
+        innodb_additional_mem_pool_size: 2M
+        innodb_data_file_path: ibdata1:10M:autoextend:max:128M
+        innodb_log_file_size: 5M
+        innodb_log_buffer_size: 8M
+        innodb_log_files_in_group: 2
+        innodb_flush_log_at_trx_commit: 1
+        innodb_lock_wait_timeout: 50
+        innodb_file_per_table: noarg_present
+      isamchk:
+        key_buffer: 20M   ## ????? key_buffer_size ?
+        sort_buffer_size: 20M
+        read_buffer: 2M
+        write_buffer: 2M
+      mysqlhotcopy:
+        interactive_timeout: noarg_present
+
+...
