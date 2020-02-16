@@ -1,0 +1,31 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+#
+# Setup variables specific to salt['config.get']('osfinger') == Debian-10.
+# You just need to add the key:values for this `osfinger` that differ
+# from `defaults.yaml`.
+#
+# If you do not need to provide defaults via the `osfinger` config,
+# you can remove this file or provide at least an empty dict, e.g.
+# values: {}
+#
+# This file will be merged with `salt.slsutil.merge`:
+#
+# You can select the merging strategy by defining the `strategy` dict
+# with one of: `aggregate`, `list`, `overwrite`, `recurse`, `smart`, e.g.
+# strategy: 'recurse'
+#
+# If you use the `recurse` or `overwrite` strategy, you can aggregate
+# the lists by defining the `merge_lists` dict with a boolean, e.g.
+# merge_lists: 'true'
+---
+values:
+  serverpkg: mariadb-server
+  service: mariadb
+  clientpkg: mariadb-client
+  devpkg: libmariadbclient-dev
+  config:
+    append: |
+      !includedir /etc/mysql/conf.d/
+      # !includedir /etc/mysql/mariadb.conf.d/
+...

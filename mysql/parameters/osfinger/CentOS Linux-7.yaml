@@ -1,0 +1,38 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+#
+# Setup variables specific to salt['config.get']('osfinger') == CentOS Linux-7.
+# You just need to add the key:values for this `osfinger` that differ
+# from `defaults.yaml`.
+#
+# If you do not need to provide defaults via the `osfinger` config,
+# you can remove this file or provide at least an empty dict, e.g.
+# values: {}
+#
+# This file will be merged with `salt.slsutil.merge`:
+#
+# You can select the merging strategy by defining the `strategy` dict
+# with one of: `aggregate`, `list`, `overwrite`, `recurse`, `smart`, e.g.
+# strategy: 'recurse'
+#
+# If you use the `recurse` or `overwrite` strategy, you can aggregate
+# the lists by defining the `merge_lists` dict with a boolean, e.g.
+# merge_lists: 'true'
+---
+values:
+  # https://mariadb.com/blog/rhel7-transition-mysql-mariadb-first-look
+  serverpkg: mariadb-server
+  service: mariadb
+  clientpkg: mariadb
+  devpkg: mariadb-devel
+  config:
+    sections:
+      mysqld_safe:
+        log_error: /var/log/mariadb/mysqld.log
+        pid_file: /var/run/mariadb/mysqld.pid
+  server_config:
+    sections:
+      mysqld_safe:
+        log_error: /var/log/mariadb/mysqld.log
+        pid_file: /var/run/mariadb/mysqld.pid
+...
