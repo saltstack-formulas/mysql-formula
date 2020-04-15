@@ -3,3 +3,4 @@
 mysql_python:
   pkg.installed:
     - name: {{ mysql.pythonpkg }}
+    - reload_modules: True
