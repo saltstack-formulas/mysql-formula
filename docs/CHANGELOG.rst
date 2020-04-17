@@ -2,6 +2,23 @@
 Changelog
 =========
 
+`0.52.6 <https://github.com/saltstack-formulas/mysql-formula/compare/v0.52.5...v0.52.6>`_ (2020-04-17)
+----------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **reload-modules:** do ``reload_modules`` on py module installation (\ `2b6e704 <https://github.com/saltstack-formulas/mysql-formula/commit/2b6e704c96d0373aadb56f90d758c960f538abdb>`_\ )
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* **gemfile:** restrict ``train`` gem version until upstream fix [skip ci] (\ `04f75a7 <https://github.com/saltstack-formulas/mysql-formula/commit/04f75a7a3b43de9425a8f36dc202b7ecf0c4f856>`_\ )
+* **kitchen:** avoid using bootstrap for ``master`` instances [skip ci] (\ `ef7a2ce <https://github.com/saltstack-formulas/mysql-formula/commit/ef7a2ce2d857dd271ec0704ab951c8337cb6b64e>`_\ )
+* **travis:** use ``major.minor`` for ``semantic-release`` version [skip ci] (\ `b4f5f79 <https://github.com/saltstack-formulas/mysql-formula/commit/b4f5f79781631d7d31061b880df3066ac5bc5860>`_\ )
+
 `0.52.5 <https://github.com/saltstack-formulas/mysql-formula/compare/v0.52.4...v0.52.5>`_ (2019-12-10)
 ----------------------------------------------------------------------------------------------------------
 
