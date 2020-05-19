@@ -2,6 +2,23 @@
 Changelog
 =========
 
+`0.52.7 <https://github.com/saltstack-formulas/mysql-formula/compare/v0.52.6...v0.52.7>`_ (2020-05-19)
+----------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **osfamilymap.yaml:** update SUSE defaults (\ `8ee79a7 <https://github.com/saltstack-formulas/mysql-formula/commit/8ee79a7bb03488e4c3632a1dcfe143696a11aad5>`_\ )
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* **gemfile.lock:** add to repo with updated ``Gemfile`` [skip ci] (\ `9e9fa3e <https://github.com/saltstack-formulas/mysql-formula/commit/9e9fa3e3d15e25ad22f75eae61af4883c79b7c0f>`_\ )
+* **kitchen+travis:** remove ``master-py2-arch-base-latest`` [skip ci] (\ `c1dddc3 <https://github.com/saltstack-formulas/mysql-formula/commit/c1dddc3a8d561847094bbe23fe2c764c8fdf79de>`_\ )
+* **workflows/commitlint:** add to repo [skip ci] (\ `b4c6570 <https://github.com/saltstack-formulas/mysql-formula/commit/b4c65702b91e8813741bf72008e41d1d8dfc735d>`_\ )
+
 `0.52.6 <https://github.com/saltstack-formulas/mysql-formula/compare/v0.52.5...v0.52.6>`_ (2020-04-17)
 ----------------------------------------------------------------------------------------------------------
 
