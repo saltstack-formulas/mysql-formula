@@ -55,13 +55,13 @@ RedHat:
 Suse:
   serverpkg: mariadb
   clientpkg: mariadb-client
-  pythonpkg: python2-pymysql
+  pythonpkg: python3-PyMySQL
 
   config:
     file: /etc/my.cnf
     sections:
       client:
-        socket: /var/run/mysql/mysql.sock
+        socket: /run/mysql/mysql.sock
       mysqld:
         # Empty values below to be resolved, disabling the rule in the meantime
         # yamllint disable rule:empty-values
