@@ -21,6 +21,15 @@ Debian-9:
       !includedir /etc/mysql/conf.d/
       # !includedir /etc/mysql/mariadb.conf.d/
 # Ubuntu
+Ubuntu-20.04:
+  serverpkg: mariadb-server
+  service: mariadb
+  clientpkg: mariadb-client
+  devpkg: libmariadbclient-dev
+  config:
+    append: |
+      !includedir /etc/mysql/conf.d/
+      # !includedir /etc/mysql/mariadb.conf.d/
 Ubuntu-18.04:
   serverpkg: mariadb-server
   # service: mariadb
