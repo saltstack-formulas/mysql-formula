@@ -1,5 +1,18 @@
 # Changelog
 
+# [0.53.0](https://github.com/saltstack-formulas/mysql-formula/compare/v0.52.7...v0.53.0) (2020-06-01)
+
+
+### Continuous Integration
+
+* **kitchen+travis:** use latest pre-salted images ([7ea518a](https://github.com/saltstack-formulas/mysql-formula/commit/7ea518a3919f1a59bc6ae821bc0df7577629059a))
+* **travis:** add notifications => zulip [skip ci] ([8adfc4b](https://github.com/saltstack-formulas/mysql-formula/commit/8adfc4bb4fbb49548cf46d277a0403b89c180b1a))
+
+
+### Features
+
+* **focal:** add settings for `ubuntu-20.04` ([0d77164](https://github.com/saltstack-formulas/mysql-formula/commit/0d77164f394909ec371f39cb41a4920c82e75052))
+
 ## [0.52.7](https://github.com/saltstack-formulas/mysql-formula/compare/v0.52.6...v0.52.7) (2020-05-19)
 
 
