@@ -42,6 +42,9 @@ include:
       - password_hash: '{{ user['password_hash'] }}'
     {%- elif user['password'] is defined and user['password'] != None %}
       - password: '{{ user['password'] }}'
+    {%- elif user['unix_socket'] is defined and user['unix_socket'] != None %}
+      - allow_passwordless: True
+      - unix_socket: True
     {%- else %}
       - allow_passwordless: True
     {%- endif %}
