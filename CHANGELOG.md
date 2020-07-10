@@ -1,5 +1,17 @@
 # Changelog
 
+# [0.54.0](https://github.com/saltstack-formulas/mysql-formula/compare/v0.53.0...v0.54.0) (2020-07-10)
+
+
+### Continuous Integration
+
+* **kitchen:** use `saltimages` Docker Hub where available [skip ci] ([b37a8a7](https://github.com/saltstack-formulas/mysql-formula/commit/b37a8a7c970cb30ed18f04c4103c5f553557699d))
+
+
+### Features
+
+* **socket_authentication:** allow unix_socket authentication ([8eccd5a](https://github.com/saltstack-formulas/mysql-formula/commit/8eccd5a68cadde02f54467a7fb9e370d2ee7d574))
+
 # [0.53.0](https://github.com/saltstack-formulas/mysql-formula/compare/v0.52.7...v0.53.0) (2020-06-01)
 
 
