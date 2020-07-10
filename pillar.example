@@ -135,6 +135,13 @@ mysql:
         - database: bar
           table: foobar
           grants: ['select', 'insert', 'update', 'delete']
+
+    # User 'alice' will be allowed to connect to the server without password
+    # as long as she has access to the unix socket.
+    # This option forces allow_passwordless to be set to True
+    alice:
+      host: 'localhost'
+      unix_socket: true
     nopassuser:
       password: ~
       host: localhost
