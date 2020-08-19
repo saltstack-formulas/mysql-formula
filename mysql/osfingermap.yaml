@@ -31,9 +31,9 @@ Ubuntu-20.04:
       !includedir /etc/mysql/conf.d/
       # !includedir /etc/mysql/mariadb.conf.d/
 Ubuntu-18.04:
-  serverpkg: mariadb-server
+  serverpkg: mariadb-server-10.1
   # service: mariadb
-  clientpkg: mariadb-client
+  clientpkg: mariadb-client-10.1
   # devpkg: libmariadbclient-dev
 Ubuntu-16.04:
   serverpkg: mariadb-server
