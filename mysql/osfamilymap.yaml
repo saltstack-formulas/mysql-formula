@@ -206,14 +206,14 @@ Gentoo:
         interactive_timeout: noarg_present
 
 FreeBSD:
-  serverpkg: mysql56-server
-  clientpkg: mysql56-client
+  serverpkg: mysql57-server
+  clientpkg: mysql57-client
   service: mysql-server
-  pythonpkg: py27-pymysql
-  devpkg: mysql56-server
+  pythonpkg: py37-pymysql
+  devpkg: mysql57-server
 
   config:
-    file: /usr/local/etc/my.cnf
+    file: /usr/local/etc/mysql/my.cnf
     sections:
       client:
         socket: /tmp/mysql.sock
@@ -221,7 +221,7 @@ FreeBSD:
         # Empty values below to be resolved, disabling the rule in the meantime
         # yamllint disable rule:empty-values
         user:
-        datadir:
+        datadir: /var/db/mysql
         # yamllint enable rule:empty-values
         socket: /tmp/mysql.sock
         skip-external-locking: noarg_present

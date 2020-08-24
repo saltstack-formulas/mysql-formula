@@ -143,13 +143,29 @@ mysql_initialize:
       - pkg: {{ mysql.serverpkg }}
 {%- endif %}
 
+{%- if os_family in ['FreeBSD'] and mysql.serverpkg.lower() != 'mariadb-server' %}
+mysql_initialize:
+ file.directory:
+   - name: /var/log/mysql
+   - user: mysql
+   - group: mysql
+   - mode: '0750'
+  cmd.run:
+    - name: /usr/local/libexec/mysqld --initialize-insecure --user=mysql --basedir=/usr/local --datadir={{ mysql_datadir }}
+    - runas: root
+    - creates: {{ mysql_datadir }}/mysql/
+    - require:
+      - pkg: {{ mysql.serverpkg }}
+      - file: /var/log/mysql
+{%- endif %}
+
 mysqld-service-running:
   service.running:
     - name: {{ mysql.service }}
     - enable: True
     - require:
       - pkg: {{ mysql.serverpkg }}
-{%- if (os_family in ['RedHat', 'Suse'] and mysql.version is defined and mysql.version >= 5.7 and mysql.serverpkg.lower() != 'mariadb-server') or (os_family in ['Gentoo']) %}
+{%- if (os_family in ['RedHat', 'Suse'] and mysql.version is defined and mysql.version >= 5.7 and mysql.serverpkg.lower() != 'mariadb-server') or (os_family in ['Gentoo', 'FreeBSD']) %}
       - cmd: mysql_initialize
 {%- elif os_family in ['RedHat', 'Suse'] and mysql.serverpkg.lower() == 'mariadb-server' %}
       - file: {{ mysql_datadir }}
