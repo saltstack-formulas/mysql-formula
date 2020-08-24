@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.54.1](https://github.com/saltstack-formulas/mysql-formula/compare/v0.54.0...v0.54.1) (2020-08-24)
+
+
+### Bug Fixes
+
+* **freebsd:** upgrade to mysql57-server ([ec68199](https://github.com/saltstack-formulas/mysql-formula/commit/ec681995b4f7e23a8dbec63809d3704f19ec9299))
+
 # [0.54.0](https://github.com/saltstack-formulas/mysql-formula/compare/v0.53.0...v0.54.0) (2020-07-10)
 
 
