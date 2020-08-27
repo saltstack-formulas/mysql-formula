@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.54.2](https://github.com/saltstack-formulas/mysql-formula/compare/v0.54.1...v0.54.2) (2020-08-27)
+
+
+### Bug Fixes
+
+* **indent:** properly indent file.directory block ([7791268](https://github.com/saltstack-formulas/mysql-formula/commit/7791268d133d557d21414365db59dc14c8f97f74)), closes [#250](https://github.com/saltstack-formulas/mysql-formula/issues/250)
+
 ## [0.54.1](https://github.com/saltstack-formulas/mysql-formula/compare/v0.54.0...v0.54.1) (2020-08-24)
 
 
