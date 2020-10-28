@@ -6,6 +6,7 @@
 
 include:
   - .python
+  - .server
 
 mysql remove test database:
   mysql_database.absent:
@@ -17,3 +18,5 @@ mysql remove test database:
     - connection_pass: '{{ mysql_salt_pass }}'
     {%- endif %}
     - connection_charset: utf8
+    - require:
+      - service: mysqld-service-running

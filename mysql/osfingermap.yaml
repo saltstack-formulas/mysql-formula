@@ -42,8 +42,11 @@ Ubuntu-16.04:
   # devpkg: libmariadbclient-dev
 
 # Redhat
+Red Hat Enterprise Linux Server-6:
+  pythonpkg: MySQL-python
 Redhat-7:
   # https://mariadb.com/blog/rhel7-transition-mysql-mariadb-first-look
+  pythonpkg: MySQL-python
   serverpkg: mariadb-server
   service: mariadb
   clientpkg: mariadb
@@ -53,9 +56,13 @@ Redhat-7:
       mysqld_safe:
         log_error: /var/log/mariadb/mysqld.log
         pid_file: /var/run/mariadb/mysqld.pid
+
 # CentOS
+CentOS-6:
+  pythonpkg: MySQL-python
 CentOS Linux-7:
   # https://mariadb.com/blog/rhel7-transition-mysql-mariadb-first-look
+  pythonpkg: MySQL-python
   serverpkg: mariadb-server
   service: mariadb
   clientpkg: mariadb
@@ -71,6 +78,5 @@ CentOS Linux-7:
         log_error: /var/log/mariadb/mysqld.log
         pid_file: /var/run/mariadb/mysqld.pid
 
-# Suse
-Leap-42:
-  pythonpkg: python-PyMySQL
+CentOS Linux-8:
+  pythonpkg: python3-PyMySQL

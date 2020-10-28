@@ -39,7 +39,7 @@ Debian:
 RedHat:
   service: mysqld
   clientpkg: mysql
-  pythonpkg: MySQL-python
+  pythonpkg: python3-PyMySQL
   config:
     file: /etc/my.cnf
     sections:
