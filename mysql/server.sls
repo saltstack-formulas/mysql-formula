@@ -12,6 +12,7 @@ include:
 {%- set mysql_salt_user = salt['pillar.get']('mysql:salt_user:salt_user_name', mysql_root_user) %}
 {%- set mysql_salt_password = salt['pillar.get']('mysql:salt_user:salt_user_password', mysql_root_password) %}
 {%- set mysql_datadir = salt['pillar.get']('mysql:server:mysqld:datadir', '/var/lib/mysql') %}
+{%- set mysql_unix_socket = salt['pillar.get']('mysql:server:unix_socket', '') %}
 
 {%- if mysql_root_password %}
 {%- if os_family == 'Debian' %}
@@ -62,6 +63,9 @@ mysql_delete_anonymous_user_{{ host }}:
     - connection_user: '{{ mysql_salt_user }}'
     {%- if mysql_salt_password %}
     - connection_pass: '{{ mysql_salt_password }}'
+    {%- endif %}
+    {%- if mysql_unix_socket %}
+    - connection_unix_socket: '{{ mysql_unix_socket }}'
     {%- endif %}
     - connection_charset: utf8
     - require:

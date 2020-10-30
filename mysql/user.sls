@@ -4,6 +4,7 @@
 {%- set mysql_host = salt['pillar.get']('mysql:server:host', 'localhost') %}
 {%- set mysql_salt_user = salt['pillar.get']('mysql:salt_user:salt_user_name', mysql_root_user) %}
 {%- set mysql_salt_pass = salt['pillar.get']('mysql:salt_user:salt_user_password', mysql_root_pass) %}
+{%- set mysql_unix_socket = salt['pillar.get']('mysql:server:unix_socket', '') %}
 
 {%- set user_states = [] %}
 {%- set user_hosts = [] %}
@@ -58,6 +59,9 @@ include:
   {%- if mysql_salt_pass %}
       - connection_pass: '{{ mysql_salt_pass }}'
   {%- endif %}
+  {%- if mysql_unix_socket %}
+      - connection_unix_socket: '{{ mysql_unix_socket }}'
+  {%- endif %}
       - connection_charset: utf8
 
 {%- if 'grants' in user %}
@@ -89,6 +93,9 @@ include:
     - connection_user: '{{ mysql_salt_user }}'
     {%- if mysql_salt_pass %}
     - connection_pass: '{{ mysql_salt_pass }}'
+    {%- endif %}
+    {%- if mysql_unix_socket %}
+    - connection_unix_socket: '{{ mysql_unix_socket }}'
     {%- endif %}
     - connection_charset: utf8
     - require:
@@ -128,6 +135,9 @@ include:
     - connection_pass: '{{ mysql_salt_pass }}'
     {%- endif %}
     - connection_charset: utf8
+    {%- if mysql_unix_socket %}
+    - connection_unix_socket: '{{ mysql_unix_socket }}'
+    {%- endif %}
     - require:
       - mysql_user: {{ state_id }}
 {%- endfor %}
