@@ -40,6 +40,7 @@ mysql:
         - sys
         - information_schema
         - performance_schema
+      explicit_defaults_for_timestamp: 1   # strict ansi supports sane defaults
     mysql:
       # my.cnf param that not require value
       no-auto-rehash: noarg_present
