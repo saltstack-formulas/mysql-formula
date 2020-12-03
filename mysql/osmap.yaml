@@ -1,0 +1,73 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+---
+Debian:
+  service: mysql
+
+Ubuntu:
+  service: mysql
+  devpkg: libmysqlclient-dev
+  config:
+    sections:
+      mysqld:
+        tmpdir: /tmp
+        log_error: /var/log/mysql/error.log
+    append: |
+      !includedir /etc/mysql/conf.d/
+
+CentOS:
+  config_directory: /etc/my.cnf.d/
+  server_config:
+    file: server.cnf
+    sections:
+      mysqld_safe:
+        log_error: /var/log/mysql/mysqld.log
+        pid_file: /var/run/mysql/mysqld.pid
+      mysqld:
+        socket: /var/lib/mysql/mysql.sock
+        bind_address: 127.0.0.1
+
+Fedora:
+  serverpkg: mariadb-server
+  clientpkg: mariadb
+  service: mariadb
+  pythonpkg: python2-mysql
+  config_directory: /etc/my.cnf.d/
+
+  server_config:
+    file: server.cnf
+    sections:
+      mysqld_safe:
+        log_error: /var/log/mariadb/mariadb.log
+        pid_file: /var/lib/mysql/mysql.pid
+      mysqld:
+        socket: /var/lib/mysql/mysql.sock
+        bind_address: 127.0.0.1
+
+  galera_config:
+    file: galera.cnf
+    sections:
+      mysqld:
+        bind-address: 0.0.0.0
+        binlog_format: ROW
+        default-storage-engine: innodb
+        innodb_autoinc_lock_mode: 2
+        wsrep_provider: /usr/lib64/galera/libgalera_smm.so
+        wsrep_cluster_name: "my_wsrep_cluster"
+        wsrep_slave_threads: 1
+        wsrep_certify_nonPK: 1
+        wsrep_max_ws_rows: 131072
+        wsrep_max_ws_size: 1073741824
+        wsrep_debug: 0
+        wsrep_convert_LOCK_to_trx: 0
+        wsrep_retry_autocommit: 1
+        wsrep_auto_increment_control: 1
+        wsrep_drupal_282555_workaround: 0
+        wsrep_causal_reads: 0
+        wsrep_sst_method: rsync
+        wsrep_sst_auth: "root:"
+
+Amazon:
+  clientpkg: mysql
+  service: mysqld
+  pythonpkg: MySQL-python

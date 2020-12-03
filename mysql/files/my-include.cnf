@@ -4,16 +4,15 @@
 {#-
 ===== FETCH DATA =====
 -#}
-{%- from "mysql/defaults.yaml" import rawmap with context -%}
-{%- from "mysql/supported_sections.yaml" import supported_sections with context -%}
-{%- set datamap = salt['grains.filter_by'](rawmap, grain='os', merge=salt['pillar.get']('mysql:global:lookup')) -%}
+{% from tpldir ~ "/map.jinja" import mysql with context %}
+{%- from tpldir ~ "/supported_sections.yaml" import supported_sections with context -%}
 {#-
 ===== COMBINE DATA =====
 -#}
-{%- if "sections" in datamap.config -%}
-{%- set goodParamList = datamap.config.sections -%}
+{%- if "global_config" in mysql and "sections" in mysql.global_config -%}
+{%- set goodParamList = mysql.global_config.sections -%}
 {%- for section_name in supported_sections -%}
-    {%- set sectdict = datamap.config.sections[section_name] | default({}) -%}
+    {%- set sectdict = mysql.global_config.sections[section_name] | default({}) -%}
     {%- for mparam, mvalue in salt['pillar.get']('mysql:global:'+section_name, {}).items() -%}
         {%- set mparamUnderscore = mparam | replace('-','_') -%}
         {%- do sectdict.update({mparamUnderscore:mvalue}) -%}
@@ -31,6 +30,7 @@
 
 [{{ sname }}]
 {%- for mparam, mvalue in sdata.items()|default([])|sort -%}
+{%- if mvalue is none %}{% continue %}{% endif -%}
 {%- set indents = 40 - mparam|count %}
 {% if mvalue == "noarg_present" -%}
 {{ mparam }}
@@ -44,4 +44,4 @@
 #
 # include all files from the config directory
 #
-!includedir {{ datamap.config_directory }}
+!includedir {{ mysql.config_directory }}
