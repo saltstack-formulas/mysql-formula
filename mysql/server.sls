@@ -59,7 +59,7 @@ mysql_password_debconf:
 {% else %}
 mysql_password_debconf:
   debconf.set:
-    - name: {{ mysql.serverpkg }}
+    - name: mysql-server
     - data:
         '{{ mysql.serverpkg }}/root_password': {'type': 'password', 'value': '{{ mysql_root_password }}'}
         '{{ mysql.serverpkg }}/root_password_again': {'type': 'password', 'value': '{{ mysql_root_password }}'}
