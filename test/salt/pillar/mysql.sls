@@ -18,14 +18,14 @@ mysql:
 
   server:
     # Use this account for database admin (defaults to root)
-    root_user: 'admin'
+    # root_user: 'admin'
     # root_password: '' - to have root@localhost without password
     root_password: 'somepass'
     root_password_hash: '*13883BDDBE566ECECC0501CDE9B293303116521A'
     user: mysql
     # If you only manage the dbs and users and the server is on
     # another host
-    host: 123.123.123.123
+    # host: 123.123.123.123
     # my.cnf sections changes
     mysqld:
       # you can use either underscore or hyphen in param names
@@ -44,11 +44,11 @@ mysql:
       # my.cnf param that not require value
       no-auto-rehash: noarg_present
 
-  salt_user:
-    salt_user_name: 'salt'
-    salt_user_password: 'someotherpass'
-    grants:
-      - 'all privileges'
+  # salt_user:
+  #   salt_user_name: 'salt'
+  #   salt_user_password: 'someotherpass'
+  #   grants:
+  #     - 'all privileges'
 
   # Manage config
   config:
@@ -80,8 +80,7 @@ mysql:
       present: false
   schema:
     foo:
-      load: true
-      source: salt://{{ tpldir }}/files/foo.schema
+      load: false
     bar:
       load: false
     baz:
@@ -115,33 +114,26 @@ mysql:
           escape: true
         - database: bar
           grants: ['all privileges']
-    bob:
-      password_hash: '*6C8989366EAF75BB670AD8EA7A7FC1176A95CEF4'
-      host: '%'  # Any host
-      ssl: true
-      ssl-X509: true
-      ssl-SUBJECT: Subject
-      ssl-ISSUER: Name
-      ssl-CIPHER: Cipher
-      databases:
-        # https://github.com/saltstack/salt/issues/41178
-        # If you want to refer to databases using wildcards, turn off escape so
-        # the renderer does not escape them, enclose the string in '`' and
-        # use two '%'
-        - database: '`foo\_%%`'
-          grants: ['all privileges']
-          grant_option: true
-          escape: false
-        - database: bar
-          table: foobar
-          grants: ['select', 'insert', 'update', 'delete']
-
-    # User 'alice' will be allowed to connect to the server without password
-    # as long as she has access to the unix socket.
-    # This option forces allow_passwordless to be set to True
-    alice:
-      host: 'localhost'
-      unix_socket: true
+    # bob:
+    #   password_hash: '*6C8989366EAF75BB670AD8EA7A7FC1176A95CEF4'
+    #   host: '%' # Any host
+    #   ssl: true
+    #   ssl-X509: true
+    #   ssl-SUBJECT: Subject
+    #   ssl-ISSUER: Name
+    #   ssl-CIPHER: Cipher
+    #   databases:
+    #     # https://github.com/saltstack/salt/issues/41178
+    #     # If you want to refer to databases using wildcards, turn off escape so
+    #     # the renderer does not escape them, enclose the string in '`' and
+    #     # use two '%'
+    #     - database: '`foo\_%%`'
+    #       grants: ['all privileges']
+    #       grant_option: true
+    #       escape: false
+    #     - database: bar
+    #       table: foobar
+    #       grants: ['select', 'insert', 'update', 'delete']
     nopassuser:
       password: ~
       host: localhost

@@ -42,7 +42,7 @@ mysql_debconf:
     - require:
       - pkg: mysql_debconf_utils
 
-  {% if salt['grains.get']('osmajorrelease')|int < 9 or not salt['grains.get']('os')|lower == 'debian' %}
+  {%- if 'osmajorrelease' in grains and salt['grains.get']('osmajorrelease')|int < 9 or not salt['grains.get']('os')|lower == 'debian' %}
 
 {% if mysql.serverpkg == 'mysql-community-server' %}
 mysql_password_debconf:
@@ -71,7 +71,7 @@ mysql_password_debconf:
 {% endif %}
  {% endif %}
 
-{% elif os_family in ['RedHat', 'Suse', 'FreeBSD'] %}
+{%- elif os_family in ['RedHat', 'Suse', 'FreeBSD'] %}
 mysql_root_password:
   cmd.run:
     - name: mysqladmin --host "{{ mysql_host }}" --user {{ mysql_root_user }} password '{{ mysql_root_password|replace("'", "'\"'\"'") }}'
@@ -79,7 +79,7 @@ mysql_root_password:
     - require:
       - service: mysqld-service-running
 
-{% for host in {'localhost': '', 'localhost.localdomain': '', salt['grains.get']('fqdn'): ''}.keys() %}
+{%- for host in {'localhost': '', 'localhost.localdomain': '', salt['grains.get']('fqdn'): ''}.keys() %}
 mysql_delete_anonymous_user_{{ host }}:
   mysql_user:
     - absent
@@ -87,9 +87,9 @@ mysql_delete_anonymous_user_{{ host }}:
     - name: ''
     - connection_host: '{{ mysql_host }}'
     - connection_user: '{{ mysql_salt_user }}'
-    {% if mysql_salt_password %}
+    {%- if mysql_salt_password %}
     - connection_pass: '{{ mysql_salt_password }}'
-    {% endif %}
+    {%- endif %}
     - connection_charset: utf8
     - require:
       - service: mysqld-service-running
@@ -100,19 +100,19 @@ mysql_delete_anonymous_user_{{ host }}:
       {%- if (mysql_salt_user != mysql_root_user) %}
       - sls: mysql.salt-user
       {%- endif %}
-{% endfor %}
-{% endif %}
-{% endif %}
+{%- endfor %}
+{%- endif %}
+{%- endif %}
 
-{% if os_family == 'Arch' %}
+{%- if os_family == 'Arch' %}
 # on arch linux: inital mysql datadirectory is not created
 mysql_install_datadir:
   cmd.run:
-{% if mysql.version is defined and mysql.version >= 5.7 %}
+{%- if mysql.version is defined and mysql.version >= 5.7 %}
     - name: mysqld --initialize-insecure --user=mysql --basedir=/usr --datadir={{ mysql_datadir }}
-{% else %}
+{%- else %}
     - name: mysql_install_db --user=mysql --basedir=/usr --datadir={{ mysql_datadir }}
-{% endif %}
+{%- endif %}
     - runas: root
     - creates: {{ mysql_datadir }}/mysql/user.frm
     - env:
@@ -122,33 +122,33 @@ mysql_install_datadir:
       - file: mysql_config
     - require_in:
       - service: mysqld-service-running
-{% endif %}
+{%- endif %}
 
 mysqld-packages:
   pkg.installed:
     - name: {{ mysql.serverpkg }}
-{% if os_family == 'Debian' and mysql_root_password %}
+{%- if os_family == 'Debian' and mysql_root_password %}
     - require:
       - debconf: mysql_debconf
-{% endif %}
+{%- endif %}
     - require_in:
       - file: mysql_config
-{% if "config_directory" in mysql %}
+{%- if "config_directory" in mysql %}
       - file: mysql_config_directory
-{% endif %}
+{%- endif %}
 
-{% if os_family in ['RedHat', 'Suse'] and mysql.version is defined and mysql.version >= 5.7 and mysql.serverpkg.lower() != 'mariadb-server' %}
+{%- if os_family in ['RedHat', 'Suse'] and mysql.version is defined and mysql.version >= 5.7 and mysql.serverpkg.lower() != 'mariadb-server' %}
 # Initialize mysql database with --initialize-insecure option before starting service so we don't get locked out.
 mysql_initialize:
   cmd.run:
     - name: mysqld --initialize-insecure --user=mysql --basedir=/usr --datadir={{ mysql_datadir }}
     - runas: root
-    - creates: {{ mysql_datadir}}/mysql/
+    - creates: {{ mysql_datadir }}/mysql/
     - require:
       - pkg: {{ mysql.serverpkg }}
-{% endif %}
+{%- endif %}
 
-{% if os_family in ['RedHat', 'Suse'] and mysql.serverpkg.lower() == 'mariadb-server' %}
+{%- if os_family in ['RedHat', 'Suse'] and mysql.serverpkg.lower() == 'mariadb-server' %}
 # For MariaDB it's enough to only create the datadir
 mysql_initialize:
   file.directory:
@@ -158,17 +158,33 @@ mysql_initialize:
     - makedirs: True
     - require:
       - pkg: {{ mysql.serverpkg }}
-{% endif %}
+{%- endif %}
 
-{% if os_family in ['Gentoo'] %}
+{%- if os_family in ['Gentoo'] %}
 mysql_initialize:
   cmd.run:
     - name: emerge --config {{ mysql.serverpkg }}
     - runas: root
-    - creates: {{ mysql_datadir}}/mysql/
+    - creates: {{ mysql_datadir }}/mysql/
     - require:
       - pkg: {{ mysql.serverpkg }}
-{% endif %}
+{%- endif %}
+
+{%- if os_family in ['FreeBSD'] and mysql.serverpkg.lower() != 'mariadb-server' %}
+mysql_initialize:
+  file.directory:
+    - name: /var/log/mysql
+    - user: mysql
+    - group: mysql
+    - mode: '0750'
+  cmd.run:
+    - name: /usr/local/libexec/mysqld --initialize-insecure --user=mysql --basedir=/usr/local --datadir={{ mysql_datadir }}
+    - runas: root
+    - creates: {{ mysql_datadir }}/mysql/
+    - require:
+      - pkg: {{ mysql.serverpkg }}
+      - file: /var/log/mysql
+{%- endif %}
 
 mysqld-service-running:
   service.running:
@@ -176,17 +192,17 @@ mysqld-service-running:
     - enable: True
     - require:
       - pkg: {{ mysql.serverpkg }}
-{% if (os_family in ['RedHat', 'Suse'] and mysql.version is defined and mysql.version >= 5.7 and mysql.serverpkg.lower() != 'mariadb-server') or (os_family in ['Gentoo']) %}
+{%- if (os_family in ['RedHat', 'Suse'] and mysql.version is defined and mysql.version >= 5.7 and mysql.serverpkg.lower() != 'mariadb-server') or (os_family in ['Gentoo', 'FreeBSD']) %}
       - cmd: mysql_initialize
-{% elif os_family in ['RedHat', 'Suse'] and mysql.serverpkg.lower() == 'mariadb-server' %}
+{%- elif os_family in ['RedHat', 'Suse'] and mysql.serverpkg.lower() == 'mariadb-server' %}
       - file: {{ mysql_datadir }}
-{% endif %}
+{%- endif %}
     - watch:
       - pkg: {{ mysql.serverpkg }}
       - file: mysql_config
-{% if "config_directory" in mysql and "server_config" in mysql %}
+{%- if "config_directory" in mysql and "server_config" in mysql %}
       - file: mysql_server_config
-{% endif %}
+{%- endif %}
 
 mysql_what_is_status_of_{{ mysql.service }}:
   cmd.run:

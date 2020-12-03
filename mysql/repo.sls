@@ -1,26 +1,26 @@
 include:
   - .config
 
-{% from tpldir ~ "/map.jinja" import mysql with context %}
+{%- from tpldir ~ "/map.jinja" import mysql with context %}
 
 # Completely ignore non-RHEL based systems
 # TODO: Add Debian and Suse systems.
 # TODO: Allow user to specify MySQL version and alter yum repo file accordingly.
-{% if grains['os_family'] == 'RedHat' %}
-  {% if grains['osmajorrelease']|int == 5 %}
-  {% set rpm_source = "http://repo.mysql.com/mysql57-community-release-el5.rpm" %}
-  {% elif grains['osmajorrelease']|int == 6 %}
-  {% set rpm_source = "http://repo.mysql.com/mysql57-community-release-el6.rpm" %}
-  {% elif grains['osmajorrelease']|int == 7 %}
-  {% set rpm_source = "http://repo.mysql.com/mysql57-community-release-el7.rpm" %}
-  {% endif %}
-{% endif %}
+{%- if grains['os_family'] == 'RedHat' and 'osmajorrelease' in grains %}
+  {%- if grains['osmajorrelease']|int == 5 %}
+  {%- set rpm_source = "http://repo.mysql.com/mysql57-community-release-el5.rpm" %}
+  {%- elif grains['osmajorrelease']|int == 6 %}
+  {%- set rpm_source = "http://repo.mysql.com/mysql57-community-release-el6.rpm" %}
+  {%- elif grains['osmajorrelease']|int == 7 %}
+  {%- set rpm_source = "http://repo.mysql.com/mysql57-community-release-el7.rpm" %}
+  {%- endif %}
+{%- endif %}
 
-{% set mysql57_community_release = salt['pillar.get']('mysql:release', false) %}
+{%- set mysql57_community_release = salt['pillar.get']('mysql:release', false) %}
 # A lookup table for MySQL Repo GPG keys & RPM URLs for various RedHat releases
-  {% set pkg = {
+  {%- set pkg = {
     'key': 'http://repo.mysql.com/RPM-GPG-KEY-mysql',
-    'key_hash': 'md5=472a4a4867adfd31a68e8c9bbfacc23d',
+    'key_hash': 'md5=162ec8cb41add661b357e926a083b0cc',
     'rpm': rpm_source
  } %}
 
@@ -38,12 +38,12 @@ mysql57_community_release:
     - require:
       - file: install_pubkey_mysql
     - require_in:
-      {% if "server_config" in mysql %}
+      {%- if "server_config" in mysql %}
       - pkg: {{ mysql.serverpkg }}
-      {% endif %}
-      {% if "clients_config" in mysql %}
+      {%- endif %}
+      {%- if "clients_config" in mysql %}
       - pkg: {{ mysql.clientpkg }}
-      {% endif %}
+      {%- endif %}
 
 set_pubkey_mysql:
   file.replace:

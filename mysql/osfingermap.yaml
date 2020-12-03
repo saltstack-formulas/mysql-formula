@@ -1,0 +1,76 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+---
+# Debian
+Debian-10:
+  serverpkg: mariadb-server
+  service: mariadb
+  clientpkg: mariadb-client
+  devpkg: libmariadbclient-dev
+  config:
+    append: |
+      !includedir /etc/mysql/conf.d/
+      # !includedir /etc/mysql/mariadb.conf.d/
+Debian-9:
+  serverpkg: mariadb-server
+  service: mariadb
+  clientpkg: mariadb-client
+  devpkg: libmariadbclient-dev
+  config:
+    append: |
+      !includedir /etc/mysql/conf.d/
+      # !includedir /etc/mysql/mariadb.conf.d/
+# Ubuntu
+Ubuntu-20.04:
+  serverpkg: mariadb-server
+  service: mariadb
+  clientpkg: mariadb-client
+  devpkg: libmariadbclient-dev
+  config:
+    append: |
+      !includedir /etc/mysql/conf.d/
+      # !includedir /etc/mysql/mariadb.conf.d/
+Ubuntu-18.04:
+  serverpkg: mariadb-server
+  # service: mariadb
+  clientpkg: mariadb-client
+  # devpkg: libmariadbclient-dev
+Ubuntu-16.04:
+  serverpkg: mariadb-server
+  # service: mariadb
+  clientpkg: mariadb-client
+  # devpkg: libmariadbclient-dev
+
+# Redhat
+Redhat-7:
+  # https://mariadb.com/blog/rhel7-transition-mysql-mariadb-first-look
+  serverpkg: mariadb-server
+  service: mariadb
+  clientpkg: mariadb
+  devpkg: mariadb-devel
+  config:
+    sections:
+      mysqld_safe:
+        log_error: /var/log/mariadb/mysqld.log
+        pid_file: /var/run/mariadb/mysqld.pid
+# CentOS
+CentOS Linux-7:
+  # https://mariadb.com/blog/rhel7-transition-mysql-mariadb-first-look
+  serverpkg: mariadb-server
+  service: mariadb
+  clientpkg: mariadb
+  devpkg: mariadb-devel
+  config:
+    sections:
+      mysqld_safe:
+        log_error: /var/log/mariadb/mysqld.log
+        pid_file: /var/run/mariadb/mysqld.pid
+  server_config:
+    sections:
+      mysqld_safe:
+        log_error: /var/log/mariadb/mysqld.log
+        pid_file: /var/run/mariadb/mysqld.pid
+
+# Suse
+Leap-42:
+  pythonpkg: python-PyMySQL
