@@ -17,6 +17,29 @@ include:
 {% if mysql_root_password %}
 {% if os_family == 'Debian' %}
 
+{%   if 'debconf_root_password' in mysql %}
+{%     set debconf_root_password = mysql.debconf_root_password %}
+{%     set debconf_root_password_again = mysql.debconf_root_password_again %}
+{%   elif mysql.server.startswith('percona-server-server') %}
+{%     if mysql.server < 'percona-server-server-5.7' %}{# 5.5 and 5.6 uses the same name... #}
+{%       set debconf_root_password = 'percona-server-server/root_password' %}
+{%       set debconf_root_password_again = 'percona-server-server/root_password_again' %}
+{%     elif '5.7' in mysql.server %}{# 5.7 changed option name... #}
+{%       set debconf_root_password = 'percona-server-server-5.7/root-pass' %}
+{%       set debconf_root_password_again = 'percona-server-server-5.7/re-root-pass' %}
+{%     else %}{# attempt to support future version? #}
+{%       set debconf_root_password = mysql.server + '/root-pass' %}
+{%       set debconf_root_password_again = mysql.server + '/re-root-pass' %}
+{%     endif %}
+{%   else %}
+{%     if salt['grains.get']('osmajorrelease')|int < 9 or not salt['grains.get']('os')|lower == 'debian' %}
+{%       set debconf_root_password = 'mysql-server/root_password' %}
+{%       set debconf_root_password_again = 'mysql-server/root_password_again' %}
+{%     else %}
+{%       set debconf_root_password = False %}
+{%     endif %}
+{%   endif %}
+
 {% if mysql.serverpkg == 'mysql-community-server' %}
 mysql-community-server_repo:
   pkgrepo.managed:
@@ -42,9 +65,8 @@ mysql_debconf:
     - require:
       - pkg: mysql_debconf_utils
 
-  {%- if 'osmajorrelease' in grains and salt['grains.get']('osmajorrelease')|int < 9 or not salt['grains.get']('os')|lower == 'debian' %}
-
-{% if mysql.serverpkg == 'mysql-community-server' %}
+  {%- if debconf_root_password %}
+      {% if mysql.serverpkg == 'mysql-community-server' %}
 mysql_password_debconf:
   debconf.set:
     - name: 'mysql-community-server'
@@ -56,14 +78,14 @@ mysql_password_debconf:
       - pkg: {{ mysql.serverpkg }}
     - require:
       - pkg: mysql_debconf_utils
-{% else %}
+            {% else %}
 mysql_password_debconf:
   debconf.set:
     - name: mysql-server
     - data:
-        '{{ mysql.serverpkg }}/root_password': {'type': 'password', 'value': '{{ mysql_root_password }}'}
-        '{{ mysql.serverpkg }}/root_password_again': {'type': 'password', 'value': '{{ mysql_root_password }}'}
-    - require_in:
+        {{debconf_root_password}}: {'type': 'password', 'value': '{{ mysql_root_password }}'}
+        {{debconf_root_password_again}}: {'type': 'password', 'value': '{{ mysql_root_password }}'}
+    - prereq:
       - pkg: {{ mysql.serverpkg }}
     - require:
       - pkg: mysql_debconf_utils
