@@ -37,11 +37,12 @@ Debian:
 RedHat:
   service: mysqld
   clientpkg: mysql
-  pythonpkg: MySQL-python
+  pythonpkg: python3-PyMySQL
   config:
     file: /etc/my.cnf
     sections:
-      client: {}
+      client:
+        socket: /var/lib/mysql/mysql.sock
       mysqld_safe:
         log_error: /var/log/mysql/mysqld.log
         pid_file: /var/run/mysql/mysqld.pid

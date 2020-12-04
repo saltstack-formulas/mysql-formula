@@ -4,18 +4,18 @@ include:
 
 {% from tpldir ~ "/map.jinja" import mysql with context %}
 
-
-{% set os = salt['grains.get']('os', None) %}
-{% set os_family = salt['grains.get']('os_family', None) %}
-{% set mysql_root_user = salt['pillar.get']('mysql:server:root_user', 'root') %}
-{% set mysql_root_password = salt['pillar.get']('mysql:server:root_password', salt['grains.get']('server_id')) %}
-{% set mysql_host = salt['pillar.get']('mysql:server:host', 'localhost') %}
-{% set mysql_salt_user = salt['pillar.get']('mysql:salt_user:salt_user_name', mysql_root_user) %}
-{% set mysql_salt_password = salt['pillar.get']('mysql:salt_user:salt_user_password', mysql_root_password) %}
-{% set mysql_datadir = salt['pillar.get']('mysql:server:mysqld:datadir', '/var/lib/mysql') %}
-{% set lsb_distrib_codename = salt['grains.get']('lsb_distrib_codename', None) %}
-{% if mysql_root_password %}
-{% if os_family == 'Debian' %}
+{%- set os = salt['grains.get']('os', None) %}
+{%- set os_family = salt['grains.get']('os_family', None) %}
+{%- set mysql_root_user = salt['pillar.get']('mysql:server:root_user', 'root') %}
+{%- set mysql_root_password = salt['pillar.get']('mysql:server:root_password', salt['grains.get']('server_id')) %}
+{%- set mysql_host = salt['pillar.get']('mysql:server:host', 'localhost') %}
+{%- set mysql_salt_user = salt['pillar.get']('mysql:salt_user:salt_user_name', mysql_root_user) %}
+{%- set mysql_salt_password = salt['pillar.get']('mysql:salt_user:salt_user_password', mysql_root_password) %}
+{%- set mysql_datadir = salt['pillar.get']('mysql:server:mysqld:datadir', '/var/lib/mysql') %}
+{%- set mysql_unix_socket = salt['pillar.get']('mysql:server:unix_socket', '') %}
+{%- set lsb_distrib_codename = salt['grains.get']('lsb_distrib_codename', None) %}
+{%- if mysql_root_password %}
+{%- if os_family == 'Debian' %}
 
 {%   if 'debconf_root_password' in mysql %}
 {%     set debconf_root_password = mysql.debconf_root_password %}
@@ -111,6 +111,9 @@ mysql_delete_anonymous_user_{{ host }}:
     - connection_user: '{{ mysql_salt_user }}'
     {%- if mysql_salt_password %}
     - connection_pass: '{{ mysql_salt_password }}'
+    {%- endif %}
+    {%- if mysql_unix_socket %}
+    - connection_unix_socket: '{{ mysql_unix_socket }}'
     {%- endif %}
     - connection_charset: utf8
     - require:
