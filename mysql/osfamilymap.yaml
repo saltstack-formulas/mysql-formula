@@ -20,8 +20,6 @@ Debian:
         max_allowed_packet: 16M
         thread_stack: 192K
         thread_cache_size: 8
-        query_cache_limit: 1M
-        query_cache_size: 16M
         expire_logs_days: 10
         max_binlog_size: 100M
         # innodb_flush_log_at_trx_commit: 1

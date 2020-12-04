@@ -2,7 +2,7 @@ include:
   - .config
   - .python
 
-{%- from tpldir ~ "/map.jinja" import mysql with context %}
+{% from tpldir ~ "/map.jinja" import mysql with context %}
 
 {%- set os = salt['grains.get']('os', None) %}
 {%- set os_family = salt['grains.get']('os_family', None) %}
@@ -13,9 +13,44 @@ include:
 {%- set mysql_salt_password = salt['pillar.get']('mysql:salt_user:salt_user_password', mysql_root_password) %}
 {%- set mysql_datadir = salt['pillar.get']('mysql:server:mysqld:datadir', '/var/lib/mysql') %}
 {%- set mysql_unix_socket = salt['pillar.get']('mysql:server:unix_socket', '') %}
-
+{%- set lsb_distrib_codename = salt['grains.get']('lsb_distrib_codename', None) %}
 {%- if mysql_root_password %}
 {%- if os_family == 'Debian' %}
+
+{%   if 'debconf_root_password' in mysql %}
+{%     set debconf_root_password = mysql.debconf_root_password %}
+{%     set debconf_root_password_again = mysql.debconf_root_password_again %}
+{%   elif mysql.server.startswith('percona-server-server') %}
+{%     if mysql.server < 'percona-server-server-5.7' %}{# 5.5 and 5.6 uses the same name... #}
+{%       set debconf_root_password = 'percona-server-server/root_password' %}
+{%       set debconf_root_password_again = 'percona-server-server/root_password_again' %}
+{%     elif '5.7' in mysql.server %}{# 5.7 changed option name... #}
+{%       set debconf_root_password = 'percona-server-server-5.7/root-pass' %}
+{%       set debconf_root_password_again = 'percona-server-server-5.7/re-root-pass' %}
+{%     else %}{# attempt to support future version? #}
+{%       set debconf_root_password = mysql.server + '/root-pass' %}
+{%       set debconf_root_password_again = mysql.server + '/re-root-pass' %}
+{%     endif %}
+{%   else %}
+{%     if salt['grains.get']('osmajorrelease')|int < 9 or not salt['grains.get']('os')|lower == 'debian' %}
+{%       set debconf_root_password = 'mysql-server/root_password' %}
+{%       set debconf_root_password_again = 'mysql-server/root_password_again' %}
+{%     else %}
+{%       set debconf_root_password = False %}
+{%     endif %}
+{%   endif %}
+
+{% if mysql.serverpkg == 'mysql-community-server' %}
+mysql-community-server_repo:
+  pkgrepo.managed:
+    - humanname: "Mysql official repo"
+    - name: deb http://repo.mysql.com/apt/ubuntu/ {{ lsb_distrib_codename }} mysql-8.0
+    - file: /etc/apt/sources.list.d/mysql.list
+    - refresh: True
+    - require_in:
+      - pkg: mysql-community-server
+{% endif %}
+
 mysql_debconf_utils:
   pkg.installed:
     - name: {{ mysql.debconf_utils }}
@@ -30,20 +65,33 @@ mysql_debconf:
     - require:
       - pkg: mysql_debconf_utils
 
-  {%- if 'osmajorrelease' in grains and salt['grains.get']('osmajorrelease')|int < 9 or not salt['grains.get']('os')|lower == 'debian' %}
-
+  {%- if debconf_root_password %}
+      {% if mysql.serverpkg == 'mysql-community-server' %}
 mysql_password_debconf:
   debconf.set:
-    - name: mysql-server
+    - name: 'mysql-community-server'
     - data:
-        'mysql-server/root_password': {'type': 'password', 'value': '{{ mysql_root_password }}'}
-        'mysql-server/root_password_again': {'type': 'password', 'value': '{{ mysql_root_password }}'}
+        'mysql-community-server/root-pass': {'type': 'password', 'value': '{{ mysql_root_password }}'}
+        'mysql-community-server/re-root-pass': {'type': 'password', 'value': '{{ mysql_root_password }}'}
+        'mysql-server/default-auth-override': {'type': 'string', 'value':'Use Legacy Authentication Method (Retain MySQL 5.x Compatibility)'}
     - require_in:
       - pkg: {{ mysql.serverpkg }}
     - require:
       - pkg: mysql_debconf_utils
+            {% else %}
+mysql_password_debconf:
+  debconf.set:
+    - name: mysql-server
+    - data:
+        {{debconf_root_password}}: {'type': 'password', 'value': '{{ mysql_root_password }}'}
+        {{debconf_root_password_again}}: {'type': 'password', 'value': '{{ mysql_root_password }}'}
+    - prereq:
+      - pkg: {{ mysql.serverpkg }}
+    - require:
+      - pkg: mysql_debconf_utils
 
-  {%- endif %}
+{% endif %}
+ {% endif %}
 
 {%- elif os_family in ['RedHat', 'Suse', 'FreeBSD'] %}
 mysql_root_password:
