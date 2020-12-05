@@ -20,16 +20,16 @@ include:
 {%   if 'debconf_root_password' in mysql %}
 {%     set debconf_root_password = mysql.debconf_root_password %}
 {%     set debconf_root_password_again = mysql.debconf_root_password_again %}
-{%   elif mysql.server.startswith('percona-server-server') %}
-{%     if mysql.server < 'percona-server-server-5.7' %}{# 5.5 and 5.6 uses the same name... #}
+{%   elif mysql.serverpkg.startswith('percona-server-server') %}
+{%     if mysql.serverpkg < 'percona-server-server-5.7' %}{# 5.5 and 5.6 uses the same name... #}
 {%       set debconf_root_password = 'percona-server-server/root_password' %}
 {%       set debconf_root_password_again = 'percona-server-server/root_password_again' %}
-{%     elif '5.7' in mysql.server %}{# 5.7 changed option name... #}
+{%     elif '5.7' in mysql.serverpkg %}{# 5.7 changed option name... #}
 {%       set debconf_root_password = 'percona-server-server-5.7/root-pass' %}
 {%       set debconf_root_password_again = 'percona-server-server-5.7/re-root-pass' %}
 {%     else %}{# attempt to support future version? #}
-{%       set debconf_root_password = mysql.server + '/root-pass' %}
-{%       set debconf_root_password_again = mysql.server + '/re-root-pass' %}
+{%       set debconf_root_password = mysql.serverpkg + '/root-pass' %}
+{%       set debconf_root_password_again = mysql.serverpkg + '/re-root-pass' %}
 {%     endif %}
 {%   else %}
 {%     if salt['grains.get']('osmajorrelease')|int < 9 or not salt['grains.get']('os')|lower == 'debian' %}
