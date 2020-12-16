@@ -1,5 +1,28 @@
 # Changelog
 
+# [0.55.0](https://github.com/saltstack-formulas/mysql-formula/compare/v0.54.2...v0.55.0) (2020-12-16)
+
+
+### Bug Fixes
+
+* **percona:** fix startswith error ([6b39bda](https://github.com/saltstack-formulas/mysql-formula/commit/6b39bda366af83b7080e056b2f3e00408689c44b))
+* **redhat:** added missing client socket ([b0f370c](https://github.com/saltstack-formulas/mysql-formula/commit/b0f370cf8b60e2e8a9e281f945ae2ab435a2e63c))
+* **redhat:** update python library, add missing  deps ([3cab000](https://github.com/saltstack-formulas/mysql-formula/commit/3cab000c89e5032dd7b7fc0c7cd7a68696e2445b))
+* **server:** fix `salt-lint` violations [skip ci] ([2d1c7c3](https://github.com/saltstack-formulas/mysql-formula/commit/2d1c7c30e60b2f8a50a3964b82cb43cc5d54709b))
+
+
+### Continuous Integration
+
+* **gitlab-ci:** use GitLab CI as Travis CI replacement ([fb50e26](https://github.com/saltstack-formulas/mysql-formula/commit/fb50e26f6a2bfa38f8ed57981f4ba730cf43c34d))
+* **pre-commit:** add to formula [skip ci] ([11e6460](https://github.com/saltstack-formulas/mysql-formula/commit/11e646082ec3846045edde20411615c7c0f3479b))
+* **pre-commit:** enable/disable `rstcheck` as relevant [skip ci] ([87cb5b7](https://github.com/saltstack-formulas/mysql-formula/commit/87cb5b7c4f6096902dd97a4eeda2c238de5b0fa9))
+* **pre-commit:** finalise `rstcheck` configuration [skip ci] ([92bf43a](https://github.com/saltstack-formulas/mysql-formula/commit/92bf43a3b79fa3b1cee0f43de98dd9aac1ea2a6c))
+
+
+### Features
+
+* **credentials:** add socket access ([1c70b0a](https://github.com/saltstack-formulas/mysql-formula/commit/1c70b0abc106fbce2d7f95feaf9f02dd64cddfcf))
+
 ## [0.54.2](https://github.com/saltstack-formulas/mysql-formula/compare/v0.54.1...v0.54.2) (2020-08-27)
 
 
