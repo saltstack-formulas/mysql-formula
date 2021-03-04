@@ -9,10 +9,10 @@
 {#-
 ===== COMBINE DATA =====
 -#}
-{%- if "sections" in mysql.config -%}
-{%- set goodParamList = mysql.config.sections -%}
+{%- if "global_config" in mysql and "sections" in mysql.global_config -%}
+{%- set goodParamList = mysql.global_config.sections -%}
 {%- for section_name in supported_sections -%}
-    {%- set sectdict = mysql.config.sections[section_name] | default({}) -%}
+    {%- set sectdict = mysql.global_config.sections[section_name] | default({}) -%}
     {%- for mparam, mvalue in salt['pillar.get']('mysql:global:'+section_name, {}).items() -%}
         {%- set mparamUnderscore = mparam | replace('-','_') -%}
         {%- do sectdict.update({mparamUnderscore:mvalue}) -%}
@@ -30,6 +30,7 @@
 
 [{{ sname }}]
 {%- for mparam, mvalue in sdata.items()|default([])|sort -%}
+{%- if mvalue is none %}{% continue %}{% endif -%}
 {%- set indents = 40 - mparam|count %}
 {% if mvalue == "noarg_present" -%}
 {{ mparam }}

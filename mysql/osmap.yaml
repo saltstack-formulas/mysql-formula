@@ -1,5 +1,8 @@
-# vim: ft=sls
-# vim: sts=2 ts=2 sw=2 et ai
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+---
+Debian:
+  service: mysql
 
 Ubuntu:
   service: mysql
@@ -13,22 +16,13 @@ Ubuntu:
       !includedir /etc/mysql/conf.d/
 
 CentOS:
-  # https://mariadb.com/blog/rhel7-transition-mysql-mariadb-first-look
-  {%- if salt['grains.get']('osmajorrelease')|int in [7] %}
-    {% set fork = 'mariadb' %}
-    {% set service = 'mariadb' %}
-  {%- else %}
-    {% set fork = 'mysql' %}
-    {% set service = 'mysqld' %}
-  {%- endif %}
-
   config_directory: /etc/my.cnf.d/
   server_config:
     file: server.cnf
     sections:
       mysqld_safe:
-        log_error: /var/log/{{ fork }}/mysqld.log
-        pid_file: /var/run/{{ fork }}/mysqld.pid
+        log_error: /var/log/mysql/mysqld.log
+        pid_file: /var/run/mysql/mysqld.pid
       mysqld:
         socket: /var/lib/mysql/mysql.sock
         bind_address: 127.0.0.1

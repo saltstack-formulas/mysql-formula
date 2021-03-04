@@ -1,27 +1,198 @@
-language: ruby
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+---
+################################################################################
+# NOTE: This file is UNMAINTAINED; it is provided for references purposes only.
+#       No guarantees are tendered that this structure will work after 2020.
+################################################################################
+# * https://en.wikipedia.org/wiki/Travis_CI:
+#   - "... free open-source plans were removed in [sic] the end of 2020"
+#   - https://blog.travis-ci.com/2020-11-02-travis-ci-new-billing
+#   - https://ropensci.org/technotes/2020/11/19/moving-away-travis/
+################################################################################
+## Machine config
+os: 'linux'
+arch: 'amd64'
+dist: 'bionic'
+version: '~> 1.0'
 
-rvm:
-  - 2.2.5
+## Language and cache config
+language: 'ruby'
+cache: 'bundler'
 
-sudo: required
-services: docker
+## Services config
+services:
+  - docker
 
-env:
-  matrix:
-  - INSTANCE=default-ubuntu-1204
-  - INSTANCE=default-ubuntu-1404
-  - INSTANCE=default-ubuntu-1604
-  - INSTANCE=default-debian-7
-  - INSTANCE=default-debian-8
-
-# https://github.com/zuazo/kitchen-in-travis-native/issues/1#issuecomment-142455888
-before_script: sudo iptables -L DOCKER || sudo iptables -N DOCKER
-
-install:
-  # setup ci for test formula
-  - export BUNDLE_GEMFILE=$PWD/Gemfile
-  - bundle install
-
+## Script to run for the test stage
 script:
-  # Run unit tests
-  - KITCHEN_LOCAL_YAML=.kitchen.docker.yml bundle exec kitchen verify ${INSTANCE}
+  - bin/kitchen verify "${INSTANCE}"
+
+## Stages and jobs matrix
+stages:
+  - test
+  # # As part of the switch away from Travis CI, ensure that the `release` stage
+  # # is not run inadvertently
+  # - name: 'release'
+  #   if: 'branch = master AND type != pull_request'
+jobs:
+  include:
+    ## Define the test stage that runs the linters (and testing matrix, if applicable)
+
+    # Run all of the linters in a single job
+    - language: 'node_js'
+      node_js: 'lts/*'
+      env: 'Lint'
+      name: 'Lint: salt-lint, yamllint, rubocop, shellcheck & commitlint'
+      before_install: 'skip'
+      script:
+        # Install and run `salt-lint`
+        - pip install --user salt-lint
+        - git ls-files -- '*.sls' '*.jinja' '*.j2' '*.tmpl' '*.tst'
+                        | xargs salt-lint
+        # Install and run `yamllint`
+        # Need at least `v1.17.0` for the `yaml-files` setting
+        - pip install --user yamllint>=1.17.0
+        - yamllint -s .
+        # Install and run `rubocop`
+        - gem install rubocop
+        - rubocop -d
+        # Run `shellcheck` (already pre-installed in Travis)
+        - shellcheck --version
+        - git ls-files -- '*.sh' '*.bash' '*.ksh'
+                        | xargs shellcheck
+        # Install and run `commitlint`
+        - npm i -D @commitlint/config-conventional
+                   @commitlint/travis-cli
+        - commitlint-travis
+
+    # Run `pre-commit` linters in a single job
+    - language: 'python'
+      env: 'Lint_pre-commit'
+      name: 'Lint: pre-commit'
+      before_install: 'skip'
+      cache:
+        directories:
+          - $HOME/.cache/pre-commit
+      script:
+        # Install and run `pre-commit`
+        - pip install pre-commit==2.7.1
+        - pre-commit run --all-files --color always --verbose
+        - pre-commit run --color always --hook-stage manual --verbose commitlint-travis
+
+    ## Define the rest of the matrix based on Kitchen testing
+    # Make sure the instances listed below match up with
+    # the `platforms` defined in `kitchen.yml`
+    # - env: INSTANCE=default-debian-10-tiamat-py3
+    # - env: INSTANCE=default-debian-9-tiamat-py3
+    # - env: INSTANCE=default-ubuntu-2004-tiamat-py3
+    # - env: INSTANCE=default-ubuntu-1804-tiamat-py3
+    # - env: INSTANCE=default-ubuntu-1604-tiamat-py3
+    # - env: INSTANCE=default-centos-8-tiamat-py3
+    # - env: INSTANCE=default-centos-7-tiamat-py3
+    # - env: INSTANCE=default-amazonlinux-2-tiamat-py3
+    # - env: INSTANCE=default-oraclelinux-8-tiamat-py3
+    # - env: INSTANCE=default-oraclelinux-7-tiamat-py3
+    - env: INSTANCE=default-debian-10-master-py3
+    - env: INSTANCE=default-debian-9-master-py3
+    - env: INSTANCE=default-ubuntu-2004-master-py3
+    - env: INSTANCE=default-ubuntu-1804-master-py3
+    - env: INSTANCE=default-ubuntu-1604-master-py3
+    # - env: INSTANCE=default-centos-8-master-py3
+    # - env: INSTANCE=default-centos-7-master-py3
+    # - env: INSTANCE=default-fedora-33-master-py3
+    # - env: INSTANCE=default-fedora-32-master-py3
+    # - env: INSTANCE=default-opensuse-leap-152-master-py3
+    # - env: INSTANCE=default-opensuse-tmbl-latest-master-py3
+    # - env: INSTANCE=default-amazonlinux-2-master-py3
+    # - env: INSTANCE=default-oraclelinux-8-master-py3
+    # - env: INSTANCE=default-oraclelinux-7-master-py3
+    # - env: INSTANCE=default-gentoo-stage3-latest-master-py3
+    # - env: INSTANCE=default-gentoo-stage3-systemd-master-py3
+    # - env: INSTANCE=default-debian-10-3002-2-py3
+    # - env: INSTANCE=default-debian-9-3002-2-py3
+    # - env: INSTANCE=default-ubuntu-2004-3002-2-py3
+    # - env: INSTANCE=default-ubuntu-1804-3002-2-py3
+    # - env: INSTANCE=default-ubuntu-1604-3002-2-py3
+    # - env: INSTANCE=default-centos-8-3002-2-py3
+    # - env: INSTANCE=default-centos-7-3002-2-py3
+    # - env: INSTANCE=default-fedora-33-3002-2-py3
+    # - env: INSTANCE=default-fedora-32-3002-2-py3
+    # - env: INSTANCE=default-opensuse-leap-152-3002-2-py3
+    # - env: INSTANCE=default-opensuse-tmbl-latest-3002-2-py3
+    # - env: INSTANCE=default-amazonlinux-2-3002-2-py3
+    # - env: INSTANCE=default-oraclelinux-8-3002-2-py3
+    # - env: INSTANCE=default-oraclelinux-7-3002-2-py3
+    # - env: INSTANCE=default-arch-base-latest-3002-2-py3
+    # - env: INSTANCE=default-gentoo-stage3-latest-3002-2-py3
+    # - env: INSTANCE=default-gentoo-stage3-systemd-3002-2-py3
+    # - env: INSTANCE=default-debian-10-3001-4-py3
+    # - env: INSTANCE=default-debian-9-3001-4-py3
+    # - env: INSTANCE=default-ubuntu-2004-3001-4-py3
+    # - env: INSTANCE=default-ubuntu-1804-3001-4-py3
+    # - env: INSTANCE=default-ubuntu-1604-3001-4-py3
+    # - env: INSTANCE=default-centos-8-3001-4-py3
+    # - env: INSTANCE=default-centos-7-3001-4-py3
+    # - env: INSTANCE=default-fedora-33-3001-4-py3
+    # - env: INSTANCE=default-fedora-32-3001-4-py3
+    # - env: INSTANCE=default-opensuse-leap-152-3001-4-py3
+    # - env: INSTANCE=default-opensuse-tmbl-latest-3001-4-py3
+    # - env: INSTANCE=default-amazonlinux-2-3001-4-py3
+    # - env: INSTANCE=default-oraclelinux-8-3001-4-py3
+    # - env: INSTANCE=default-oraclelinux-7-3001-4-py3
+    # - env: INSTANCE=default-arch-base-latest-3001-4-py3
+    # - env: INSTANCE=default-gentoo-stage3-latest-3001-4-py3
+    # - env: INSTANCE=default-gentoo-stage3-systemd-3001-4-py3
+    # - env: INSTANCE=default-debian-10-3000-6-py3
+    # - env: INSTANCE=default-debian-9-3000-6-py3
+    # - env: INSTANCE=default-ubuntu-1804-3000-6-py3
+    # - env: INSTANCE=default-ubuntu-1604-3000-6-py3
+    # - env: INSTANCE=default-centos-8-3000-6-py3
+    # - env: INSTANCE=default-centos-7-3000-6-py3
+    # - env: INSTANCE=default-opensuse-leap-152-3000-6-py3
+    # - env: INSTANCE=default-amazonlinux-2-3000-6-py3
+    # - env: INSTANCE=default-oraclelinux-8-3000-6-py3
+    # - env: INSTANCE=default-oraclelinux-7-3000-6-py3
+    # - env: INSTANCE=default-gentoo-stage3-latest-3000-6-py3
+    # - env: INSTANCE=default-gentoo-stage3-systemd-3000-6-py3
+    # - env: INSTANCE=default-ubuntu-1804-3000-6-py2
+    # - env: INSTANCE=default-ubuntu-1604-3000-6-py2
+    # - env: INSTANCE=default-arch-base-latest-3000-6-py2
+
+    ## Define the release stage that runs `semantic-release`
+    - stage: 'release'
+      language: 'node_js'
+      node_js: 'lts/*'
+      env: 'Release'
+      name: 'Run semantic-release inc. file updates to AUTHORS, CHANGELOG & FORMULA'
+      before_install: 'skip'
+      script:
+        # Update `AUTHORS.md`
+        - export MAINTAINER_TOKEN=${GH_TOKEN}
+        - go get github.com/myii/maintainer
+        - maintainer contributor
+
+        # Install all dependencies required for `semantic-release`
+        - npm i -D @semantic-release/changelog@3
+                   @semantic-release/exec@3
+                   @semantic-release/git@7
+      deploy:
+        provider: 'script'
+        # Opt-in to `dpl v2` to complete the Travis build config validation (beta)
+        # * https://docs.travis-ci.com/user/build-config-validation
+        # Deprecated `skip_cleanup` can now be avoided, `cleanup: false` is by default
+        edge: true
+        # Run `semantic-release`
+        script: 'npx semantic-release@15.14'
+
+# Notification options: `always`, `never` or `change`
+notifications:
+  webhooks:
+    if: 'repo = saltstack-formulas/mysql-formula'
+    urls:
+      - https://saltstack-formulas.zulipchat.com/api/v1/external/travis?api_key=HsIq3o5QmLxdnVCKF9is0FUIpkpAY79P&stream=CI&topic=saltstack-formulas%2Fmysql-formula&ignore_pull_requests=true
+    on_success: always  # default: always
+    on_failure: always  # default: always
+    on_start: always    # default: never
+    on_cancel: always   # default: always
+    on_error: always    # default: always

@@ -1,15 +1,8 @@
-# vim: sts=2 ts=2 sw=2 et ai
-#
-
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+---
 Debian:
-    {% if salt['grains.get']('osmajorrelease')|int >= 9 %}
-  serverpkg: mariadb-server
-  service: mariadb
-  clientpkg: mariadb-client
-  devpkg: libmariadbclient-dev
-    {% else %}
   devpkg: libmysqlclient-dev
-    {% endif %}
 
   config:
     sections:
@@ -20,20 +13,18 @@ Debian:
         pid_file: /var/run/mysqld/mysqld.pid
         basedir: /usr
         tmpdir: /tmp
-        lc_messages_dir:  /usr/share/mysql
+        lc_messages_dir: /usr/share/mysql
         skip_external_locking: noarg_present
         bind_address: 127.0.0.1
         key_buffer_size: 16M
         max_allowed_packet: 16M
         thread_stack: 192K
         thread_cache_size: 8
-        query_cache_limit: 1M
-        query_cache_size: 16M
         expire_logs_days: 10
         max_binlog_size: 100M
-        #innodb_flush_log_at_trx_commit: 1
-        #innodb_lock_wait_timeout: 50
-        #innodb_file_per_table: noarg_present
+        # innodb_flush_log_at_trx_commit: 1
+        # innodb_lock_wait_timeout: 50
+        # innodb_file_per_table: noarg_present
       mysqldump:
         quick: noarg_present
         quote_names: noarg_present
@@ -42,31 +33,19 @@ Debian:
         key_buffer_size: 16M
     append: |
       !includedir /etc/mysql/conf.d/
-      # {% if salt['grains.get']('osmajorrelease')|int >= 9 -%}
-      # !includedir /etc/mysql/mariadb.conf.d/
-      # {%- endif %}
 
 RedHat:
-  #https://mariadb.com/blog/rhel7-transition-mysql-mariadb-first-look
-   {%- if salt['grains.get']('osmajorrelease')|int in [7] %}
-     {% set fork = 'mariadb' %}
-  serverpkg: mariadb-server
-  service: mariadb
-  devpkg: mariadb-devel
-   {%- else %}
-     {% set fork = 'mysql' %}
   service: mysqld
-   {%- endif %}
-
-  clientpkg: {{ fork }}
-  pythonpkg: MySQL-python
+  clientpkg: mysql
+  pythonpkg: python3-PyMySQL
   config:
     file: /etc/my.cnf
     sections:
       client:
+        socket: /var/lib/mysql/mysql.sock
       mysqld_safe:
-        log_error: /var/log/{{ fork }}/mysqld.log
-        pid_file: /var/run/{{ fork }}/mysqld.pid
+        log_error: /var/log/mysql/mysqld.log
+        pid_file: /var/run/mysql/mysqld.pid
       mysqld:
         socket: /var/lib/mysql/mysql.sock
         bind_address: 127.0.0.1
@@ -75,26 +54,24 @@ RedHat:
 Suse:
   serverpkg: mariadb
   clientpkg: mariadb-client
-  {%- if salt['grains.get']('osmajorrelease')|int == 42 %}
-    # "old" package name up to Leap 42.x
-  pythonpkg: python-PyMySQL
-    {% else %}
-  pythonpkg: python2-pymysql
-    {% endif %}
+  pythonpkg: python3-PyMySQL
 
   config:
     file: /etc/my.cnf
     sections:
       client:
-        socket: /var/run/mysql/mysql.sock
+        socket: /run/mysql/mysql.sock
       mysqld:
+        # Empty values below to be resolved, disabling the rule in the meantime
+        # yamllint disable rule:empty-values
         port:
         user:
         socket:
-        datadir: 
+        datadir:
         tmpdir:
+        # yamllint enable rule:empty-values
         innodb_file_format: Barracuda
-        innodb_file_per_table: ON
+        innodb_file_per_table: 'ON'
         server-id: 1
         sql_mode: NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
       mysqld_multi:
@@ -109,6 +86,8 @@ Arch:
   clientpkg: mariadb-clients
   service: mysqld
   pythonpkg: mysql-python
+  # Empty value below to be resolved, disabling the rule in the meantime
+  # yamllint disable-line rule:empty-values
   dev:
 
   config:
@@ -178,7 +157,7 @@ Gentoo:
         default_character_set: utf8
       myisamchk:
         character_sets_dir: /usr/share/mysql/charsets
-        key_buffer: 20M   ##????? key_buffer_size ?
+        key_buffer: 20M   ## ????? key_buffer_size ?
         sort_buffer_size: 20M
         read_buffer: 2M
         write_buffer: 2M
@@ -188,7 +167,8 @@ Gentoo:
         err_log: /var/log/mysql/mysql.err
       mysqld:
         character_set_serverpkg: utf8
-        # note: the gentoo init.d script specifically needs pid-file (dash not underscore)
+        # note: the gentoo init.d script specifically needs pid-file
+        # (dash not underscore)
         pid-file: /var/run/mysqld/mysqld.pid
         log_error: /var/log/mysql/mysqld.err
         basedir: /usr
@@ -217,7 +197,7 @@ Gentoo:
         innodb_lock_wait_timeout: 50
         innodb_file_per_table: noarg_present
       isamchk:
-        key_buffer: 20M   ##????? key_buffer_size ?
+        key_buffer: 20M   ## ????? key_buffer_size ?
         sort_buffer_size: 20M
         read_buffer: 2M
         write_buffer: 2M
@@ -225,20 +205,23 @@ Gentoo:
         interactive_timeout: noarg_present
 
 FreeBSD:
-  serverpkg: mysql56-server
-  clientpkg: mysql56-client
+  serverpkg: mysql57-server
+  clientpkg: mysql57-client
   service: mysql-server
-  pythonpkg: py27-pymysql
-  devpkg: mysql56-server
+  pythonpkg: py37-pymysql
+  devpkg: mysql57-server
 
   config:
-    file: /usr/local/etc/my.cnf
+    file: /usr/local/etc/mysql/my.cnf
     sections:
       client:
         socket: /tmp/mysql.sock
       mysqld:
+        # Empty values below to be resolved, disabling the rule in the meantime
+        # yamllint disable rule:empty-values
         user:
-        datadir:
+        datadir: /var/db/mysql
+        # yamllint enable rule:empty-values
         socket: /tmp/mysql.sock
         skip-external-locking: noarg_present
         key_buffer_size: 16M
