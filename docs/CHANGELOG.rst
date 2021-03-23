@@ -2,6 +2,26 @@
 Changelog
 =========
 
+`0.55.1 <https://github.com/saltstack-formulas/mysql-formula/compare/v0.55.0...v0.55.1>`_ (2021-03-23)
+----------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **salt-user:** redirect error output from user access checks (\ `4cb4c05 <https://github.com/saltstack-formulas/mysql-formula/commit/4cb4c05e48272c8073b0798afa8b31f232d12674>`_\ )
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* **commitlint:** ensure ``upstream/master`` uses main repo URL [skip ci] (\ `e20d7c6 <https://github.com/saltstack-formulas/mysql-formula/commit/e20d7c69d12777365ff95c841decfe7dc05c4227>`_\ )
+* **gemfile+lock:** use ``ssf`` customised ``kitchen-docker`` repo [skip ci] (\ `63561c0 <https://github.com/saltstack-formulas/mysql-formula/commit/63561c0a2f236722b4449717e83b421a021d7093>`_\ )
+* **gitlab-ci:** add ``rubocop`` linter (with ``allow_failure``\ ) [skip ci] (\ `d08b960 <https://github.com/saltstack-formulas/mysql-formula/commit/d08b960daf910f9c386523ae3d942d851cca2802>`_\ )
+* **kitchen+ci:** use latest pre-salted images (after CVE) [skip ci] (\ `1af83d1 <https://github.com/saltstack-formulas/mysql-formula/commit/1af83d1fac432c9208c968182979090348dab69c>`_\ )
+* **kitchen+gitlab-ci:** use latest pre-salted images [skip ci] (\ `b27382a <https://github.com/saltstack-formulas/mysql-formula/commit/b27382a76cf3f2fd40c5dc6934175186f2065720>`_\ )
+* **pre-commit:** update hook for ``rubocop`` [skip ci] (\ `86397f6 <https://github.com/saltstack-formulas/mysql-formula/commit/86397f6390a6f5aab812dda258d3438674798af3>`_\ )
+
 `0.55.0 <https://github.com/saltstack-formulas/mysql-formula/compare/v0.54.2...v0.55.0>`_ (2020-12-16)
 ----------------------------------------------------------------------------------------------------------
 
