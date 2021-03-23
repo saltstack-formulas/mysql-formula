@@ -312,6 +312,7 @@ suites:
       state_top:
         base:
           '*':
+            - mysql._mapdata
             - mysql
       pillars:
         top.sls:
