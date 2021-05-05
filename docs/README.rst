@@ -1,7 +1,5 @@
-.. _readme:
-
-mysql
-=====
+mysql-formula
+=============
 
 |img_travis| |img_sr|
 
@@ -51,12 +49,12 @@ Available states
 Meta-state including all server packages in correct order. This meta-state does **not** include ``mysql.remove_test_database``.
 
 ``mysql.macos``
-^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^
 
 Install "MySQL Community Server", "MySQL Workbench", and other related mysql products on MacOS (and create Desktop shortcuts).
 
 ``mysql.macos.remove``
-^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
 
 Remove "MySQL Community Server", "MySQL Workbench", and any other enabled products from MacOS.
 
@@ -150,7 +148,7 @@ Add the official MySQL 5.7 repository.
     changed enabled repository accordingly.
 
 ``mysql.config``
-^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^
 
 Manage the MySQL configuration.
 
