@@ -2,6 +2,33 @@
 Changelog
 =========
 
+`0.55.2 <https://github.com/saltstack-formulas/mysql-formula/compare/v0.55.1...v0.55.2>`_ (2021-05-07)
+----------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **salt-user:** fix setting grants for the salt user (\ `346633d <https://github.com/saltstack-formulas/mysql-formula/commit/346633d6f65a4da5e44a9e7c1cff9f00e0e2075b>`_\ )
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* **kitchen+gitlab:** adjust matrix to add ``3003`` [skip ci] (\ `3df6d64 <https://github.com/saltstack-formulas/mysql-formula/commit/3df6d6410d0ad74d51cb26032d4917617913d835>`_\ )
+
+Documentation
+^^^^^^^^^^^^^
+
+
+* **readme:** fix headings [skip ci] (\ `897a83d <https://github.com/saltstack-formulas/mysql-formula/commit/897a83dc2ae0430144f5c1ef0dde29f05839fe69>`_\ )
+
+Tests
+^^^^^
+
+
+* standardise use of ``share`` suite & ``_mapdata`` state [skip ci] (\ `c11750c <https://github.com/saltstack-formulas/mysql-formula/commit/c11750c9ccb702cfa28bbae4b3e2481e835729c1>`_\ )
+
 `0.55.1 <https://github.com/saltstack-formulas/mysql-formula/compare/v0.55.0...v0.55.1>`_ (2021-03-23)
 ----------------------------------------------------------------------------------------------------------
 
