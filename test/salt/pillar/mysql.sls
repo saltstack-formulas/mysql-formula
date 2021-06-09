@@ -30,9 +30,10 @@ mysql:
     mysqld:
       # you can use either underscore or hyphen in param names
       bind-address: 0.0.0.0
-      log_bin: /var/log/mysql/mysql-bin.log
+      # log_bin: /var/log/mysql/mysql-bin.log
       datadir: /var/lib/mysql
-      port: 3307
+      # port: 3307
+      # plugin-load-add: auth_socket.so
       binlog_do_db: foo
       auto_increment_increment: 5
       binlog-ignore-db:
@@ -112,8 +113,6 @@ mysql:
         - database: foo
           grants: ['select', 'insert', 'update']
           escape: true
-        - database: bar
-          grants: ['all privileges']
     # bob:
     #   password_hash: '*6C8989366EAF75BB670AD8EA7A7FC1176A95CEF4'
     #   host: '%' # Any host
@@ -136,7 +135,7 @@ mysql:
     #       grants: ['select', 'insert', 'update', 'delete']
     nopassuser:
       password: ~
-      host: localhost
+      # host: localhost  # requires unix_socket plugin
       databases: []
     application:
       password: 'somepass'
