@@ -14,33 +14,34 @@ include:
 {%- set mysql_datadir = salt['pillar.get']('mysql:server:mysqld:datadir', '/var/lib/mysql') %}
 {%- set mysql_unix_socket = salt['pillar.get']('mysql:server:unix_socket', '') %}
 {%- set lsb_distrib_codename = salt['grains.get']('lsb_distrib_codename', None) %}
+
 {%- if mysql_root_password %}
-{%- if os_family == 'Debian' %}
+{%-   if os_family == 'Debian' %}
 
-{%   if 'debconf_root_password' in mysql %}
-{%     set debconf_root_password = mysql.debconf_root_password %}
-{%     set debconf_root_password_again = mysql.debconf_root_password_again %}
-{%   elif mysql.serverpkg.startswith('percona-server-server') %}
-{%     if mysql.serverpkg < 'percona-server-server-5.7' %}{# 5.5 and 5.6 uses the same name... #}
-{%       set debconf_root_password = 'percona-server-server/root_password' %}
-{%       set debconf_root_password_again = 'percona-server-server/root_password_again' %}
-{%     elif '5.7' in mysql.serverpkg %}{# 5.7 changed option name... #}
-{%       set debconf_root_password = 'percona-server-server-5.7/root-pass' %}
-{%       set debconf_root_password_again = 'percona-server-server-5.7/re-root-pass' %}
-{%     else %}{# attempt to support future version? #}
-{%       set debconf_root_password = mysql.serverpkg + '/root-pass' %}
-{%       set debconf_root_password_again = mysql.serverpkg + '/re-root-pass' %}
-{%     endif %}
-{%   else %}
-{%     if salt['grains.get']('osmajorrelease')|int < 9 or not salt['grains.get']('os')|lower == 'debian' %}
-{%       set debconf_root_password = 'mysql-server/root_password' %}
-{%       set debconf_root_password_again = 'mysql-server/root_password_again' %}
-{%     else %}
-{%       set debconf_root_password = False %}
-{%     endif %}
-{%   endif %}
+{%-     if 'debconf_root_password' in mysql %}
+{%-       set debconf_root_password = mysql.debconf_root_password %}
+{%-       set debconf_root_password_again = mysql.debconf_root_password_again %}
+{%-     elif mysql.serverpkg.startswith('percona-server-server') %}
+{%-       if mysql.serverpkg < 'percona-server-server-5.7' %}{# 5.5 and 5.6 uses the same name... #}
+{%-         set debconf_root_password = 'percona-server-server/root_password' %}
+{%-         set debconf_root_password_again = 'percona-server-server/root_password_again' %}
+{%-       elif '5.7' in mysql.serverpkg %}{# 5.7 changed option name... #}
+{%-         set debconf_root_password = 'percona-server-server-5.7/root-pass' %}
+{%-         set debconf_root_password_again = 'percona-server-server-5.7/re-root-pass' %}
+{%-       else %}{# attempt to support future version? #}
+{%-         set debconf_root_password = mysql.serverpkg + '/root-pass' %}
+{%-         set debconf_root_password_again = mysql.serverpkg + '/re-root-pass' %}
+{%-       endif %}
+{%-     else %}
+{%-       if salt['grains.get']('osmajorrelease')|int < 9 or not salt['grains.get']('os')|lower == 'debian' %}
+{%-         set debconf_root_password = 'mysql-server/root_password' %}
+{%-         set debconf_root_password_again = 'mysql-server/root_password_again' %}
+{%-       else %}
+{%-         set debconf_root_password = False %}
+{%-       endif %}
+{%-     endif %}
 
-{% if mysql.serverpkg == 'mysql-community-server' %}
+{%    if mysql.serverpkg == 'mysql-community-server' %}
 mysql-community-server_repo:
   pkgrepo.managed:
     - humanname: "Mysql official repo"
@@ -49,7 +50,7 @@ mysql-community-server_repo:
     - refresh: True
     - require_in:
       - pkg: mysql-community-server
-{% endif %}
+{%    endif %}
 
 mysql_debconf_utils:
   pkg.installed:
@@ -65,8 +66,8 @@ mysql_debconf:
     - require:
       - pkg: mysql_debconf_utils
 
-  {%- if debconf_root_password %}
-      {% if mysql.serverpkg == 'mysql-community-server' %}
+{%-   if debconf_root_password %}
+{%      if mysql.serverpkg == 'mysql-community-server' %}
 mysql_password_debconf:
   debconf.set:
     - name: 'mysql-community-server'
@@ -78,7 +79,7 @@ mysql_password_debconf:
       - pkg: {{ mysql.serverpkg }}
     - require:
       - pkg: mysql_debconf_utils
-            {% else %}
+{%      else %}
 mysql_password_debconf:
   debconf.set:
     - name: mysql-server
@@ -90,10 +91,10 @@ mysql_password_debconf:
     - require:
       - pkg: mysql_debconf_utils
 
-{% endif %}
- {% endif %}
+{%      endif %}
+{%    endif %}
 
-{%- elif os_family in ['RedHat', 'Suse', 'FreeBSD'] %}
+{%-   elif os_family in ['RedHat', 'Suse', 'FreeBSD'] %}
 mysql_root_password:
   cmd.run:
     - name: mysqladmin --host "{{ mysql_host }}" --user {{ mysql_root_user }} password '{{ mysql_root_password|replace("'", "'\"'\"'") }}'
@@ -101,7 +102,7 @@ mysql_root_password:
     - require:
       - service: mysqld-service-running
 
-{%- for host in {'localhost': '', 'localhost.localdomain': '', salt['grains.get']('fqdn'): ''}.keys() %}
+{%-     for host in {'localhost': '', 'localhost.localdomain': '', salt['grains.get']('fqdn'): ''}.keys() %}
 mysql_delete_anonymous_user_{{ host }}:
   mysql_user:
     - absent
@@ -109,35 +110,35 @@ mysql_delete_anonymous_user_{{ host }}:
     - name: ''
     - connection_host: '{{ mysql_host }}'
     - connection_user: '{{ mysql_salt_user }}'
-    {%- if mysql_salt_password %}
+{%-       if mysql_salt_password %}
     - connection_pass: '{{ mysql_salt_password }}'
-    {%- endif %}
-    {%- if mysql_unix_socket %}
+{%-       endif %}
+{%-       if mysql_unix_socket %}
     - connection_unix_socket: '{{ mysql_unix_socket }}'
-    {%- endif %}
+{%-       endif %}
     - connection_charset: utf8
     - require:
       - service: mysqld-service-running
       - pkg: mysql_python
-      {%- if (mysql_salt_user == mysql_root_user) and mysql_root_password %}
+{%-       if (mysql_salt_user == mysql_root_user) and mysql_root_password %}
       - cmd: mysql_root_password
-      {%- endif %}
-      {%- if (mysql_salt_user != mysql_root_user) %}
+{%-       endif %}
+{%-       if (mysql_salt_user != mysql_root_user) %}
       - sls: mysql.salt-user
-      {%- endif %}
-{%- endfor %}
-{%- endif %}
+{%-       endif %}
+{%-     endfor %}
+{%-   endif %}
 {%- endif %}
 
 {%- if os_family == 'Arch' %}
 # on arch linux: inital mysql datadirectory is not created
 mysql_install_datadir:
   cmd.run:
-{%- if mysql.version is defined and mysql.version >= 5.7 %}
+{%-   if mysql.version is defined and mysql.version >= 5.7 %}
     - name: mysqld --initialize-insecure --user=mysql --basedir=/usr --datadir={{ mysql_datadir }}
-{%- else %}
+{%-   else %}
     - name: mysql_install_db --user=mysql --basedir=/usr --datadir={{ mysql_datadir }}
-{%- endif %}
+{%-   endif %}
     - runas: root
     - creates: {{ mysql_datadir }}/mysql/user.frm
     - env:
@@ -162,7 +163,8 @@ mysqld-packages:
       - file: mysql_config_directory
 {%- endif %}
 
-{%- if os_family in ['RedHat', 'Suse'] and mysql.version is defined and mysql.version >= 5.7 and mysql.serverpkg.lower() != 'mariadb-server' %}
+{%- if os_family in ['RedHat', 'Suse'] and mysql.version is defined
+      and mysql.version >= 5.7 and mysql.serverpkg.lower() != 'mariadb-server' %}
 # Initialize mysql database with --initialize-insecure option before starting service so we don't get locked out.
 mysql_initialize:
   cmd.run:
@@ -217,7 +219,9 @@ mysqld-service-running:
     - enable: True
     - require:
       - pkg: {{ mysql.serverpkg }}
-{%- if (os_family in ['RedHat', 'Suse'] and mysql.version is defined and mysql.version >= 5.7 and mysql.serverpkg.lower() != 'mariadb-server') or (os_family in ['Gentoo', 'FreeBSD']) %}
+{%- if (os_family in ['RedHat', 'Suse'] and mysql.version is defined
+      and mysql.version >= 5.7 and mysql.serverpkg.lower() != 'mariadb-server')
+      or (os_family in ['Gentoo', 'FreeBSD']) %}
       - cmd: mysql_initialize
 {%- elif os_family in ['RedHat', 'Suse'] and mysql.serverpkg.lower() == 'mariadb-server' %}
       - file: {{ mysql_datadir }}
