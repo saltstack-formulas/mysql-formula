@@ -208,7 +208,7 @@ FreeBSD:
   serverpkg: mysql57-server
   clientpkg: mysql57-client
   service: mysql-server
-  pythonpkg: py37-pymysql
+  pythonpkg: py38-pymysql
   devpkg: mysql57-server
 
   config:
