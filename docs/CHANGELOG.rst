@@ -2,6 +2,26 @@
 Changelog
 =========
 
+`0.56.0 <https://github.com/saltstack-formulas/mysql-formula/compare/v0.55.2...v0.56.0>`_ (2021-07-19)
+----------------------------------------------------------------------------------------------------------
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* add Debian 11 Bullseye & update ``yamllint`` configuration [skip ci] (\ `ee34e48 <https://github.com/saltstack-formulas/mysql-formula/commit/ee34e48fae56a5ca06557d8997e47d100eef8c48>`_\ )
+* **3003.1:** update inc. AlmaLinux, Rocky & ``rst-lint`` [skip ci] (\ `4d5e6d9 <https://github.com/saltstack-formulas/mysql-formula/commit/4d5e6d9e1924fdabae726b1ef6cdc58b8dcb331f>`_\ )
+* **kitchen:** move ``provisioner`` block & update ``run_command`` [skip ci] (\ `f51d4ba <https://github.com/saltstack-formulas/mysql-formula/commit/f51d4ba4ced7d7a6b13da091b838e60a16be7d1b>`_\ )
+* **kitchen+gitlab:** remove Ubuntu 16.04 & Fedora 32 (EOL) [skip ci] (\ `13c8450 <https://github.com/saltstack-formulas/mysql-formula/commit/13c8450069aad9bf1ff25a0c7870a82d5a0b3e7f>`_\ )
+* add ``arch-master`` to matrix and update ``.travis.yml`` [skip ci] (\ `8dbff38 <https://github.com/saltstack-formulas/mysql-formula/commit/8dbff388203b9b6156d07e6cc4bb6558c7ad72e0>`_\ )
+
+Features
+^^^^^^^^
+
+
+* **freebsd:** update packages from ``py37-*`` => ``py38-*`` (\ `70eeed8 <https://github.com/saltstack-formulas/mysql-formula/commit/70eeed80c1b0ce0dfd1ffe539b5e0be6ba5415fd>`_\ )
+* **osfingermap:** add support for ``Debian 11`` [skip ci] (\ `3ea9b34 <https://github.com/saltstack-formulas/mysql-formula/commit/3ea9b347590e6f15761d07567a7640d138f74128>`_\ )
+
 `0.55.2 <https://github.com/saltstack-formulas/mysql-formula/compare/v0.55.1...v0.55.2>`_ (2021-05-07)
 ----------------------------------------------------------------------------------------------------------
 
