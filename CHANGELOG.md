@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.56.1](https://github.com/saltstack-formulas/mysql-formula/compare/v0.56.0...v0.56.1) (2021-08-25)
+
+
+### Code Refactoring
+
+* **jinja:** improve indentation ([d09728e](https://github.com/saltstack-formulas/mysql-formula/commit/d09728e04f0405e0e085b68210210ced9d892fe4))
+
+
+### Continuous Integration
+
+* **gemfile+lock:** use `ssf` customised `inspec` repo [skip ci] ([8f91b4f](https://github.com/saltstack-formulas/mysql-formula/commit/8f91b4f3ecd2b9c9ee862aa607993f5b81ef4d6c))
+* **kitchen+ci:** update with latest `3003.2` pre-salted images [skip ci] ([d908ad5](https://github.com/saltstack-formulas/mysql-formula/commit/d908ad5e5558e236812860095222cdfb5f80ff08))
+
 # [0.56.0](https://github.com/saltstack-formulas/mysql-formula/compare/v0.55.2...v0.56.0) (2021-07-19)
 
 
