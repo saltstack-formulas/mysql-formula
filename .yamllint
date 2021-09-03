@@ -22,6 +22,7 @@ ignore: |
   .kitchen/
   kitchen.vagrant.yml
   mysql/supported_sections.yaml
+  mysql/osfingermap.yaml
 
 yaml-files:
   # Default settings

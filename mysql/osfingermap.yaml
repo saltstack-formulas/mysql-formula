@@ -71,7 +71,11 @@ CentOS-6:
   pythonpkg: MySQL-python
 CentOS Linux-7:
   # https://mariadb.com/blog/rhel7-transition-mysql-mariadb-first-look
+      {%- if 'pythonversion' in grains and grains.pythonversion[0]|int == 3 %}
+  pythonpkg: python36-PyMySQL   # python36-mysql works too
+      {%- else %}
   pythonpkg: MySQL-python
+      {%- endif %}
   serverpkg: mariadb-server
   service: mariadb
   clientpkg: mariadb
