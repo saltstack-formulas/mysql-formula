@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
-# Override by OS
+# Override by OS.
 package_name = 'mariadb-server'
 if (os[:name] == 'suse') || (os[:name] == 'opensuse')
   package_name = 'mariadb'
-elsif (os[:name] == 'debian') && os[:release].start_with?('8')
-  package_name = 'mysql-server'
-elsif (os[:name] == 'centos') && os[:release].start_with?('8')
+elsif os[:release].start_with?('8') && %w[debian centos].include?(os[:name])
   package_name = 'mysql-server'
 end
 
