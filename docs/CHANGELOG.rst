@@ -2,6 +2,22 @@
 Changelog
 =========
 
+`0.56.2 <https://github.com/saltstack-formulas/mysql-formula/compare/v0.56.1...v0.56.2>`_ (2021-09-04)
+----------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **centos7:** add correct pymysql package on cent7/saltpy3 (\ `9722b02 <https://github.com/saltstack-formulas/mysql-formula/commit/9722b0218763c56b7bb1096b421058e6898ae55e>`_\ )
+* **ci:** corrected ruby last else (\ `df2fa30 <https://github.com/saltstack-formulas/mysql-formula/commit/df2fa300eff9c07e54967a3ef1366c57896b4eb5>`_\ )
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* **centos:** add centos ci; fix test pillar (\ `060b43f <https://github.com/saltstack-formulas/mysql-formula/commit/060b43f3036bbdfd1c0910fe91ff280221ef116c>`_\ )
+
 `0.56.1 <https://github.com/saltstack-formulas/mysql-formula/compare/v0.56.0...v0.56.1>`_ (2021-08-25)
 ----------------------------------------------------------------------------------------------------------
 
