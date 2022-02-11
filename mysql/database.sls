@@ -59,9 +59,9 @@ include:
     - makedirs: True
 
 {{ state_id }}_load:
-  cmd.wait:
+  cmd.run:
     - name: mysql -u {{ mysql_salt_user }} -h{{ mysql_host }} {% if mysql_salt_pass %}-p{%- endif %}{{ mysql_salt_pass }} {{ database }} < /etc/mysql/{{ database }}.schema
-    - watch:
+    - onchanges:
       - file: {{ state_id }}_schema
       - mysql_database: {{ state_id }}
 {%- endif %}
