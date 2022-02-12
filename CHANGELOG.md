@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.56.3](https://github.com/saltstack-formulas/mysql-formula/compare/v0.56.2...v0.56.3) (2022-02-12)
+
+
+### Code Refactoring
+
+* **salt-lint:** fix violation ([7b62a62](https://github.com/saltstack-formulas/mysql-formula/commit/7b62a627e074bef9df4d06d9757ce6217af39d7a))
+
+
+### Continuous Integration
+
+* update linters to latest versions [skip ci] ([d9a2eb5](https://github.com/saltstack-formulas/mysql-formula/commit/d9a2eb505b919e89f5f08f29db1edcded6d421c4))
+* **gemfile:** allow rubygems proxy to be provided as an env var [skip ci] ([0a08d4f](https://github.com/saltstack-formulas/mysql-formula/commit/0a08d4fa9acb3c00dfc9ee78641f66b45fec96fd))
+* **kitchen+ci:** update with `3004` pre-salted images/boxes [skip ci] ([3abbd24](https://github.com/saltstack-formulas/mysql-formula/commit/3abbd242a54fb2c600daa04276a05dd31baceee1))
+* **kitchen+ci:** update with latest CVE pre-salted images [skip ci] ([c66269a](https://github.com/saltstack-formulas/mysql-formula/commit/c66269abfc4bfdf7fc12c2a110e215b1804caee8))
+* **kitchen+gitlab:** update for new pre-salted images [skip ci] ([8ef45fb](https://github.com/saltstack-formulas/mysql-formula/commit/8ef45fbe7124b3ca60505bbd383ce762a89a6406))
+
 ## [0.56.2](https://github.com/saltstack-formulas/mysql-formula/compare/v0.56.1...v0.56.2) (2021-09-04)
 
 
