@@ -1,12 +1,15 @@
 # frozen_string_literal: true
 
-# Override by OS.
-package_name = 'mariadb-server'
-if (os[:name] == 'suse') || (os[:name] == 'opensuse')
-  package_name = 'mariadb'
-elsif os[:release].start_with?('8') && %w[debian centos].include?(os[:name])
-  package_name = 'mysql-server'
-end
+# Override by platform.
+package_name =
+  case system.platform[:finger]
+  when 'opensuse-tumbleweed', 'opensuse-15'
+    'mariadb'
+  when 'debian-8', 'centos-8', 'ubuntu-22.04'
+    'mysql-server'
+  else
+    'mariadb-server'
+  end
 
 control 'mysql package' do
   title 'should be installed'
