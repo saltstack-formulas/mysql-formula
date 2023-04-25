@@ -1,0 +1,20 @@
+name: CI
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        img:
+          - opensuse.leap
+          - debian.11
+    steps:
+      - uses: actions/checkout@v2
+      - name: Test
+        run: |
+          cd t && \
+          make test_container
+        env:
+          T_IMAGE: ${{ matrix.img }}
