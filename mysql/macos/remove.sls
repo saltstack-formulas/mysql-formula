@@ -19,11 +19,11 @@ mysql-macos-{{ product }}-desktop-shortcut-remove:
     - mode: 755
     - template: jinja
     - context:
-      user: {{ mysql.macos.user }}
-      home: {{ mysql.macos.userhomes }}
-      app: {{ data.app }}
-      dir: {{ '/Applications' if "isapp" in data and data.isapp else dl.prefix ~ '/' ~ archivename ~ '/bin' }}
-      suffix: {{ '.app' if "isapp" in data and data.isapp else '' }}
+        user: {{ mysql.macos.user }}
+        home: {{ mysql.macos.userhomes }}
+        app: {{ data.app }}
+        dir: {{ '/Applications' if "isapp" in data and data.isapp else dl.prefix ~ '/' ~ archivename ~ '/bin' }}
+        suffix: {{ '.app' if "isapp" in data and data.isapp else '' }}
   cmd.run:
     - name: /tmp/mac_shortcut.sh remove
     - runas: {{ mysql.macos.user }}

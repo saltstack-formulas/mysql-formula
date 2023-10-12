@@ -20,7 +20,7 @@ mysql_server_config:
     - source: salt://{{ tpldir }}/files/server.cnf
     {%- if os_family in ['Debian', 'Gentoo', 'RedHat'] %}
     - context:
-      tpldir: {{ tpldir }}
+        tpldir: {{ tpldir }}
     - user: root
     - group: root
     - mode: 644
@@ -37,7 +37,7 @@ mysql_galera_config:
     - source: salt://{{ tpldir }}/files/galera.cnf
     {%- if os_family in ['Debian', 'Gentoo', 'RedHat'] %}
     - context:
-      tpldir: {{ tpldir }}
+        tpldir: {{ tpldir }}
     - user: root
     - group: root
     - mode: 644
@@ -54,7 +54,7 @@ mysql_library_config:
     - source: salt://{{ tpldir }}/files/client.cnf
     {%- if os_family in ['Debian', 'Gentoo', 'RedHat'] %}
     - context:
-      tpldir: {{ tpldir }}
+        tpldir: {{ tpldir }}
     - user: root
     - group: root
     - mode: 644
@@ -71,7 +71,7 @@ mysql_clients_config:
     - source: salt://{{ tpldir }}/files/mysql-clients.cnf
     {%- if os_family in ['Debian', 'Gentoo', 'RedHat'] %}
     - context:
-      tpldir: {{ tpldir }}
+        tpldir: {{ tpldir }}
     - user: root
     - group: root
     - mode: 644
@@ -92,7 +92,7 @@ mysql_config:
     - source: salt://{{ tpldir }}/files/my.cnf
 {%- endif %}
     - context:
-      tpldir: {{ tpldir }}
+        tpldir: {{ tpldir }}
     {%- if os_family in ['Debian', 'Gentoo', 'RedHat'] %}
     - user: root
     - group: root
