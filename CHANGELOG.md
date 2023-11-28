@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.56.4](https://github.com/saltstack-formulas/mysql-formula/compare/v0.56.3...v0.56.4) (2023-11-28)
+
+
+### Bug Fixes
+
+* **bug:** config arrays as multiple lines ([fabd837](https://github.com/saltstack-formulas/mysql-formula/commit/fabd837bcbec14e535aca57ef3c2bd132038ff36))
+
+
+### Continuous Integration
+
+* update `pre-commit` configuration inc. for pre-commit.ci [skip ci] ([3880cd3](https://github.com/saltstack-formulas/mysql-formula/commit/3880cd3a2bd8ac6d2482b0e9a2365db2db9aff2a))
+* **kitchen+gitlab:** update for new pre-salted images [skip ci] ([47ff13c](https://github.com/saltstack-formulas/mysql-formula/commit/47ff13c31413e1f1236435c92136e34054e5adc3))
+
+
+### Styles
+
+* update precommit and style ([5f487e3](https://github.com/saltstack-formulas/mysql-formula/commit/5f487e33f688d4c12ba6f5c902d89ac535249373))
+
+
+### Tests
+
+* **packages:** update for `ubuntu-22.04` [skip ci] ([6e2433e](https://github.com/saltstack-formulas/mysql-formula/commit/6e2433e29df15aef7514bb4c958211dc4594c831))
+* **system:** add `build_platform_codename` [skip ci] ([bb6b4e5](https://github.com/saltstack-formulas/mysql-formula/commit/bb6b4e5a8245aed23ccbc9036702a096b32bf058))
+* **system.rb:** add support for `mac_os_x` [skip ci] ([924cc3a](https://github.com/saltstack-formulas/mysql-formula/commit/924cc3a59232d376778f7593c4af78c31c8234a4))
+
 ## [0.56.3](https://github.com/saltstack-formulas/mysql-formula/compare/v0.56.2...v0.56.3) (2022-02-12)
 
 
