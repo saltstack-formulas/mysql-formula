@@ -33,7 +33,13 @@
 {% elif mvalue == "SETONPLEASE"  %}
 {{ mparam }}{{ '='|indent(indents, true) }} ON
 {%- else -%}
+{%- if mvalue is list -%}
+{%- for value in mvalue %}
+{{ mparam }}{{ '='|indent(indents, true) }} {{ value }}
+{%- endfor -%}
+{%- else -%}
 {{ mparam }}{{ '='|indent(indents, true) }} {{ mvalue }}
+{%- endif -%}
 {%- endif -%}
 {%- endfor -%}
 {%- endif -%}
