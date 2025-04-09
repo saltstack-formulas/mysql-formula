@@ -1,6 +1,13 @@
 {%- from tpldir ~ "/map.jinja" import mysql with context %}
 
-mysql_python:
+mysqlclient_packages:
   pkg.installed:
-    - name: {{ mysql.pythonpkg }}
+    - pkgs:
+      - libmariadb-dev
+      - pkg-config
     - reload_modules: True
+
+mysqlclient:
+  pip.installed:
+    - require:
+      - pkg: mysqlclient_packages
