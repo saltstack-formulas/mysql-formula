@@ -1,6 +1,6 @@
 mysql-formula
 =============
-
+TEST
 |img_travis| |img_sr|
 
 .. |img_travis| image:: https://travis-ci.com/saltstack-formulas/mysql-formula.svg?branch=master
