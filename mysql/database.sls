@@ -60,7 +60,10 @@ include:
 
 {{ state_id }}_load:
   cmd.run:
-    - name: mysql -u {{ mysql_salt_user }} -h{{ mysql_host }} {% if mysql_salt_pass %}-p{%- endif %}{{ mysql_salt_pass }} {{ database }} < /etc/mysql/{{ database }}.schema
+    - name: mysql -u {{ mysql_salt_user }} -h{{ mysql_host }} {% if mysql_salt_pass %}-p{%- endif %}$SALT_PASS {{ database }} < /etc/mysql/{{ database }}.schema
+    - env:
+      - SALT_PASS: "{{ mysql_salt_pass }}"
+    - output_loglevel: quiet
     - onchanges:
       - file: {{ state_id }}_schema
       - mysql_database: {{ state_id }}
