@@ -1,0 +1,21 @@
+FROM registry.opensuse.org/opensuse/leap
+ENV container podman
+
+ENV LANG en_US.UTF-8
+
+RUN test ! -f /var/log/zypper.log || mv /var/log/zypper.log /var/log/zypper.log.preinstalled
+
+# these are needed to run test
+RUN zypper -vvvn install systemd salt-minion sudo
+
+##DUMMY
+
+RUN mkdir -p /srv/salt/ && \
+  sed -i 's^\#*\s*file_client: .*$^file_client: local\nsystemd.scope: False\nenable_fqdns_grains: False^' /etc/salt/minion && \
+  sed -i '/pam_systemd.so/d' /etc/pam.d/common-session-pc # delete pam_systemd , otherwise sudo will hang
+
+ADD mysql   /srv/salt/mysql
+
+WORKDIR /opt/project
+
+ENTRYPOINT ["/usr/lib/systemd/systemd"]

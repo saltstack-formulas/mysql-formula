@@ -1,0 +1,19 @@
+FROM debian:11
+ENV container podman
+
+ENV LANG en_US.UTF-8
+
+# these are needed to run test
+RUN apt-get -y update && apt-get -y upgrade
+RUN apt-get -y install systemd salt-minion curl sudo
+
+##DUMMY
+
+RUN mkdir -p /srv/salt/ && \
+  sed -i 's^\#*\s*file_client: .*$^file_client: local\nsystemd.scope: False\nenable_fqdns_grains: False^' /etc/salt/minion
+
+ADD mysql   /srv/salt/mysql
+
+WORKDIR /opt/project
+
+ENTRYPOINT ["/bin/systemd"]
