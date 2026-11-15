@@ -80,7 +80,7 @@ mysql_clients_config:
       - file: mysql_config_directory
 {%- endif %}
 
-{%- endif %}
+{%- endif %}{# if "config_directory" in mysql #}
 
 mysql_config:
   file.managed:
@@ -98,3 +98,4 @@ mysql_config:
     - group: root
     - mode: 644
     {%- endif %}
+

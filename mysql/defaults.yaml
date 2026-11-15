@@ -8,6 +8,31 @@ mysql:
   devpkg: mysql-devel
   debconf_utils: debconf-utils
 
+  supported_sections:
+    - client-server
+    - client
+    - client-mariadb
+    - galera
+    - mariadb
+    - mysql
+    - mysqldump
+    - mysqld_safe
+    - mysqlhotcopy
+    - mysqladmin
+    - mysqlcheck
+    - mysqlimport
+    - mysqlshow
+    - mysql_upgrade
+    - mysqlbinlog
+    - mysqlslap
+    - myisampack
+    - myisamchk
+    - isamchk
+    - mysqld
+    - mysqld_multi
+    - server
+    - xtrabackup
+
   config:
     file: /etc/mysql/my.cnf
     sections:
