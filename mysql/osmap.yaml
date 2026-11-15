@@ -5,8 +5,11 @@ Debian:
   service: mysql
 
 Ubuntu:
-  service: mysql
-  devpkg: libmysqlclient-dev
+  service: mariadb
+  serverpkg: mariadb-server
+  clientpkg: mariadb-client
+  devpkg: libmariadbclient-dev
+  pythonpkg: python3-mysqldb
   config:
     sections:
       mysqld:
@@ -14,6 +17,7 @@ Ubuntu:
         log_error: /var/log/mysql/error.log
     append: |
       !includedir /etc/mysql/conf.d/
+      # !includedir /etc/mysql/mariadb.conf.d/
 
 CentOS:
   config_directory: /etc/my.cnf.d/
@@ -31,7 +35,7 @@ Fedora:
   serverpkg: mariadb-server
   clientpkg: mariadb
   service: mariadb
-  pythonpkg: python2-mysql
+  pythonpkg: python3-mysqlclient
   config_directory: /etc/my.cnf.d/
 
   server_config:

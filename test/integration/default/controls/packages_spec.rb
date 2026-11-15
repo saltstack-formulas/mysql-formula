@@ -5,8 +5,6 @@ package_name =
   case system.platform[:finger]
   when 'opensuse-tumbleweed', 'opensuse-15'
     'mariadb'
-  when 'debian-8', 'centos-8', 'ubuntu-22.04'
-    'mysql-server'
   else
     'mariadb-server'
   end
