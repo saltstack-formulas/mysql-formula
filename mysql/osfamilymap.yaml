@@ -5,6 +5,7 @@ Debian:
   serverpkg: mariadb-server
   service: mariadb
   clientpkg: mariadb-client
+  pythonpkg: python3-mysqldb
   devpkg: libmariadbclient-dev
   config:
     sections:
