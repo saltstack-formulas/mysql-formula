@@ -3,8 +3,10 @@
 # Override by platform.
 package_name =
   case system.platform[:finger]
-  when 'opensuse-tumbleweed', 'opensuse-15'
+  when /^(open)suse-/
     'mariadb'
+  when /amazon/
+    'mariadb123-server'
   else
     'mariadb-server'
   end

@@ -1,6 +1,6 @@
 include:
-  - .config
   - .python
+  - .config
 
 {% from tpldir ~ "/map.jinja" import mysql with context %}
 
@@ -104,8 +104,7 @@ mysql_root_password:
 
 {%-     for host in {'localhost': '', 'localhost.localdomain': '', salt['grains.get']('fqdn'): ''}.keys() %}
 mysql_delete_anonymous_user_{{ host }}:
-  mysql_user:
-    - absent
+  mysql_user.absent:
     - host: {{ host or "''" }}
     - name: ''
     - connection_host: '{{ mysql_host }}'
@@ -119,7 +118,7 @@ mysql_delete_anonymous_user_{{ host }}:
     - connection_charset: utf8
     - require:
       - service: mysqld-service-running
-      - pkg: mysql_python
+      - pip: mysqlclient-pip-pkg-installed
 {%-       if (mysql_salt_user == mysql_root_user) and mysql_root_password %}
       - cmd: mysql_root_password
 {%-       endif %}
