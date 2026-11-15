@@ -4,9 +4,6 @@
 exclude_paths: []
 rules: {}
 skip_list:
-  # TODO: Formula-specific override to remove eventually
-  #       A lot of attention is going to be needed to resolve the existing long lines
-  - 204  # Lines should be no longer that 160 chars
   # Using `salt-lint` for linting other files as well, such as Jinja macros/templates
   - 205  # Use ".sls" as a Salt State file extension
   # Skipping `207` and `208` because `210` is sufficient, at least for the time-being
