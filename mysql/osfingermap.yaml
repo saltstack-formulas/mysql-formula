@@ -1,36 +1,6 @@
 # -*- coding: utf-8 -*-
 # vim: ft=yaml
 ---
-# Ubuntu
-Ubuntu-22.04:
-  serverpkg: mariadb-server
-  service: mariadb
-  clientpkg: mariadb-client
-  devpkg: libmariadbclient-dev
-  config:
-    append: |
-      !includedir /etc/mysql/conf.d/
-      # !includedir /etc/mysql/mariadb.conf.d/
-Ubuntu-20.04:
-  serverpkg: mariadb-server
-  service: mariadb
-  clientpkg: mariadb-client
-  devpkg: libmariadbclient-dev
-  config:
-    append: |
-      !includedir /etc/mysql/conf.d/
-      # !includedir /etc/mysql/mariadb.conf.d/
-Ubuntu-18.04:
-  serverpkg: mariadb-server
-  # service: mariadb
-  clientpkg: mariadb-client
-  # devpkg: libmariadbclient-dev
-Ubuntu-16.04:
-  serverpkg: mariadb-server
-  # service: mariadb
-  clientpkg: mariadb-client
-  # devpkg: libmariadbclient-dev
-
 # Redhat
 Red Hat Enterprise Linux Server-6:
   pythonpkg: MySQL-python
@@ -46,31 +16,3 @@ Redhat-7:
       mysqld_safe:
         log_error: /var/log/mariadb/mysqld.log
         pid_file: /var/run/mariadb/mysqld.pid
-
-# CentOS
-CentOS-6:
-  pythonpkg: MySQL-python
-CentOS Linux-7:
-  # https://mariadb.com/blog/rhel7-transition-mysql-mariadb-first-look
-      {%- if 'pythonversion' in grains and grains.pythonversion[0]|int == 3 %}
-  pythonpkg: python36-PyMySQL   # python36-mysql works too
-      {%- else %}
-  pythonpkg: MySQL-python
-      {%- endif %}
-  serverpkg: mariadb-server
-  service: mariadb
-  clientpkg: mariadb
-  devpkg: mariadb-devel
-  config:
-    sections:
-      mysqld_safe:
-        log_error: /var/log/mariadb/mysqld.log
-        pid_file: /var/run/mariadb/mysqld.pid
-  server_config:
-    sections:
-      mysqld_safe:
-        log_error: /var/log/mariadb/mysqld.log
-        pid_file: /var/run/mariadb/mysqld.pid
-
-CentOS Linux-8:
-  pythonpkg: python3-PyMySQL

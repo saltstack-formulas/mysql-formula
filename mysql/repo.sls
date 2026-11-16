@@ -62,3 +62,4 @@ set_gpg_mysql:
     - repl: 'gpgcheck=1'
     - require:
       - pkg: mysql57_community_release
+

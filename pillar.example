@@ -56,13 +56,13 @@ mysql:
     file: ~/.my.cnf
     sections:
       client:
-        port: 33306
-        socket: /var/lib/mysql-socket/mysql.sock
+        port: 3306
+        socket: /run/mysql/mysql.sock
       mysqld_safe:
         plugin-dir: '~/mysql/plugins'
       mysqld:
         user: myself
-        port: 33306
+        port: 3306
         datadir: ~/mysql/datadir
     apparmor:
       dir: /etc/apparmor.d/local
